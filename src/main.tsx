@@ -1,8 +1,10 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+
+import './styles/index.css';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <h1>CRATE</h1>
+    <h1 className="text-3xl text-brand-primary">CRATE</h1>
   </StrictMode>
-)
+);
