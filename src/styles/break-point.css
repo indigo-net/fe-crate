@@ -1,0 +1,4 @@
+@theme {
+  --breakpoint-mobile: 365px;
+  --breakpoint-desktop: 720px;
+}
