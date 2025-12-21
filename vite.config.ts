@@ -1,9 +1,9 @@
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
-import tailwindcss from '@tailwindcss/vite';
-// @ts-ignore
-import eslint from 'vite-plugin-eslint';
 import path from 'path';
+
+import tailwindcss from '@tailwindcss/vite';
+import react from '@vitejs/plugin-react';
+import { defineConfig } from 'vite';
+import eslint from 'vite-plugin-eslint';
 
 // https://vite.dev/config/
 export default defineConfig({
