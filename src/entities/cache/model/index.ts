@@ -1,6 +1,5 @@
-import TypeGuard from '@/shared/lib/type-guard';
-
-import CustomModel from '@/shared/model/custom-model';
+import { TypeGuard } from '@/shared/lib';
+import { CustomModel } from '@/shared/model';
 
 interface State<T = null> {
   data: T;

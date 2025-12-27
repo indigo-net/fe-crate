@@ -1,6 +1,5 @@
-import UUID from '@/shared/lib/uuid';
-
-import CustomModel from '@/shared/model/custom-model';
+import { UUID } from '@/shared/lib';
+import { CustomModel } from '@/shared/model';
 
 interface State {
   id: string;

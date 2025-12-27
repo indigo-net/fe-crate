@@ -1,8 +1,8 @@
 import { memo } from 'react';
 
-import TypeGuard from '@/shared/lib/type-guard';
+import { TypeGuard } from '@/shared/lib';
 
-import { FormQuestionType } from '@/entities/form-question/type';
+import type { FormQuestionType } from '@/entities/form-question/model';
 
 import { useQuestionCardContext } from '../context';
 
