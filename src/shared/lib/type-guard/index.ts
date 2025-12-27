@@ -18,6 +18,10 @@ class TypeGuard {
   static checkUndefined(value: unknown): value is undefined {
     return value === undefined;
   }
+
+  static checkFunction(value: unknown): value is Function {
+    return typeof value === 'function';
+  }
 }
 
 export default TypeGuard;
