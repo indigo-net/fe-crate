@@ -15,13 +15,14 @@ html {
   -webkit-font-smoothing: antialiased;
   /* macOS/iOS에서 폰트 렌더링 개선 */
   -moz-osx-font-smoothing: grayscale;
+  /* 테마 색상 적용 */
+  background-color: var(--color-bg-default);
+  color: var(--color-text-primary);
 }
 
 body {
   line-height: 1.5;
   overflow: hidden;
-  background-color: var(--color-bg-default);
-  color: var(--color-text-primary);
   margin: 0;
   padding: 0;
 }
