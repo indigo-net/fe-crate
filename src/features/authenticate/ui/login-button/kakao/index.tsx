@@ -2,8 +2,8 @@ import { EnvManager } from '@/shared/lib';
 import { memo } from 'react';
 
 const Kakao = () => {
-  const clientId = EnvManager.getAppEnv('VITE_KAKAO_CLIENT_ID');
-  const redirectUri = EnvManager.getAppEnv('VITE_KAKAO_REDIRECT_URI');
+  const clientId = EnvManager.getAppEnv('VITE_KAKAO_CLIENT_ID') ?? '';
+  const redirectUri = EnvManager.getAppEnv('VITE_KAKAO_REDIRECT_URI') ?? '';
 
   return (
     <a
