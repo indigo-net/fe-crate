@@ -1,10 +1,10 @@
 import type { SVGProps } from 'react';
 
-const Moon = (props: SVGProps<SVGSVGElement>) => {
+const KakaoTalk = (props: SVGProps<SVGSVGElement>) => {
   const {
     width = 24,
     height = 24,
-    'aria-label': ariaLabel = 'moon',
+    'aria-label': ariaLabel = 'kakaotalk',
     'aria-hidden': ariaHidden = false,
   } = props;
 
@@ -14,20 +14,14 @@ const Moon = (props: SVGProps<SVGSVGElement>) => {
       width={width}
       height={height}
       viewBox="0 0 24 24"
-      fill="none"
+      fill="currentColor"
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden={ariaHidden}
     >
       {!ariaHidden && <title>{ariaLabel}</title>}
-      <path
-        d="M18.5 14.2 A7.5 7.5 0 1 1 10.2 5.5 A5.2 5.2 0 0 0 18.5 14.2Z"
-        stroke="currentColor"
-        strokeWidth={1.125}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <path d="M4 11.2C4 7.78 7.58 5 12 5C16.42 5 20 7.78 20 11.2C20 14.62 16.42 17.4 12 17.4C11.19 17.4 10.4 17.31 9.66 17.15L6 19L6.78 15.93C5.05 14.95 4 13.18 4 11.2Z" />
     </svg>
   );
 };
 
-export default Moon;
+export default KakaoTalk;

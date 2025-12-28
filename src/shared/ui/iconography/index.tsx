@@ -1,9 +1,9 @@
-import Moon from './moon';
-import Sun from './sun';
+import Logo from './logo';
+import Stroke from './stroke';
 
 const Iconography = {
-  Sun: Sun,
-  Moon: Moon,
+  Logo: Logo,
+  Stroke: Stroke,
 };
 
 export default Iconography;

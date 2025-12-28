@@ -1,4 +1,11 @@
+import { LoginButton } from '@/features/authenticate/ui';
+import { DarkModeButton } from '@/features/toggle-theme/ui';
+
+import useLandingPageController from './hook';
+
 const LandingPage = () => {
+  const { isLoggined } = useLandingPageController();
+
   return (
     <div className="w-full h-[100dvh] overflow-y-auto flex flex-col">
       <header className="w-full p-[24px] h-fit bg-default flex justify-between items-center border-b border-b-divider-default">
@@ -9,10 +16,16 @@ const LandingPage = () => {
           </div>
           <strong className="color-text-primary cursor-default">CRATE</strong>
         </div>
-        {/** 👇 TODO: Button 컴포넌트로 대체 */}
-        <button className="py-[8px] px-[16px] text-brand-primary rounded-[8px] hover:bg-brand-primary/10">
-          대시보드
-        </button>
+        <div className="flex items-center gap-[12px]">
+          <DarkModeButton />
+          {isLoggined ? (
+            <button className="py-[8px] px-[16px] text-brand-primary rounded-[8px] hover:bg-brand-primary/10">
+              대시보드
+            </button>
+          ) : (
+            <LoginButton.Kakao />
+          )}
+        </div>
       </header>
 
       <main className="m-0 p-0 w-full flex flex-col bg-transparent">
