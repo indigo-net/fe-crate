@@ -30,19 +30,19 @@ const LandingPage = () => {
 
       <main className="m-0 p-0 w-full flex flex-col bg-transparent">
         <div className="w-full h-fit bg-bg-sub flex flex-col gap-[32px] justify-center items-center py-[80px]">
-          <h1 className="text-text-primary text-[24px] font-bold text-center">
-            지원서 평가, 이제 한 곳에서!
-          </h1>
+          <h1 className="text-text-primary text-[24px] font-bold text-center">지원서 평가, 이제 한 곳에서!</h1>
           <h2 className="text-text-secondary text-[20px] whitespace-pre-line text-center">
             {'양식 제작부터 지원 접수, 평가, 선발까지\n모집 과정의 모든 것을 효율적으로 관리하세요'}
           </h2>
           <div className="w-full flex justify-center items-center gap-[24px]">
-            {/** 👇 TODO: Button 컴포넌트로 대체 */}
-            <button className="border-none rounded-[8px] w-fit min-w-[180px] flex items-center justify-center gap-[8px] py-[12px] px-[32px] bg-brand-primary color-white hover:bg-brand-primary/90">
+            <a
+              href="/new-form"
+              className="border-none rounded-[8px] w-fit min-w-[180px] flex items-center justify-center gap-[8px] py-[12px] px-[32px] bg-brand-primary color-white hover:bg-brand-primary/90"
+            >
               {/** 👇 TODO: Icon 컴포넌트로 대체 */}
               <span>I</span>
               <span>양식 만들기</span>
-            </button>
+            </a>
             {/** 👇 TODO: Button 컴포넌트로 대체 */}
             <button className="border-[0.5px] border-border-sub rounded-[8px] w-fit min-w-[180px] flex items-center justify-center gap-[8px] py-[12px] px-[32px] bg-transparent color-text-tertiary hover:bg-gray-100/90">
               {/** 👇 TODO: Icon 컴포넌트로 대체 */}
@@ -62,9 +62,7 @@ const LandingPage = () => {
                 <span className="w-[48px] min-w-[48px] aspect-square flex items-center justify-center rounded-[18px] bg-indigo-300/90 text-indigo-600">
                   I
                 </span>
-                <strong className="text-text-primary text-[18px] font-bold whitespace-nowrap">
-                  간편한 양식 제작
-                </strong>
+                <strong className="text-text-primary text-[18px] font-bold whitespace-nowrap">간편한 양식 제작</strong>
               </div>
               <p className="desktop:h-[80px] h-fit text-left text-text-tertiary text-[16px] break-keep">
                 드래그 앤 드롭으로 원하는 질문을 자유롭게 구성하고 맞춤형 지원서를 만드세요.
@@ -109,9 +107,7 @@ const LandingPage = () => {
       </main>
 
       <footer className="w-full h-fit p-[48px] mt-auto flex justify-center items-center bg-bg-default border-t border-t-divider-default">
-        <small className="text-text-secondary">
-          © 2025 indigo-net. CRATE by indigo-net. All rights reserved.
-        </small>
+        <small className="text-text-secondary">© 2025 indigo-net. CRATE by indigo-net. All rights reserved.</small>
       </footer>
     </div>
   );
