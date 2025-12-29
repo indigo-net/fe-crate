@@ -19,22 +19,24 @@ const useQuestionEditCardController = (props: Props) => {
   }, [formQuestions, questionId]);
 
   const handleTitleChange = (title: string) => {
-    setFormQuestions(prev => {
-      if (TypeGuard.checkNull(question)) {
-        return prev;
+    setFormQuestions(prevList => {
+      const prevQuestion = FormQuestionStateService.findQuestionById(prevList, questionId);
+      if (TypeGuard.checkNull(prevQuestion)) {
+        return prevList;
       }
-      const newQuestion = FormQuestionStateService.editQuestionTitle(question, title);
-      return FormQuestionStateService.replaceQuestionById(prev, newQuestion, questionId);
+      const newQuestion = FormQuestionStateService.editQuestionTitle(prevQuestion, title);
+      return FormQuestionStateService.replaceQuestionById(prevList, newQuestion, questionId);
     });
   };
 
   const handleTypeChange = (type: FormQuestionType) => {
-    setFormQuestions(prev => {
-      if (TypeGuard.checkNull(question)) {
-        return prev;
+    setFormQuestions(prevList => {
+      const prevQuestion = FormQuestionStateService.findQuestionById(prevList, questionId);
+      if (TypeGuard.checkNull(prevQuestion)) {
+        return prevList;
       }
-      const newQuestion = FormQuestionStateService.editQuestionType(question, type);
-      return FormQuestionStateService.replaceQuestionById(prev, newQuestion, questionId);
+      const newQuestion = FormQuestionStateService.editQuestionType(prevQuestion, type);
+      return FormQuestionStateService.replaceQuestionById(prevList, newQuestion, questionId);
     });
   };
 
