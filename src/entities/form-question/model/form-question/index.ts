@@ -1,4 +1,3 @@
-
 import { TypeGuard, UUID } from '@/shared/lib';
 import { CustomModel } from '@/shared/model';
 
@@ -23,9 +22,9 @@ interface Props {
   id?: string;
   type: FormQuestionType;
   title: string;
-  description?: string;
+  description?: string | null;
   required?: boolean;
-  options?: FormQuestionOptionModel[];
+  options?: FormQuestionOptionModel[] | null;
 }
 
 class FormQuestionModel extends CustomModel<State> {
@@ -34,11 +33,7 @@ class FormQuestionModel extends CustomModel<State> {
     super();
     const { id, type, title, description, required, options } = props;
 
-    const isValidateOptions =
-      !TypeGuard.checkUndefined(options) &&
-      options.length !== 0 &&
-      type !== 'SHORT_TEXT' &&
-      type !== 'LONG_TEXT';
+    const isValidateOptions = !!options && options.length !== 0 && type !== 'SHORT_TEXT' && type !== 'LONG_TEXT';
 
     this.state = {
       id: id || UUID.v4(),
@@ -50,8 +45,14 @@ class FormQuestionModel extends CustomModel<State> {
     };
   }
 
-  get id(): string {
-    return this.state.id;
+  getValue<K extends keyof State>(key: K): State[K] {
+    return this.state[key];
+  }
+
+  setValue<K extends keyof State>(key: K, value: State[K]): FormQuestionModel {
+    return this.clone({
+      [key]: value,
+    });
   }
 
   pushOption(option: FormQuestionOptionModel): FormQuestionModel {
@@ -74,8 +75,8 @@ class FormQuestionModel extends CustomModel<State> {
       type: props?.type ?? this.state.type,
       title: props?.title ?? this.state.title,
       required: TypeGuard.checkBoolean(props?.required) ? props?.required : this.state.required,
-      description: (props?.description ?? this.state.description) || undefined,
-      options: (props?.options ?? this.state.options) || undefined,
+      description: props?.description ?? this.state.description,
+      options: props?.options ?? this.state.options,
     });
   }
 }
