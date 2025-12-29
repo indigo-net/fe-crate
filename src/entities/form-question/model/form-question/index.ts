@@ -33,7 +33,8 @@ class FormQuestionModel extends CustomModel<State> {
     super();
     const { id, type, title, description, required, options } = props;
 
-    const isValidateOptions = !!options && options.length !== 0 && type !== 'SHORT_TEXT' && type !== 'LONG_TEXT';
+    const isValidateOptions =
+      !!options && options.length !== 0 && type !== 'SHORT_TEXT' && type !== 'LONG_TEXT';
 
     this.state = {
       id: id || UUID.v4(),
@@ -75,8 +76,10 @@ class FormQuestionModel extends CustomModel<State> {
       type: props?.type ?? this.state.type,
       title: props?.title ?? this.state.title,
       required: TypeGuard.checkBoolean(props?.required) ? props?.required : this.state.required,
-      description: props?.description ?? this.state.description,
-      options: props?.options ?? this.state.options,
+      description: !TypeGuard.checkUndefined(props?.description)
+        ? props.description
+        : this.state.description,
+      options: !TypeGuard.checkUndefined(props?.options) ? props.options : this.state.options,
     });
   }
 }
