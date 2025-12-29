@@ -1,9 +1,10 @@
-import type { FormQuestionType } from '../';
 
 import { TypeGuard, UUID } from '@/shared/lib';
 import { CustomModel } from '@/shared/model';
 
 import FormQuestionOptionModel from './option';
+
+import type { FormQuestionType } from '../';
 
 interface State {
   id: string;

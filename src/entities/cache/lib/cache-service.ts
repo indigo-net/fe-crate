@@ -1,5 +1,6 @@
-import { type CacheData, CacheModel } from '../model';
 import { TypeGuard } from '@/shared/lib';
+
+import { type CacheData, CacheModel } from '../model';
 
 class CacheService {
   static CACHE_MAP = new Map<string, CacheModel<CacheData>>();

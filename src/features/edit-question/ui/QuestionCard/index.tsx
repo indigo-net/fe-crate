@@ -3,9 +3,7 @@ import { memo, PropsWithChildren } from 'react';
 import { FormQuestionModel } from '@/entities/form-question/model';
 
 import { QuestionCardProvider } from './context';
-import OptionList from './OptionList';
 import QuestionProfile from './QuestionProfile';
-
 
 interface Props {
   question: FormQuestionModel;
@@ -25,7 +23,6 @@ const QuestionCardSection = (props: PropsWithChildren<Props>) => {
 
 const QuestionCard = Object.assign(memo(QuestionCardSection), {
   Profile: QuestionProfile,
-  OptionList: OptionList,
 });
 
 export default QuestionCard;

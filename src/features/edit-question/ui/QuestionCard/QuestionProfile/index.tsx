@@ -2,9 +2,9 @@ import { memo } from 'react';
 
 import { TypeGuard } from '@/shared/lib';
 
-import type { FormQuestionType } from '@/entities/form-question/model';
-
 import { useQuestionCardContext } from '../context';
+
+import type { FormQuestionType } from '@/entities/form-question/model';
 
 interface Props {
   onChangeQuestionTitle?(title: string): void;

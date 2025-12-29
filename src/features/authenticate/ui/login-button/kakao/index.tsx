@@ -1,5 +1,6 @@
-import { EnvManager } from '@/shared/lib';
 import { memo } from 'react';
+
+import { EnvManager } from '@/shared/lib';
 
 const Kakao = () => {
   const clientId = EnvManager.getAppEnv('VITE_KAKAO_CLIENT_ID') ?? '';
