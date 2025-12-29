@@ -37,6 +37,7 @@ const QuestionEditCard = (props: Props) => {
           placeholder="질문을 입력해주세요. (최대 50자)"
           className="w-full py-[4px] text-[18px] font-bold bg-transparent border-b border-gray-200 text-text-primary focus:border-brand-primary focus:outline-none placeholder:text-text-tertiary transition-colors"
           maxLength={50}
+          value={question?.getValue('title') ?? ''}
           onChange={e => {
             handleTitleChange(e.target.value);
           }}
