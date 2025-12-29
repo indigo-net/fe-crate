@@ -1,12 +1,13 @@
 import { useCallback } from 'react';
 
+import { FormQuestionStateService } from '@/entities/form-question/lib';
 import { FormQuestionModel } from '@/entities/form-question/model';
 import { useFormQuestionList } from '@/entities/form-question/store';
 
 import type { FormQuestionType } from '@/entities/form-question/model';
 
-const useNewForm = () => {
-  const { formQuestions, addQuestion } = useFormQuestionList();
+const useNewFormPageController = () => {
+  const { formQuestions, setFormQuestions } = useFormQuestionList();
 
   // 질문 추가 핸들러
   const handleAddQuestion = useCallback(
@@ -15,12 +16,12 @@ const useNewForm = () => {
         title: '',
         type: questionType,
       });
-      addQuestion(formQuestion);
+      setFormQuestions(prev => FormQuestionStateService.pushQuestionToList(prev, formQuestion));
     },
-    [addQuestion],
+    [setFormQuestions],
   );
 
   return { formQuestions, handleAddQuestion };
 };
 
-export default useNewForm;
+export default useNewFormPageController;

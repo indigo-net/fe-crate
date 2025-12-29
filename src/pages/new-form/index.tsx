@@ -1,10 +1,10 @@
 import { QuestionAddSection } from '@/features/add-question/ui';
-import { QuestionCard } from '@/features/edit-question/ui';
+import { QuestionEditCard } from '@/features/edit-question/ui';
 
-import useNewForm from './hook';
+import useNewFormPageController from './hook';
 
 const NewFormPage = () => {
-  const { formQuestions, handleAddQuestion } = useNewForm();
+  const { formQuestions, handleAddQuestion } = useNewFormPageController();
 
   return (
     <div className="w-full h-[100dvh] flex flex-col">
@@ -34,33 +34,8 @@ const NewFormPage = () => {
       <main className="flex-1 overflow-y-auto flex flex-col bg-bg-sub items-center h-full w-full">
         <div className="p-[32px] flex flex-col gap-[24px] w-full max-w-[1200px]">
           {formQuestions.map(question => {
-            const { id, type } = question.toJSON();
-            switch (type) {
-              case 'SHORT_TEXT':
-                return (
-                  <QuestionCard key={id} question={question}>
-                    <QuestionCard.Profile />
-                  </QuestionCard>
-                );
-              case 'LONG_TEXT':
-                return (
-                  <QuestionCard key={id} question={question}>
-                    <QuestionCard.Profile />
-                  </QuestionCard>
-                );
-              case 'MULTIPLE_CHOICE':
-                return (
-                  <QuestionCard key={id} question={question}>
-                    <QuestionCard.Profile />
-                  </QuestionCard>
-                );
-              case 'SINGLE_CHOICE':
-                return (
-                  <QuestionCard key={id} question={question}>
-                    <QuestionCard.Profile />
-                  </QuestionCard>
-                );
-            }
+            const id = question.getValue('id');
+            return <QuestionEditCard key={id} questionId={id} />;
           })}
 
           <QuestionAddSection
