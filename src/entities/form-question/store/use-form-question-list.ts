@@ -1,25 +1,22 @@
 import { create } from 'zustand';
 
-import FormQuestionModel from '../model/form-question';
+import type { FormQuestionModel } from '../model';
 
 interface State {
   formQuestions: FormQuestionModel[];
-
-  addQuestion: (question: FormQuestionModel) => void;
-  removeQuestion: (questionId: string) => void;
+  setFormQuestions: (
+    next: FormQuestionModel[] | ((prev: FormQuestionModel[]) => FormQuestionModel[]),
+  ) => void;
 }
 
 const useFormQuestionList = create<State>(set => ({
   formQuestions: [],
-  addQuestion: question => {
-    set(state => ({
-      formQuestions: [...state.formQuestions, question],
-    }));
-  },
-  removeQuestion: questionId => {
-    set(state => ({
-      formQuestions: state.formQuestions.filter(question => question.id !== questionId),
-    }));
+  setFormQuestions: next => {
+    set(state => {
+      return {
+        formQuestions: typeof next === 'function' ? next(state.formQuestions) : next,
+      };
+    });
   },
 }));
 
