@@ -1,5 +1,7 @@
 import { memo } from 'react';
 
+import { Iconography } from '@/shared/ui';
+
 import useQuestionEditCardController from './hook';
 
 import type { FormQuestionType } from '@/entities/form-question/model';
@@ -10,14 +12,15 @@ interface Props {
 
 const QuestionEditCard = (props: Props) => {
   const { questionId } = props;
-  const { question, handleTitleChange, handleTypeChange } = useQuestionEditCardController({
-    questionId,
-  });
+  const { question, handleTitleChange, handleTypeChange, handleDeleteQuestion } =
+    useQuestionEditCardController({
+      questionId,
+    });
 
   return (
     <section className="w-full flex flex-col gap-[12px] p-[24px] bg-bg-default border border-divider-default rounded-[16px] shadow-sm">
-      {/* 질문 타입 선택 */}
-      <div className="w-fit">
+      <div className="w-full flex justify-between items-center">
+        {/* 질문 타입 선택 */}
         <select
           value={question?.getValue('type') ?? 'SHORT_TEXT'}
           className="appearance-none cursor-pointer px-[8px] py-[4px] text-[12px] rounded-[6px] bg-bg-sub border border-divider-default text-text-secondary transition-colors"
@@ -28,6 +31,18 @@ const QuestionEditCard = (props: Props) => {
           <option value="MULTIPLE_CHOICE">객관식(복수선택)</option>
           <option value="SINGLE_CHOICE">객관식(단일선택)</option>
         </select>
+
+        <button
+          type="button"
+          aria-label="질문 삭제"
+          className="group rounded-full aspect-square p-[8px] flex items-center justify-center bg-gray-100 hover:bg-gray-200 transition-colors cursor-pointer"
+          onClick={handleDeleteQuestion}
+        >
+          <Iconography.Stroke.Trash
+            className="text-gray-500 group-hover:text-danger transition-colors duration-200"
+            aria-hidden
+          />
+        </button>
       </div>
 
       {/* 질문 제목 입력 */}
