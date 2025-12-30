@@ -1,5 +1,7 @@
 import { memo } from 'react';
 
+import { Iconography } from '@/shared/ui';
+
 import useQuestionEditCardController from './hook';
 
 import type { FormQuestionType } from '@/entities/form-question/model';
@@ -16,8 +18,8 @@ const QuestionEditCard = (props: Props) => {
 
   return (
     <section className="w-full flex flex-col gap-[12px] p-[24px] bg-bg-default border border-divider-default rounded-[16px] shadow-sm">
-      {/* 질문 타입 선택 */}
-      <div className="w-fit">
+      <div className="w-full flex justify-between items-center">
+        {/* 질문 타입 선택 */}
         <select
           value={question?.getValue('type') ?? 'SHORT_TEXT'}
           className="appearance-none cursor-pointer px-[8px] py-[4px] text-[12px] rounded-[6px] bg-bg-sub border border-divider-default text-text-secondary transition-colors"
@@ -28,6 +30,14 @@ const QuestionEditCard = (props: Props) => {
           <option value="MULTIPLE_CHOICE">객관식(복수선택)</option>
           <option value="SINGLE_CHOICE">객관식(단일선택)</option>
         </select>
+
+        <Iconography.Stroke.Trash
+          role="button"
+          className="cursor-pointer text-gray-400 hover:text-danger transition-colors duration-200"
+          width={24}
+          height={24}
+          onClick={() => {}}
+        />
       </div>
 
       {/* 질문 제목 입력 */}
