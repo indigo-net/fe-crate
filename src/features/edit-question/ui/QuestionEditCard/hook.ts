@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import { FormQuestionStateService } from '@/entities/form-question/lib';
+import { QuestionStateService, QuestionListStateService } from '@/entities/form-question/lib';
 import { useFormQuestionList } from '@/entities/form-question/store';
 import { TypeGuard } from '@/shared/lib';
 
@@ -15,28 +15,28 @@ const useQuestionEditCardController = (props: Props) => {
   const { formQuestions, setFormQuestions } = useFormQuestionList();
 
   const question = useMemo((): FormQuestionModel | null => {
-    return FormQuestionStateService.findQuestionById(formQuestions, questionId);
+    return QuestionListStateService.findQuestionById(formQuestions, questionId);
   }, [formQuestions, questionId]);
 
   const handleTitleChange = (title: string) => {
     setFormQuestions(prevList => {
-      const prevQuestion = FormQuestionStateService.findQuestionById(prevList, questionId);
+      const prevQuestion = QuestionListStateService.findQuestionById(prevList, questionId);
       if (TypeGuard.checkNull(prevQuestion)) {
         return prevList;
       }
-      const newQuestion = FormQuestionStateService.editQuestionTitle(prevQuestion, title);
-      return FormQuestionStateService.replaceQuestionById(prevList, newQuestion, questionId);
+      const newQuestion = QuestionStateService.editQuestionTitle(prevQuestion, title);
+      return QuestionListStateService.replaceQuestionById(prevList, newQuestion, questionId);
     });
   };
 
   const handleTypeChange = (type: FormQuestionType) => {
     setFormQuestions(prevList => {
-      const prevQuestion = FormQuestionStateService.findQuestionById(prevList, questionId);
+      const prevQuestion = QuestionListStateService.findQuestionById(prevList, questionId);
       if (TypeGuard.checkNull(prevQuestion)) {
         return prevList;
       }
-      const newQuestion = FormQuestionStateService.editQuestionType(prevQuestion, type);
-      return FormQuestionStateService.replaceQuestionById(prevList, newQuestion, questionId);
+      const newQuestion = QuestionStateService.editQuestionType(prevQuestion, type);
+      return QuestionListStateService.replaceQuestionById(prevList, newQuestion, questionId);
     });
   };
 
