@@ -40,10 +40,17 @@ const useQuestionEditCardController = (props: Props) => {
     });
   };
 
+  const handleDeleteQuestion = () => {
+    setFormQuestions(prevList => {
+      return QuestionListStateService.removeQuestionFromList(prevList, questionId);
+    });
+  };
+
   return {
     question,
     handleTitleChange,
     handleTypeChange,
+    handleDeleteQuestion,
   };
 };
 

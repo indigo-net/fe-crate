@@ -5,10 +5,10 @@ class QuestionListStateService {
     return [...prevList, question];
   }
 
-  //   static removeQuestionFromList(prevList: FormQuestionModel[], questionId: string) {
-  //     const newList = prevList.filter(question => question.getValue('id') !== questionId);
-  //     return newList.length === prevList.length ? prevList : newList;
-  //   }
+  static removeQuestionFromList(prevList: FormQuestionModel[], questionId: string) {
+    const newList = prevList.filter(question => question.getValue('id') !== questionId);
+    return newList.length === prevList.length ? prevList : newList;
+  }
 
   static findQuestionById(
     prevList: FormQuestionModel[],

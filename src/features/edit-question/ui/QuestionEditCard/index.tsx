@@ -12,9 +12,10 @@ interface Props {
 
 const QuestionEditCard = (props: Props) => {
   const { questionId } = props;
-  const { question, handleTitleChange, handleTypeChange } = useQuestionEditCardController({
-    questionId,
-  });
+  const { question, handleTitleChange, handleTypeChange, handleDeleteQuestion } =
+    useQuestionEditCardController({
+      questionId,
+    });
 
   return (
     <section className="w-full flex flex-col gap-[12px] p-[24px] bg-bg-default border border-divider-default rounded-[16px] shadow-sm">
@@ -36,7 +37,7 @@ const QuestionEditCard = (props: Props) => {
           className="cursor-pointer text-gray-400 hover:text-danger transition-colors duration-200"
           width={24}
           height={24}
-          onClick={() => {}}
+          onClick={handleDeleteQuestion}
         />
       </div>
 

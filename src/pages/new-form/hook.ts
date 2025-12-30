@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 
-import { FormQuestionStateService } from '@/entities/form-question/lib';
+import { QuestionListStateService } from '@/entities/form-question/lib';
 import { FormQuestionModel } from '@/entities/form-question/model';
 import { useFormQuestionList } from '@/entities/form-question/store';
 
@@ -16,7 +16,7 @@ const useNewFormPageController = () => {
         title: '',
         type: questionType,
       });
-      setFormQuestions(prev => FormQuestionStateService.pushQuestionToList(prev, formQuestion));
+      setFormQuestions(prev => QuestionListStateService.pushQuestion(prev, formQuestion));
     },
     [setFormQuestions],
   );
