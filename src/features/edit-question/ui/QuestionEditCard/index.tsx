@@ -32,13 +32,17 @@ const QuestionEditCard = (props: Props) => {
           <option value="SINGLE_CHOICE">객관식(단일선택)</option>
         </select>
 
-        <Iconography.Stroke.Trash
-          role="button"
-          className="cursor-pointer text-gray-400 hover:text-danger transition-colors duration-200"
-          width={24}
-          height={24}
+        <button
+          type="button"
+          aria-label="질문 삭제"
+          className="group rounded-full aspect-square p-[8px] flex items-center justify-center bg-gray-100 hover:bg-gray-200 transition-colors cursor-pointer"
           onClick={handleDeleteQuestion}
-        />
+        >
+          <Iconography.Stroke.Trash
+            className="text-gray-500 group-hover:text-danger transition-colors duration-200"
+            aria-hidden
+          />
+        </button>
       </div>
 
       {/* 질문 제목 입력 */}
