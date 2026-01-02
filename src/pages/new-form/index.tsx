@@ -1,5 +1,5 @@
-import { QuestionAddSection } from '@/features/add-question/ui';
-import { QuestionEditCard } from '@/features/edit-question/ui';
+import { QuestionAddSection } from '@/features/edit-form/ui';
+import { QuestionEditCard } from '@/features/edit-form/ui';
 
 import useNewFormPageController from './hook';
 
