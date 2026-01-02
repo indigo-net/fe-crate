@@ -1,19 +1,9 @@
 import { memo } from 'react';
 
-interface Props {
-  onClickShortTextButton?: () => void;
-  onClickLongTextButton?: () => void;
-  onClickMultipleChoiceButton?: () => void;
-  onClickSingleChoiceButton?: () => void;
-}
+import useQuestionAddSectionController from './hook';
 
-const QuestionAddSection = (props: Props) => {
-  const {
-    onClickShortTextButton = () => {},
-    onClickLongTextButton = () => {},
-    onClickMultipleChoiceButton = () => {},
-    onClickSingleChoiceButton = () => {},
-  } = props;
+const QuestionAddSection = () => {
+  const { handleAddQuestion } = useQuestionAddSectionController();
 
   // 공통 버튼 스타일 (기본 상태 및 호버 상태)
   const buttonBaseClass =
@@ -29,27 +19,30 @@ const QuestionAddSection = (props: Props) => {
     <section className="shadow-sm border border-divider-default rounded-[16px] p-[24px] flex flex-col gap-[16px] bg-bg-default w-full">
       <h3 className="text-[20px] font-bold text-text-primary">질문 추가</h3>
       <div className="flex-1 w-full flex items-center gap-[12px]">
-        <button className={`${buttonBaseClass} ${activeClass}`} onClick={onClickShortTextButton}>
+        <button
+          className={`${buttonBaseClass} ${activeClass}`}
+          onClick={() => handleAddQuestion('SHORT_TEXT')}
+        >
           단답형
         </button>
         <button
           disabled
           className={`${buttonBaseClass} ${disabledClass}`}
-          onClick={onClickLongTextButton}
+          onClick={() => handleAddQuestion('LONG_TEXT')}
         >
           장문형
         </button>
         <button
           disabled
           className={`${buttonBaseClass} ${disabledClass}`}
-          onClick={onClickMultipleChoiceButton}
+          onClick={() => handleAddQuestion('MULTIPLE_CHOICE')}
         >
           복수선택
         </button>
         <button
           disabled
           className={`${buttonBaseClass} ${disabledClass}`}
-          onClick={onClickSingleChoiceButton}
+          onClick={() => handleAddQuestion('SINGLE_CHOICE')}
         >
           단일선택
         </button>

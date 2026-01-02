@@ -1,6 +1,13 @@
-import type { FormQuestionModel, FormQuestionType } from '../model';
+import { FormQuestionModel, type FormQuestionType } from '../model';
 
 class QuestionStateService {
+  static getInitialQuestion(type: FormQuestionType) {
+    return new FormQuestionModel({
+      title: '',
+      type,
+    });
+  }
+
   static editQuestionTitle(prev: FormQuestionModel, title: string, isClone = false) {
     if (isClone) {
       return prev.clone({ title });
