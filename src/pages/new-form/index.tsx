@@ -1,10 +1,10 @@
-import { QuestionAddSection } from '@/features/add-question/ui';
-import { QuestionEditCard } from '@/features/edit-question/ui';
+import { QuestionAddSection } from '@/features/edit-form/ui';
+import { QuestionEditCard } from '@/features/edit-form/ui';
 
 import useNewFormPageController from './hook';
 
 const NewFormPage = () => {
-  const { formQuestions, handleAddQuestion } = useNewFormPageController();
+  const { formQuestions } = useNewFormPageController();
 
   return (
     <div className="w-full h-[100dvh] flex flex-col">
@@ -38,12 +38,7 @@ const NewFormPage = () => {
             return <QuestionEditCard key={id} questionId={id} />;
           })}
 
-          <QuestionAddSection
-            onClickShortTextButton={() => handleAddQuestion('SHORT_TEXT')}
-            onClickLongTextButton={() => handleAddQuestion('LONG_TEXT')}
-            onClickMultipleChoiceButton={() => handleAddQuestion('MULTIPLE_CHOICE')}
-            onClickSingleChoiceButton={() => handleAddQuestion('SINGLE_CHOICE')}
-          />
+          <QuestionAddSection />
         </div>
       </main>
     </div>
