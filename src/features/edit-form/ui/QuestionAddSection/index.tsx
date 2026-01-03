@@ -26,8 +26,7 @@ const QuestionAddSection = () => {
           단답형
         </button>
         <button
-          disabled
-          className={`${buttonBaseClass} ${disabledClass}`}
+          className={`${buttonBaseClass} ${activeClass}`}
           onClick={() => handleAddQuestion('LONG_TEXT')}
         >
           장문형
@@ -40,7 +39,7 @@ const QuestionAddSection = () => {
           복수선택
         </button>
         <button
-          className={`${buttonBaseClass} ${disabledClass}`}
+          className={`${buttonBaseClass} ${activeClass}`}
           onClick={() => handleAddQuestion('SINGLE_CHOICE')}
         >
           단일선택
