@@ -84,6 +84,18 @@ const QuestionEditCard = (props: Props) => {
           </div>
         </div>
       )}
+      {/* 장문형 답변 영역 프리뷰 */}
+      {question?.getValue('type') === 'LONG_TEXT' && (
+        <div className="w-full pt-[8px]">
+          <div className="w-full max-w-[400px]">
+            <textarea
+              disabled
+              placeholder="장문형 텍스트 (최대 1000자)"
+              className="resize-none w-full h-[100px] px-[12px] py-[10px] text-[14px] rounded-[8px] border border-dashed border-gray-300 bg-gray-100 text-gray-400 cursor-not-allowed select-none"
+            />
+          </div>
+        </div>
+      )}
       {/* (단일) 선택형 답변 영역 프리뷰 */}
       {question?.getValue('type') === 'SINGLE_CHOICE' && (
         <div className="w-full pt-[8px]">
