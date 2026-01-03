@@ -40,7 +40,6 @@ const QuestionAddSection = () => {
           복수선택
         </button>
         <button
-          disabled
           className={`${buttonBaseClass} ${disabledClass}`}
           onClick={() => handleAddQuestion('SINGLE_CHOICE')}
         >

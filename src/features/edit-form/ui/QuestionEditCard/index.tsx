@@ -19,6 +19,8 @@ const QuestionEditCard = (props: Props) => {
     handleTypeChange,
     handleDeleteQuestion,
     handleUpdateOption,
+    handleAddOption,
+    handleRemoveOption,
   } = useQuestionEditCardController({
     questionId,
   });
@@ -98,9 +100,28 @@ const QuestionEditCard = (props: Props) => {
                     className="flex-1 text-[14px] text-text-primary bg-transparent border-b border-transparent focus:border-brand-primary focus:outline-none placeholder:text-text-tertiary transition-colors py-[4px]"
                     onChange={e => handleUpdateOption(id, e.target.value)}
                   />
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveOption(id)}
+                    className="p-[4px] rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
+                    aria-label="옵션 삭제"
+                  >
+                    <Iconography.Stroke.Minus
+                      className="w-[20px] h-[20px] text-danger hover:cursor-pointer"
+                      aria-hidden
+                    />
+                  </button>
                 </div>
               );
             })}
+            <button
+              type="button"
+              onClick={handleAddOption}
+              className="w-fit flex items-center gap-[4px] px-[8px] py-[4px] rounded-[6px] hover:bg-gray-100 transition-colors text-[13px] text-text-secondary font-medium"
+            >
+              <Iconography.Stroke.Plus className="w-[14px] h-[14px]" />
+              <span>옵션 추가</span>
+            </button>
           </div>
         </div>
       )}

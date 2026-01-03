@@ -1,4 +1,4 @@
-import { FormQuestionModel, type FormQuestionType } from '../model';
+import { FormQuestionModel, FormQuestionOptionModel, type FormQuestionType } from '../model';
 
 class QuestionStateService {
   static getInitialQuestion(type: FormQuestionType) {
@@ -39,6 +39,29 @@ class QuestionStateService {
       }
       return option;
     });
+
+    if (isClone) {
+      return prev.clone({ options: newOptions });
+    }
+    return prev.setValue('options', newOptions);
+  }
+
+  static addOption(prev: FormQuestionModel, isClone = false) {
+    const prevOptions = prev.getValue('options') ?? [];
+    const newOption = new FormQuestionOptionModel({ content: '' });
+    const newOptions = [...prevOptions, newOption];
+
+    if (isClone) {
+      return prev.clone({ options: newOptions });
+    }
+    return prev.setValue('options', newOptions);
+  }
+
+  static removeOption(prev: FormQuestionModel, optionId: string, isClone = false) {
+    const prevOptions = prev.getValue('options');
+    if (!prevOptions) return prev;
+
+    const newOptions = prevOptions.filter(opt => opt.getValue('id') !== optionId);
 
     if (isClone) {
       return prev.clone({ options: newOptions });
