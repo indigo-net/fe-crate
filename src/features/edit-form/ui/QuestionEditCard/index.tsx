@@ -1,5 +1,6 @@
-import { memo } from 'react';
+import { Fragment, memo } from 'react';
 
+import { TypeGuard } from '@/shared/lib';
 import { Iconography } from '@/shared/ui';
 
 import useQuestionEditCardController from './hook';
@@ -12,10 +13,19 @@ interface Props {
 
 const QuestionEditCard = (props: Props) => {
   const { questionId } = props;
-  const { question, handleTitleChange, handleTypeChange, handleDeleteQuestion } =
-    useQuestionEditCardController({
-      questionId,
-    });
+  const {
+    question,
+    handleTitleChange,
+    handleTypeChange,
+    handleDeleteQuestion,
+    handleUpdateOption,
+  } = useQuestionEditCardController({
+    questionId,
+  });
+
+  if (TypeGuard.checkNull(question)) {
+    return <Fragment />;
+  }
 
   return (
     <section className="w-full flex flex-col gap-[12px] p-[24px] bg-bg-default border border-divider-default rounded-[16px] shadow-sm">
@@ -69,6 +79,28 @@ const QuestionEditCard = (props: Props) => {
               placeholder="단답형 텍스트 (최대 100자)"
               className="w-full px-[12px] py-[10px] text-[14px] rounded-[8px] border border-dashed border-gray-300 bg-gray-100 text-gray-400 cursor-not-allowed select-none"
             />
+          </div>
+        </div>
+      )}
+      {/* (단일) 선택형 답변 영역 프리뷰 */}
+      {question?.getValue('type') === 'SINGLE_CHOICE' && (
+        <div className="w-full pt-[8px]">
+          <div className="w-full flex flex-col gap-[8px]">
+            {question?.getValue('options')?.map(option => {
+              const { id, content } = option.toJSON();
+              return (
+                <div key={id} className="w-full flex items-center gap-[8px]">
+                  <div className="w-[18px] h-[18px] rounded-full border border-gray-300 bg-white flex-shrink-0" />
+                  <input
+                    type="text"
+                    value={content}
+                    placeholder="옵션을 입력해주세요"
+                    className="flex-1 text-[14px] text-text-primary bg-transparent border-b border-transparent focus:border-brand-primary focus:outline-none placeholder:text-text-tertiary transition-colors py-[4px]"
+                    onChange={e => handleUpdateOption(id, e.target.value)}
+                  />
+                </div>
+              );
+            })}
           </div>
         </div>
       )}

@@ -46,11 +46,23 @@ const useQuestionEditCardController = (props: Props) => {
     });
   };
 
+  const handleUpdateOption = (optionId: string, content: string) => {
+    setFormQuestions(prevList => {
+      const prevQuestion = QuestionListStateService.findQuestionById(prevList, questionId);
+      if (TypeGuard.checkNull(prevQuestion)) {
+        return prevList;
+      }
+      const newQuestion = QuestionStateService.editOptionContent(prevQuestion, optionId, content);
+      return QuestionListStateService.replaceQuestionById(prevList, newQuestion, questionId);
+    });
+  };
+
   return {
     question,
     handleTitleChange,
     handleTypeChange,
     handleDeleteQuestion,
+    handleUpdateOption,
   };
 };
 
