@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 import { LoginButton } from '@/features/authenticate/ui';
 import { DarkModeButton } from '@/features/toggle-theme/ui';
 
@@ -30,19 +32,21 @@ const LandingPage = () => {
 
       <main className="m-0 p-0 w-full flex flex-col bg-transparent">
         <div className="w-full h-fit bg-bg-sub flex flex-col gap-[32px] justify-center items-center py-[80px]">
-          <h1 className="text-text-primary text-[24px] font-bold text-center">지원서 평가, 이제 한 곳에서!</h1>
+          <h1 className="text-text-primary text-[24px] font-bold text-center">
+            지원서 평가, 이제 한 곳에서!
+          </h1>
           <h2 className="text-text-secondary text-[20px] whitespace-pre-line text-center">
             {'양식 제작부터 지원 접수, 평가, 선발까지\n모집 과정의 모든 것을 효율적으로 관리하세요'}
           </h2>
           <div className="w-full flex justify-center items-center gap-[24px]">
-            <a
-              href="/new-form"
+            <Link
+              to="/new-form"
               className="border-none rounded-[8px] w-fit min-w-[180px] flex items-center justify-center gap-[8px] py-[12px] px-[32px] bg-brand-primary color-white hover:bg-brand-primary/90"
             >
               {/** 👇 TODO: Icon 컴포넌트로 대체 */}
               <span>I</span>
               <span>양식 만들기</span>
-            </a>
+            </Link>
             {/** 👇 TODO: Button 컴포넌트로 대체 */}
             <button className="border-[0.5px] border-border-sub rounded-[8px] w-fit min-w-[180px] flex items-center justify-center gap-[8px] py-[12px] px-[32px] bg-transparent color-text-tertiary hover:bg-gray-100/90">
               {/** 👇 TODO: Icon 컴포넌트로 대체 */}
@@ -54,23 +58,25 @@ const LandingPage = () => {
 
         <div className="py-[80px] w-full h-fit flex items-center justify-center">
           <div className="px-[24px] grid w-full max-w-[1200px] grid-cols-1 desktop:grid-cols-3 justify-center items-center gap-[20px]">
-            <a
-              href="/"
+            <Link
+              to="/"
               className="rounded-[16px] border border-border-sub py-[16px] px-[12px] w-full flex flex-col gap-[16px] hover:border-brand-primary transition-border-colors duration-[200ms]"
             >
               <div className="flex items-center gap-[8px]">
                 <span className="w-[48px] min-w-[48px] aspect-square flex items-center justify-center rounded-[18px] bg-indigo-300/90 text-indigo-600">
                   I
                 </span>
-                <strong className="text-text-primary text-[18px] font-bold whitespace-nowrap">간편한 양식 제작</strong>
+                <strong className="text-text-primary text-[18px] font-bold whitespace-nowrap">
+                  간편한 양식 제작
+                </strong>
               </div>
               <p className="desktop:h-[80px] h-fit text-left text-text-tertiary text-[16px] break-keep">
                 드래그 앤 드롭으로 원하는 질문을 자유롭게 구성하고 맞춤형 지원서를 만드세요.
               </p>
-            </a>
+            </Link>
 
-            <a
-              href="/"
+            <Link
+              to="/"
               className="rounded-[16px] border border-border-sub py-[16px] px-[12px] w-full flex flex-col gap-[16px] hover:border-brand-primary transition-border-colors duration-[200ms]"
             >
               <div className="flex items-center gap-[8px]">
@@ -84,10 +90,10 @@ const LandingPage = () => {
               <p className="desktop:h-[80px] h-fit text-left text-text-tertiary text-[16px] break-keep">
                 여러 평가자가 동시에 지원서를 검토하고 점수를 부여할 수 있습니다.
               </p>
-            </a>
+            </Link>
 
-            <a
-              href="/"
+            <Link
+              to="/"
               className="rounded-[16px] border border-border-sub py-[16px] px-[12px] w-full flex flex-col gap-[16px] hover:border-brand-primary transition-border-colors duration-[200ms]"
             >
               <div className="flex items-center gap-[8px]">
@@ -101,13 +107,15 @@ const LandingPage = () => {
               <p className="desktop:h-[80px] h-fit text-left text-text-tertiary text-[16px] break-keep">
                 평가 결과를 한눈에 확인하고 합격자를 빠르게 선정하세요.
               </p>
-            </a>
+            </Link>
           </div>
         </div>
       </main>
 
       <footer className="w-full h-fit p-[48px] mt-auto flex justify-center items-center bg-bg-default border-t border-t-divider-default">
-        <small className="text-text-secondary">© 2025 indigo-net. CRATE by indigo-net. All rights reserved.</small>
+        <small className="text-text-secondary">
+          © 2025 indigo-net. CRATE by indigo-net. All rights reserved.
+        </small>
       </footer>
     </div>
   );
