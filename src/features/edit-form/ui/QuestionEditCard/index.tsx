@@ -96,15 +96,22 @@ const QuestionEditCard = (props: Props) => {
           </div>
         </div>
       )}
-      {/* (단일) 선택형 답변 영역 프리뷰 */}
-      {question?.getValue('type') === 'SINGLE_CHOICE' && (
+      {/* 선택형 답변 영역 프리뷰 */}
+      {(question?.getValue('type') === 'SINGLE_CHOICE' ||
+        question?.getValue('type') === 'MULTIPLE_CHOICE') && (
         <div className="w-full pt-[8px]">
           <div className="w-full flex flex-col gap-[8px]">
             {question?.getValue('options')?.map(option => {
               const { id, content } = option.toJSON();
               return (
                 <div key={id} className="w-full flex items-center gap-[8px]">
-                  <div className="w-[18px] h-[18px] rounded-full border border-gray-300 bg-white flex-shrink-0" />
+                  <div
+                    className={`w-[18px] h-[18px] border border-gray-300 bg-white flex-shrink-0 ${
+                      question?.getValue('type') === 'SINGLE_CHOICE'
+                        ? 'rounded-full'
+                        : 'rounded-[4px]'
+                    }`}
+                  />
                   <input
                     type="text"
                     value={content}
