@@ -870,8 +870,7 @@ const QuestionAddSection = () => {
           단답형
         </button>
         <button
-          disabled
-          className={`${buttonBaseClass} ${disabledClass}`}
+          className={`${buttonBaseClass} ${activeClass}`}
           onClick={() => handleAddQuestion('LONG_TEXT')}
         >
           장문형
@@ -884,7 +883,7 @@ const QuestionAddSection = () => {
           복수선택
         </button>
         <button
-          className={`${buttonBaseClass} ${disabledClass}`}
+          className={`${buttonBaseClass} ${activeClass}`}
           onClick={() => handleAddQuestion('SINGLE_CHOICE')}
         >
           단일선택
@@ -1076,6 +1075,18 @@ const QuestionEditCard = (props: Props) => {
               type="text"
               placeholder="단답형 텍스트 (최대 100자)"
               className="w-full px-[12px] py-[10px] text-[14px] rounded-[8px] border border-dashed border-gray-300 bg-gray-100 text-gray-400 cursor-not-allowed select-none"
+            />
+          </div>
+        </div>
+      )}
+      {/* 장문형 답변 영역 프리뷰 */}
+      {question?.getValue('type') === 'LONG_TEXT' && (
+        <div className="w-full pt-[8px]">
+          <div className="w-full max-w-[400px]">
+            <textarea
+              disabled
+              placeholder="장문형 텍스트 (최대 1000자)"
+              className="resize-none w-full h-[100px] px-[12px] py-[10px] text-[14px] rounded-[8px] border border-dashed border-gray-300 bg-gray-100 text-gray-400 cursor-not-allowed select-none"
             />
           </div>
         </div>
