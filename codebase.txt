@@ -1,0 +1,2600 @@
+This file is a merged representation of the entire codebase, combined into a single document by Repomix.
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of the entire repository's contents.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+</file_summary>
+
+<directory_structure>
+.agent/
+  rules/
+    icon-generation-rules.md
+    main-rule.md
+.github/
+  workflows/
+    update-codebase.yml
+public/
+  vite.svg
+src/
+  @types/
+    vite-env.d.ts
+  entities/
+    cache/
+      lib/
+        cache-service.ts
+        index.ts
+      model/
+        cache-model.ts
+        index.ts
+        type.d.ts
+    form-question/
+      lib/
+        index.ts
+        question-list-state-service.ts
+        question-state-service.ts
+      model/
+        form-question/
+          index.ts
+          option.ts
+        index.ts
+        type.d.ts
+      store/
+        index.ts
+        use-form-question-list.ts
+    README.md
+  features/
+    authenticate/
+      ui/
+        login-button/
+          kakao/
+            index.tsx
+          index.tsx
+        index.ts
+    edit-form/
+      ui/
+        QuestionAddSection/
+          hook.ts
+          index.tsx
+        QuestionEditCard/
+          hook.ts
+          index.tsx
+        index.ts
+    toggle-theme/
+      ui/
+        dark-mode-button/
+          index.tsx
+        index.ts
+  pages/
+    kakao-redirect/
+      hook.ts
+      index.tsx
+    landing/
+      hook.ts
+      index.tsx
+    new-form/
+      hook.ts
+      index.tsx
+  shared/
+    lib/
+      axios-manager/
+        index.ts
+      env-manager/
+        index.ts
+      type-guard/
+        index.ts
+      uuid/
+        index.ts
+      index.ts
+    model/
+      custom-model/
+        index.ts
+      index.ts
+    ui/
+      iconography/
+        logo/
+          kakao-talk/
+            index.tsx
+          index.tsx
+        stroke/
+          minus/
+            index.tsx
+          moon/
+            index.tsx
+          plus/
+            index.tsx
+          sun/
+            index.tsx
+          trash/
+            index.tsx
+          index.tsx
+        index.tsx
+      index.ts
+  styles/
+    break-point.css
+    colors.css
+    index.css
+  App.tsx
+  main.tsx
+.gitignore
+.prettierignore
+.prettierrc
+eslint.config.js
+index.html
+package.json
+README.md
+tsconfig.json
+vite.config.ts
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path=".agent/rules/icon-generation-rules.md">
+---
+trigger: glob
+globs: src/shared/ui/iconography/**/*.{ts,tsx}
+---
+
+When generating an icon, the model MUST follow this rule set without exception. Any output that violates the rules is invalid.
+
+1. Output Format
+
+- Always provide both:
+  - Raw .svg markup
+  - React component code
+- React component must be written in TypeScript.
+
+2. SVG Structure
+
+- Use <svg> tag only. No <symbol>, no external defs.
+- Always include a <title> tag for accessibility.
+- viewBox must be "0 0 24 24".
+- Default size: width=24, height=24.
+
+3. Styling Rules
+
+- Solid style icon.
+- Color must be currentColor only.
+- `fill="none"` on <svg>.
+- Use <path> only unless geometry strictly requires otherwise.
+- Stroke rules:
+  - `stroke="currentColor"`
+  - `strokeWidth={1.125}`
+  - `strokeLinecap="round"`
+  - `strokeLinejoin="round"`
+
+4. Geometry Rules
+
+- Icon must be visually centered.
+- Use even spacing and symmetrical coordinates.
+- Avoid unnecessary complexity.
+- No decorative noise, no shading, no gradients.
+
+5. React Component Rules
+
+- Component signature:
+
+```tsx
+import type { SVGProps } from 'react';
+```
+
+- Destructure props exactly:
+  - `width = 24`
+  - `height = 24`
+  - `'aria-label'`
+  - `'aria-hidden'`
+- `<title>` must render conditionally:
+  - Render only when aria-hidden is false.
+- Spread props onto <svg>.
+
+6. Naming
+
+- Component name must be PascalCase.
+- aria-label value must match the icon name (lowercase).
+
+7. Consistency Enforcement Phrase
+   Every icon generation MUST internally obey this rule set.
+   If any rule is violated, the icon is considered invalid and must be regenerated.
+</file>
+
+<file path=".agent/rules/main-rule.md">
+---
+trigger: always_on
+---
+
+You are a Senior Front-End Developer and an Expert in ReactJS, NextJS, JavaScript, TypeScript, HTML, CSS and modern UI/UX frameworks (e.g., TailwindCSS, Shadcn, Radix). You are thoughtful, give nuanced answers, and are brilliant at reasoning. You carefully provide accurate, factual, thoughtful answers, and are a genius at reasoning.
+
+- Follow the user’s requirements carefully & to the letter.
+- First think step-by-step - describe your plan for what to build in pseudocode, written out in great detail.
+- Confirm, then write code!
+- Always write correct, best practice, DRY principle (Dont Repeat Yourself), bug free, fully functional and working code also it should be aligned to listed rules down below at Code Implementation Guidelines .
+- Focus on easy and readability code, over being performant.
+- Fully implement all requested functionality.
+- Leave NO todo’s, placeholders or missing pieces.
+- Ensure code is complete! Verify thoroughly finalised.
+- Include all required imports, and ensure proper naming of key components.
+- Be concise Minimize any other prose.
+- If you think there might not be a correct answer, you say so.
+- If you do not know the answer, say so, instead of guessing.
+
+### Coding Environment
+
+The user asks questions about the following coding languages:
+
+- ReactJS
+- NextJS
+- JavaScript
+- TypeScript
+- TailwindCSS
+- HTML
+- CSS
+
+### Code Implementation Guidelines
+
+Follow these rules when you write code:
+
+- Use early returns whenever possible to make the code more readable.
+- Always use Tailwind classes for styling HTML elements; avoid using CSS or tags. And write all Tailwind utility syntax according to the latest Tailwind v4 guidelines, using the new unified @theme tokens and the updated class conventions.
+- Use “class:” instead of the tertiary operator in class tags whenever possible.
+- Use descriptive variable and function/const names. Also, event functions should be named with a “handle” prefix, like “handleClick” for onClick and “handleKeyDown” for onKeyDown.
+- Implement accessibility features on elements. For example, a tag should have a tabindex=“0”, aria-label, on:click, and on:keydown, and similar attributes.
+- Use consts instead of functions, for example, “const toggle = () =>”. Also, define a type if possible.
+
+### Additional Mandatory Output Rules
+
+- Every response MUST include:
+  1. Commit message(s) describing the current change
+  - Follow conventional commit style when applicable
+  - Be concise, factual, and scoped to the change
+  2. Pull Request body draft for opening a PR
+  - Include:
+    - Summary of changes
+    - Key implementation notes
+    - Any breaking or notable behavior
+- Default target branch: `dev`
+- Exception:
+  - If a different target branch is required, the user will explicitly specify it in the request.
+  - Do NOT assume any branch other than dev unless stated.
+- These outputs are mandatory for every request, regardless of size or complexity.
+- Do not omit them. Do not summarize them away.
+</file>
+
+<file path=".github/workflows/update-codebase.yml">
+name: Update Codebase
+
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  update-codebase:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: 코드 체크아웃
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.base.ref }}
+
+      - name: Node.js 환경 설정
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: 코드베이스 분석 및 codebase.txt 생성
+        run: npx -y repomix --output codebase.txt --style xml
+
+      - name: 변경 사항 커밋 및 푸시
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add codebase.txt
+          git commit -m "chore: update codebase.txt [skip ci]" || echo "No changes to commit"
+          git push
+</file>
+
+<file path="public/vite.svg">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--logos" width="31.88" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 256 257"><defs><linearGradient id="IconifyId1813088fe1fbc01fb466" x1="-.828%" x2="57.636%" y1="7.652%" y2="78.411%"><stop offset="0%" stop-color="#41D1FF"></stop><stop offset="100%" stop-color="#BD34FE"></stop></linearGradient><linearGradient id="IconifyId1813088fe1fbc01fb467" x1="43.376%" x2="50.316%" y1="2.242%" y2="89.03%"><stop offset="0%" stop-color="#FFEA83"></stop><stop offset="8.333%" stop-color="#FFDD35"></stop><stop offset="100%" stop-color="#FFA800"></stop></linearGradient></defs><path fill="url(#IconifyId1813088fe1fbc01fb466)" d="M255.153 37.938L134.897 252.976c-2.483 4.44-8.862 4.466-11.382.048L.875 37.958c-2.746-4.814 1.371-10.646 6.827-9.67l120.385 21.517a6.537 6.537 0 0 0 2.322-.004l117.867-21.483c5.438-.991 9.574 4.796 6.877 9.62Z"></path><path fill="url(#IconifyId1813088fe1fbc01fb467)" d="M185.432.063L96.44 17.501a3.268 3.268 0 0 0-2.634 3.014l-5.474 92.456a3.268 3.268 0 0 0 3.997 3.378l24.777-5.718c2.318-.535 4.413 1.507 3.936 3.838l-7.361 36.047c-.495 2.426 1.782 4.5 4.151 3.78l15.304-4.649c2.372-.72 4.652 1.36 4.15 3.788l-11.698 56.621c-.732 3.542 3.979 5.473 5.943 2.437l1.313-2.028l72.516-144.72c1.215-2.423-.88-5.186-3.54-4.672l-25.505 4.922c-2.396.462-4.435-1.77-3.759-4.114l16.646-57.705c.677-2.35-1.37-4.583-3.769-4.113Z"></path></svg>
+</file>
+
+<file path="src/@types/vite-env.d.ts">
+/// <reference types="vite/client" />
+
+declare global {
+  type AppEnvKey = 'VITE_KAKAO_CLIENT_ID' | 'VITE_KAKAO_REDIRECT_URI' | 'VITE_API_BASE_URL';
+
+  interface ImportMetaEnv {
+    readonly [key in AppEnvKey]: string;
+  }
+
+  interface ImportMeta {
+    readonly env: ImportMetaEnv;
+  }
+}
+
+export {};
+</file>
+
+<file path="src/entities/cache/lib/cache-service.ts">
+import { TypeGuard } from '@/shared/lib';
+
+import { type CacheData, CacheModel } from '../model';
+
+class CacheService {
+  static CACHE_MAP = new Map<string, CacheModel<CacheData>>();
+
+  static get<T extends CacheData>(key: string): T | null {
+    const cached = this.CACHE_MAP.get(key);
+    if (TypeGuard.checkUndefined(cached) || cached.isExpired) {
+      this.CACHE_MAP.delete(key);
+      return null;
+    } else {
+      return cached.data as T;
+    }
+  }
+
+  static set<T extends CacheData>(key: string, data: T, ttlMs?: number): boolean {
+    if (this.CACHE_MAP.has(key)) {
+      return false;
+    }
+
+    this.CACHE_MAP.set(key, new CacheModel({ data, ttlMs }));
+    return true;
+  }
+
+  static invalidate(key: string) {
+    this.CACHE_MAP.delete(key);
+  }
+}
+
+export default CacheService;
+</file>
+
+<file path="src/entities/cache/lib/index.ts">
+export { default as CacheService } from './cache-service';
+</file>
+
+<file path="src/entities/cache/model/cache-model.ts">
+import { TypeGuard } from '@/shared/lib';
+import { CustomModel } from '@/shared/model';
+
+import type { CacheData } from './type';
+
+interface State<T extends CacheData = null> {
+  data: T;
+  // NOTE: null 인 경우, 기한없는 캐싱
+  expiredAt: number | null;
+}
+
+interface Props<T extends CacheData = null> {
+  data: T;
+  // Time To Live (milliseconds)
+  ttlMs?: number;
+}
+
+class CacheModel<T extends CacheData = null> extends CustomModel<State<T>> {
+  private state: State<T>;
+
+  constructor(props: Props<T>) {
+    super();
+    const { data, ttlMs } = props;
+    const now = Date.now();
+
+    this.state = {
+      data,
+      expiredAt: TypeGuard.checkUndefined(ttlMs) ? null : Math.max(now + ttlMs, now),
+    };
+  }
+
+  get isExpired(): boolean {
+    const { expiredAt } = this.state;
+
+    if (TypeGuard.checkNull(expiredAt)) {
+      return false;
+    }
+
+    return expiredAt < Date.now();
+  }
+
+  get data(): T {
+    return this.state.data;
+  }
+
+  toJSON(): State<T> {
+    return this.state;
+  }
+
+  clone(): CacheModel<T> {
+    const { data, expiredAt } = this.state;
+
+    return new CacheModel({
+      data,
+      ttlMs: !TypeGuard.checkNull(expiredAt) ? Math.max(expiredAt - Date.now(), 0) : undefined,
+    });
+  }
+}
+
+export default CacheModel;
+</file>
+
+<file path="src/entities/cache/model/index.ts">
+export { default as CacheModel } from './cache-model';
+
+export * from './type';
+</file>
+
+<file path="src/entities/cache/model/type.d.ts">
+type CacheData = string | number | boolean | object | null;
+
+export type { CacheData };
+</file>
+
+<file path="src/entities/form-question/lib/index.ts">
+export { default as QuestionStateService } from './question-state-service';
+export { default as QuestionListStateService } from './question-list-state-service';
+</file>
+
+<file path="src/entities/form-question/lib/question-list-state-service.ts">
+import type { FormQuestionModel } from '../model';
+
+class QuestionListStateService {
+  static pushQuestion(prevList: FormQuestionModel[], question: FormQuestionModel) {
+    return [...prevList, question];
+  }
+
+  static removeQuestionFromList(prevList: FormQuestionModel[], questionId: string) {
+    const newList = prevList.filter(question => question.getValue('id') !== questionId);
+    return newList.length === prevList.length ? prevList : newList;
+  }
+
+  static findQuestionById(
+    prevList: FormQuestionModel[],
+    questionId: string,
+  ): FormQuestionModel | null {
+    return prevList.find(question => question.getValue('id') === questionId) || null;
+  }
+
+  static replaceQuestionById(
+    prevList: FormQuestionModel[],
+    newQuestion: FormQuestionModel,
+    targetId: string,
+  ): FormQuestionModel[] {
+    return prevList.map(question =>
+      question.getValue('id') === targetId ? newQuestion : question,
+    );
+  }
+}
+
+export default QuestionListStateService;
+</file>
+
+<file path="src/entities/form-question/lib/question-state-service.ts">
+import { FormQuestionModel, FormQuestionOptionModel, type FormQuestionType } from '../model';
+
+class QuestionStateService {
+  static getInitialQuestion(type: FormQuestionType) {
+    return new FormQuestionModel({
+      title: '',
+      type,
+    });
+  }
+
+  static editQuestionTitle(prev: FormQuestionModel, title: string, isClone = false) {
+    if (isClone) {
+      return prev.clone({ title });
+    }
+    return prev.setValue('title', title);
+  }
+
+  static editQuestionType(prev: FormQuestionModel, type: FormQuestionType, isClone = false) {
+    if (isClone) {
+      return prev.clone({ type });
+    }
+    return prev.setValue('type', type);
+  }
+
+  static editOptionContent(
+    prev: FormQuestionModel,
+    optionId: string,
+    content: string,
+    isClone = false,
+  ) {
+    const prevOptions = prev.getValue('options');
+    if (!prevOptions) {
+      return prev;
+    }
+
+    const newOptions = prevOptions.map(option => {
+      if (option.getValue('id') === optionId) {
+        return option.clone({ content });
+      }
+      return option;
+    });
+
+    if (isClone) {
+      return prev.clone({ options: newOptions });
+    }
+    return prev.setValue('options', newOptions);
+  }
+
+  static addOption(prev: FormQuestionModel, isClone = false) {
+    const prevOptions = prev.getValue('options') ?? [];
+    const newOption = new FormQuestionOptionModel({ content: '' });
+    const newOptions = [...prevOptions, newOption];
+
+    if (isClone) {
+      return prev.clone({ options: newOptions });
+    }
+    return prev.setValue('options', newOptions);
+  }
+
+  static removeOption(prev: FormQuestionModel, optionId: string, isClone = false) {
+    const prevOptions = prev.getValue('options');
+    if (!prevOptions) return prev;
+
+    const newOptions = prevOptions.filter(opt => opt.getValue('id') !== optionId);
+
+    if (isClone) {
+      return prev.clone({ options: newOptions });
+    }
+    return prev.setValue('options', newOptions);
+  }
+}
+
+export default QuestionStateService;
+</file>
+
+<file path="src/entities/form-question/model/form-question/index.ts">
+import { TypeGuard, UUID } from '@/shared/lib';
+import { CustomModel } from '@/shared/model';
+
+import FormQuestionOptionModel from './option';
+
+import type { FormQuestionType } from '../';
+
+interface State {
+  id: string;
+  type: FormQuestionType;
+  // 질문 내용
+  title: string;
+  // 질문 설명
+  description: string | null;
+  // 필수 질문 여부
+  required: boolean;
+  // (객관식 질문일 경우), 선택지 목록)
+  options: FormQuestionOptionModel[] | null;
+}
+
+interface Props {
+  id?: string;
+  type: FormQuestionType;
+  title: string;
+  description?: string | null;
+  required?: boolean;
+  options?: FormQuestionOptionModel[] | null;
+}
+
+class FormQuestionModel extends CustomModel<State> {
+  private state: State;
+  constructor(props: Props) {
+    super();
+    const { id, type, title, description, required, options } = props;
+
+    const isValidateOptions =
+      !!options && options.length !== 0 && type !== 'SHORT_TEXT' && type !== 'LONG_TEXT';
+
+    this.state = {
+      id: id || UUID.v4(),
+      type: type,
+      title: title,
+      description: description || null,
+      required: required || false,
+      options: isValidateOptions ? options : null,
+    };
+  }
+
+  getValue<K extends keyof State>(key: K): State[K] {
+    return this.state[key];
+  }
+
+  setValue<K extends keyof State>(key: K, value: State[K]): FormQuestionModel {
+    return this.clone({
+      [key]: value,
+    });
+  }
+
+  pushOption(option: FormQuestionOptionModel): FormQuestionModel {
+    const options = this.state.options;
+    if (TypeGuard.checkNull(options)) {
+      return this;
+    }
+    return this.clone({
+      options: [...options, option],
+    });
+  }
+
+  toJSON(): State {
+    return this.state;
+  }
+
+  clone(props?: Partial<Exclude<State, 'id'>>): FormQuestionModel {
+    return new FormQuestionModel({
+      id: this.state.id,
+      type: props?.type ?? this.state.type,
+      title: props?.title ?? this.state.title,
+      required: TypeGuard.checkBoolean(props?.required) ? props?.required : this.state.required,
+      description: !TypeGuard.checkUndefined(props?.description)
+        ? props.description
+        : this.state.description,
+      options: !TypeGuard.checkUndefined(props?.options) ? props.options : this.state.options,
+    });
+  }
+}
+
+export default FormQuestionModel;
+</file>
+
+<file path="src/entities/form-question/model/form-question/option.ts">
+import { UUID } from '@/shared/lib';
+import { CustomModel } from '@/shared/model';
+
+interface State {
+  id: string;
+  // 선택지 내용
+  content: string;
+  // 선택 여부
+  checked: boolean;
+  // 기본 선택 여부
+  defaultChecked: boolean;
+}
+
+interface Props {
+  id?: string;
+  content: string;
+  checked?: boolean;
+  defaultChecked?: boolean;
+}
+
+class FormQuestionOptionModel extends CustomModel<State> {
+  private state: State;
+
+  constructor(props: Props) {
+    super();
+    const { id, content, checked, defaultChecked } = props;
+    this.state = {
+      id: id || UUID.v4(),
+      content,
+      checked: checked || false,
+      defaultChecked: defaultChecked || false,
+    };
+  }
+
+  getValue<K extends keyof State>(key: K): State[K] {
+    return this.state[key];
+  }
+
+  setValue<K extends keyof State>(key: K, value: State[K]): FormQuestionOptionModel {
+    return this.clone({
+      [key]: value,
+    });
+  }
+
+  toJSON(): State {
+    return this.state;
+  }
+
+  clone(props?: Partial<State>): FormQuestionOptionModel {
+    return new FormQuestionOptionModel({
+      ...this.toJSON(),
+      ...props,
+    });
+  }
+}
+
+export default FormQuestionOptionModel;
+</file>
+
+<file path="src/entities/form-question/model/index.ts">
+export { default as FormQuestionModel } from './form-question';
+export { default as FormQuestionOptionModel } from './form-question/option';
+
+export * from './type.d';
+</file>
+
+<file path="src/entities/form-question/model/type.d.ts">
+type FormQuestionType = 'SINGLE_CHOICE' | 'MULTIPLE_CHOICE' | 'SHORT_TEXT' | 'LONG_TEXT';
+
+export type { FormQuestionType };
+</file>
+
+<file path="src/entities/form-question/store/index.ts">
+export { default as useFormQuestionList } from './use-form-question-list';
+</file>
+
+<file path="src/entities/form-question/store/use-form-question-list.ts">
+import { create } from 'zustand';
+
+import type { FormQuestionModel } from '../model';
+
+interface State {
+  formQuestions: FormQuestionModel[];
+  setFormQuestions: (
+    next: FormQuestionModel[] | ((prev: FormQuestionModel[]) => FormQuestionModel[]),
+  ) => void;
+}
+
+const useFormQuestionList = create<State>(set => ({
+  formQuestions: [],
+  setFormQuestions: next => {
+    set(state => {
+      return {
+        formQuestions: typeof next === 'function' ? next(state.formQuestions) : next,
+      };
+    });
+  },
+}));
+
+export default useFormQuestionList;
+</file>
+
+<file path="src/entities/README.md">
+- 데이터 모델과 해당 데이터에 대한 로직을 포함
+</file>
+
+<file path="src/features/authenticate/ui/login-button/kakao/index.tsx">
+import { memo } from 'react';
+
+import { EnvManager } from '@/shared/lib';
+
+const Kakao = () => {
+  const clientId = EnvManager.getAppEnv('VITE_KAKAO_CLIENT_ID') ?? '';
+  const redirectUri = EnvManager.getAppEnv('VITE_KAKAO_REDIRECT_URI') ?? '';
+
+  return (
+    <a
+      role="button"
+      href={`https://kauth.kakao.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code`}
+      aria-label="카카오 로그인"
+      className="flex items-center justify-center gap-[12px] bg-[#FEE500] text-[rgba(0,0,0,0.85)] text-base p-[12px] rounded-[12px] hover:bg-[#FDD835] active:bg-[#FBC02D] transition-colors duration-200 w-fit"
+    >
+      <span>카카오 로그인</span>
+    </a>
+  );
+};
+
+export default memo(Kakao);
+</file>
+
+<file path="src/features/authenticate/ui/login-button/index.tsx">
+import KakaoLoginButton from './kakao';
+
+const LoginButton = {
+  Kakao: KakaoLoginButton,
+};
+
+export default LoginButton;
+</file>
+
+<file path="src/features/authenticate/ui/index.ts">
+export { default as LoginButton } from './login-button';
+</file>
+
+<file path="src/features/edit-form/ui/QuestionAddSection/hook.ts">
+import { useCallback } from 'react';
+
+import { QuestionListStateService, QuestionStateService } from '@/entities/form-question/lib';
+import { useFormQuestionList } from '@/entities/form-question/store';
+
+import type { FormQuestionType } from '@/entities/form-question/model';
+
+const useQuestionAddSectionController = () => {
+  const { setFormQuestions } = useFormQuestionList();
+
+  // 질문 추가 핸들러
+  const handleAddQuestion = useCallback(
+    (questionType: FormQuestionType) => {
+      const formQuestion = QuestionStateService.getInitialQuestion(questionType);
+      setFormQuestions(prev => QuestionListStateService.pushQuestion(prev, formQuestion));
+    },
+    [setFormQuestions],
+  );
+
+  return { handleAddQuestion };
+};
+
+export default useQuestionAddSectionController;
+</file>
+
+<file path="src/features/edit-form/ui/QuestionAddSection/index.tsx">
+import { memo } from 'react';
+
+import useQuestionAddSectionController from './hook';
+
+const QuestionAddSection = () => {
+  const { handleAddQuestion } = useQuestionAddSectionController();
+
+  // 공통 버튼 스타일 (기본 상태 및 호버 상태)
+  const buttonBaseClass =
+    'border-[2px] border-divider-default rounded-[8px] py-[12px] px-[16px] flex justify-center items-center flex-nowrap w-full text-[14px] text-center text-nowrap transition-colors duration-100 ease-in-out';
+  const activeClass =
+    'hover:bg-brand-primary/10 hover:border-brand-primary hover:text-brand-primary cursor-pointer text-text-secondary';
+
+  // Disabled 스타일: Gray-scale 활용
+  const disabledClass =
+    'disabled:bg-gray-100 disabled:border-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed';
+
+  return (
+    <section className="shadow-sm border border-divider-default rounded-[16px] p-[24px] flex flex-col gap-[16px] bg-bg-default w-full">
+      <h3 className="text-[20px] font-bold text-text-primary">질문 추가</h3>
+      <div className="flex-1 w-full flex items-center gap-[12px]">
+        <button
+          className={`${buttonBaseClass} ${activeClass}`}
+          onClick={() => handleAddQuestion('SHORT_TEXT')}
+        >
+          단답형
+        </button>
+        <button
+          disabled
+          className={`${buttonBaseClass} ${disabledClass}`}
+          onClick={() => handleAddQuestion('LONG_TEXT')}
+        >
+          장문형
+        </button>
+        <button
+          disabled
+          className={`${buttonBaseClass} ${disabledClass}`}
+          onClick={() => handleAddQuestion('MULTIPLE_CHOICE')}
+        >
+          복수선택
+        </button>
+        <button
+          className={`${buttonBaseClass} ${disabledClass}`}
+          onClick={() => handleAddQuestion('SINGLE_CHOICE')}
+        >
+          단일선택
+        </button>
+      </div>
+    </section>
+  );
+};
+
+export default memo(QuestionAddSection);
+</file>
+
+<file path="src/features/edit-form/ui/QuestionEditCard/hook.ts">
+import { useMemo } from 'react';
+
+import { QuestionStateService, QuestionListStateService } from '@/entities/form-question/lib';
+import { useFormQuestionList } from '@/entities/form-question/store';
+import { TypeGuard } from '@/shared/lib';
+
+import type { FormQuestionModel, FormQuestionType } from '@/entities/form-question/model';
+
+interface Props {
+  questionId: string;
+}
+
+const useQuestionEditCardController = (props: Props) => {
+  const { questionId } = props;
+  const { formQuestions, setFormQuestions } = useFormQuestionList();
+
+  const question = useMemo((): FormQuestionModel | null => {
+    return QuestionListStateService.findQuestionById(formQuestions, questionId);
+  }, [formQuestions, questionId]);
+
+  const handleTitleChange = (title: string) => {
+    setFormQuestions(prevList => {
+      const prevQuestion = QuestionListStateService.findQuestionById(prevList, questionId);
+      if (TypeGuard.checkNull(prevQuestion)) {
+        return prevList;
+      }
+      const newQuestion = QuestionStateService.editQuestionTitle(prevQuestion, title);
+      return QuestionListStateService.replaceQuestionById(prevList, newQuestion, questionId);
+    });
+  };
+
+  const handleTypeChange = (type: FormQuestionType) => {
+    setFormQuestions(prevList => {
+      const prevQuestion = QuestionListStateService.findQuestionById(prevList, questionId);
+      if (TypeGuard.checkNull(prevQuestion)) {
+        return prevList;
+      }
+      const newQuestion = QuestionStateService.editQuestionType(prevQuestion, type);
+      return QuestionListStateService.replaceQuestionById(prevList, newQuestion, questionId);
+    });
+  };
+
+  const handleDeleteQuestion = () => {
+    setFormQuestions(prevList => {
+      return QuestionListStateService.removeQuestionFromList(prevList, questionId);
+    });
+  };
+
+  const handleUpdateOption = (optionId: string, content: string) => {
+    setFormQuestions(prevList => {
+      const prevQuestion = QuestionListStateService.findQuestionById(prevList, questionId);
+      if (TypeGuard.checkNull(prevQuestion)) {
+        return prevList;
+      }
+      const newQuestion = QuestionStateService.editOptionContent(prevQuestion, optionId, content);
+      return QuestionListStateService.replaceQuestionById(prevList, newQuestion, questionId);
+    });
+  };
+
+  const handleAddOption = () => {
+    setFormQuestions(prevList => {
+      const prevQuestion = QuestionListStateService.findQuestionById(prevList, questionId);
+      if (TypeGuard.checkNull(prevQuestion)) {
+        return prevList;
+      }
+      const newQuestion = QuestionStateService.addOption(prevQuestion);
+      return QuestionListStateService.replaceQuestionById(prevList, newQuestion, questionId);
+    });
+  };
+
+  const handleRemoveOption = (optionId: string) => {
+    setFormQuestions(prevList => {
+      const prevQuestion = QuestionListStateService.findQuestionById(prevList, questionId);
+      if (TypeGuard.checkNull(prevQuestion)) {
+        return prevList;
+      }
+      const newQuestion = QuestionStateService.removeOption(prevQuestion, optionId);
+      return QuestionListStateService.replaceQuestionById(prevList, newQuestion, questionId);
+    });
+  };
+
+  return {
+    question,
+    handleTitleChange,
+    handleTypeChange,
+    handleDeleteQuestion,
+    handleUpdateOption,
+    handleAddOption,
+    handleRemoveOption,
+  };
+};
+
+export default useQuestionEditCardController;
+</file>
+
+<file path="src/features/edit-form/ui/QuestionEditCard/index.tsx">
+import { Fragment, memo } from 'react';
+
+import { TypeGuard } from '@/shared/lib';
+import { Iconography } from '@/shared/ui';
+
+import useQuestionEditCardController from './hook';
+
+import type { FormQuestionType } from '@/entities/form-question/model';
+
+interface Props {
+  questionId: string;
+}
+
+const QuestionEditCard = (props: Props) => {
+  const { questionId } = props;
+  const {
+    question,
+    handleTitleChange,
+    handleTypeChange,
+    handleDeleteQuestion,
+    handleUpdateOption,
+    handleAddOption,
+    handleRemoveOption,
+  } = useQuestionEditCardController({
+    questionId,
+  });
+
+  if (TypeGuard.checkNull(question)) {
+    return <Fragment />;
+  }
+
+  return (
+    <section className="w-full flex flex-col gap-[12px] p-[24px] bg-bg-default border border-divider-default rounded-[16px] shadow-sm">
+      <div className="w-full flex justify-between items-center">
+        {/* 질문 타입 선택 */}
+        <select
+          value={question?.getValue('type') ?? 'SHORT_TEXT'}
+          className="appearance-none cursor-pointer px-[8px] py-[4px] text-[12px] rounded-[6px] bg-bg-sub border border-divider-default text-text-secondary transition-colors"
+          onChange={e => handleTypeChange(e.target.value as FormQuestionType)}
+        >
+          <option value="SHORT_TEXT">단답형</option>
+          <option value="LONG_TEXT">장답형</option>
+          <option value="MULTIPLE_CHOICE">객관식(복수선택)</option>
+          <option value="SINGLE_CHOICE">객관식(단일선택)</option>
+        </select>
+
+        <button
+          type="button"
+          aria-label="질문 삭제"
+          className="group rounded-full aspect-square p-[8px] flex items-center justify-center bg-gray-100 hover:bg-gray-200 transition-colors cursor-pointer"
+          onClick={handleDeleteQuestion}
+        >
+          <Iconography.Stroke.Trash
+            className="text-gray-500 group-hover:text-danger transition-colors duration-200"
+            aria-hidden
+          />
+        </button>
+      </div>
+
+      {/* 질문 제목 입력 */}
+      <div className="w-full">
+        <input
+          type="text"
+          placeholder="질문을 입력해주세요. (최대 50자)"
+          className="w-full py-[4px] text-[18px] font-bold bg-transparent border-b border-gray-200 text-text-primary focus:border-brand-primary focus:outline-none placeholder:text-text-tertiary transition-colors"
+          maxLength={50}
+          value={question?.getValue('title') ?? ''}
+          onChange={e => {
+            handleTitleChange(e.target.value);
+          }}
+        />
+      </div>
+
+      {/* 단답형 답변 영역 프리뷰 */}
+      {question?.getValue('type') === 'SHORT_TEXT' && (
+        <div className="w-full pt-[8px]">
+          <div className="w-full max-w-[400px]">
+            <input
+              disabled
+              type="text"
+              placeholder="단답형 텍스트 (최대 100자)"
+              className="w-full px-[12px] py-[10px] text-[14px] rounded-[8px] border border-dashed border-gray-300 bg-gray-100 text-gray-400 cursor-not-allowed select-none"
+            />
+          </div>
+        </div>
+      )}
+      {/* (단일) 선택형 답변 영역 프리뷰 */}
+      {question?.getValue('type') === 'SINGLE_CHOICE' && (
+        <div className="w-full pt-[8px]">
+          <div className="w-full flex flex-col gap-[8px]">
+            {question?.getValue('options')?.map(option => {
+              const { id, content } = option.toJSON();
+              return (
+                <div key={id} className="w-full flex items-center gap-[8px]">
+                  <div className="w-[18px] h-[18px] rounded-full border border-gray-300 bg-white flex-shrink-0" />
+                  <input
+                    type="text"
+                    value={content}
+                    placeholder="옵션을 입력해주세요"
+                    className="flex-1 text-[14px] text-text-primary bg-transparent border-b border-transparent focus:border-brand-primary focus:outline-none placeholder:text-text-tertiary transition-colors py-[4px]"
+                    onChange={e => handleUpdateOption(id, e.target.value)}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveOption(id)}
+                    className="p-[4px] rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
+                    aria-label="옵션 삭제"
+                  >
+                    <Iconography.Stroke.Minus
+                      className="w-[20px] h-[20px] text-danger hover:cursor-pointer"
+                      aria-hidden
+                    />
+                  </button>
+                </div>
+              );
+            })}
+            <button
+              type="button"
+              onClick={handleAddOption}
+              className="w-fit flex items-center gap-[4px] px-[8px] py-[4px] rounded-[6px] hover:bg-gray-100 transition-colors text-[13px] text-text-secondary font-medium"
+            >
+              <Iconography.Stroke.Plus className="w-[14px] h-[14px]" />
+              <span>옵션 추가</span>
+            </button>
+          </div>
+        </div>
+      )}
+    </section>
+  );
+};
+
+export default memo(QuestionEditCard);
+</file>
+
+<file path="src/features/edit-form/ui/index.ts">
+export { default as QuestionEditCard } from './QuestionEditCard';
+export { default as QuestionAddSection } from './QuestionAddSection';
+</file>
+
+<file path="src/features/toggle-theme/ui/dark-mode-button/index.tsx">
+import { memo, useCallback, useState } from 'react';
+
+import { TypeGuard } from '@/shared/lib';
+import { Iconography } from '@/shared/ui';
+
+const DarkModeButton = () => {
+  const [darkMode, setDarkMode] = useState(
+    document?.documentElement.classList.contains('dark') ?? false,
+  );
+
+  const handleToggle = useCallback(() => {
+    if (TypeGuard.checkUndefined(document)) {
+      return;
+    }
+    if (darkMode) {
+      document.documentElement.classList.remove('dark');
+      setDarkMode(false);
+    } else {
+      document.documentElement.classList.add('dark');
+      setDarkMode(true);
+    }
+  }, [darkMode]);
+
+  return (
+    <button
+      onClick={handleToggle}
+      aria-pressed={darkMode}
+      aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+      className="rounded-full bg-gray-200 p-2 text-gray-800 w-fit h-fit aspect-square transition-colors hover:bg-gray-300 active:bg-gray-400"
+    >
+      {darkMode ? <Iconography.Stroke.Sun aria-hidden /> : <Iconography.Stroke.Moon aria-hidden />}
+    </button>
+  );
+};
+
+export default memo(DarkModeButton);
+</file>
+
+<file path="src/features/toggle-theme/ui/index.ts">
+export { default as DarkModeButton } from './dark-mode-button';
+</file>
+
+<file path="src/pages/kakao-redirect/hook.ts">
+import { useCallback, useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+
+import { TypeGuard } from '@/shared/lib';
+import { AxiosManager } from '@/shared/lib';
+
+const useKakaoRedirectPageController = () => {
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+
+  const initialize = useCallback(async () => {
+    const code = searchParams.get('code');
+
+    console.log(code);
+
+    if (!TypeGuard.checkNull(code)) {
+      // TODO: 인가코드를 이용하여 access token을 발급
+      try {
+        await AxiosManager.getAxiosInstance().post('', { data: { code } });
+        localStorage.setItem('isLoggined', 'true');
+      } catch {
+        localStorage.setItem('isLoggined', 'false');
+      }
+    } else {
+      localStorage.setItem('isLoggined', 'false');
+    }
+    navigate('/');
+  }, [searchParams, navigate]);
+
+  useEffect(() => {
+    initialize();
+  }, []);
+};
+
+export default useKakaoRedirectPageController;
+</file>
+
+<file path="src/pages/kakao-redirect/index.tsx">
+import useKakaoRedirectPageController from './hook';
+
+const KakaoRedirectPage = () => {
+  useKakaoRedirectPageController();
+
+  return (
+    <div className="bg-bg-default w-full h-[100dvh] flex justify-center items-center">
+      <span className="text-text-primary text-base font-medium">...</span>
+    </div>
+  );
+};
+
+export default KakaoRedirectPage;
+</file>
+
+<file path="src/pages/landing/hook.ts">
+import { useState } from 'react';
+
+const useLandingPageController = () => {
+  const [isLoggined] = useState(() => {
+    const loginFlag = localStorage?.getItem('isLoggined');
+    return loginFlag === 'true';
+  });
+
+  return {
+    isLoggined,
+  };
+};
+
+export default useLandingPageController;
+</file>
+
+<file path="src/pages/landing/index.tsx">
+import { Link } from 'react-router-dom';
+
+import { LoginButton } from '@/features/authenticate/ui';
+import { DarkModeButton } from '@/features/toggle-theme/ui';
+
+import useLandingPageController from './hook';
+
+const LandingPage = () => {
+  const { isLoggined } = useLandingPageController();
+
+  return (
+    <div className="w-full h-[100dvh] overflow-y-auto flex flex-col">
+      <header className="w-full p-[24px] h-fit bg-default flex justify-between items-center border-b border-b-divider-default">
+        <div className="flex items-center gap-[12px]">
+          {/** 👇 TODO: Icon 컴포넌트로 대체 (서비스 로고) */}
+          <div className="bg-brand-primary w-10 h-10 color-white rounded-[12px] flex justify-center items-center overflow-hidden">
+            i
+          </div>
+          <strong className="color-text-primary cursor-default">CRATE</strong>
+        </div>
+        <div className="flex items-center gap-[12px]">
+          <DarkModeButton />
+          {isLoggined ? (
+            <button className="py-[8px] px-[16px] text-brand-primary rounded-[8px] hover:bg-brand-primary/10">
+              대시보드
+            </button>
+          ) : (
+            <LoginButton.Kakao />
+          )}
+        </div>
+      </header>
+
+      <main className="m-0 p-0 w-full flex flex-col bg-transparent">
+        <div className="w-full h-fit bg-bg-sub flex flex-col gap-[32px] justify-center items-center py-[80px]">
+          <h1 className="text-text-primary text-[24px] font-bold text-center">
+            지원서 평가, 이제 한 곳에서!
+          </h1>
+          <h2 className="text-text-secondary text-[20px] whitespace-pre-line text-center">
+            {'양식 제작부터 지원 접수, 평가, 선발까지\n모집 과정의 모든 것을 효율적으로 관리하세요'}
+          </h2>
+          <div className="w-full flex justify-center items-center gap-[24px]">
+            <Link
+              to="/new-form"
+              className="border-none rounded-[8px] w-fit min-w-[180px] flex items-center justify-center gap-[8px] py-[12px] px-[32px] bg-brand-primary color-white hover:bg-brand-primary/90"
+            >
+              {/** 👇 TODO: Icon 컴포넌트로 대체 */}
+              <span>I</span>
+              <span>양식 만들기</span>
+            </Link>
+            {/** 👇 TODO: Button 컴포넌트로 대체 */}
+            <button className="border-[0.5px] border-border-sub rounded-[8px] w-fit min-w-[180px] flex items-center justify-center gap-[8px] py-[12px] px-[32px] bg-transparent color-text-tertiary hover:bg-gray-100/90">
+              {/** 👇 TODO: Icon 컴포넌트로 대체 */}
+              <span>I</span>
+              <span>대시보드 만들기</span>
+            </button>
+          </div>
+        </div>
+
+        <div className="py-[80px] w-full h-fit flex items-center justify-center">
+          <div className="px-[24px] grid w-full max-w-[1200px] grid-cols-1 desktop:grid-cols-3 justify-center items-center gap-[20px]">
+            <Link
+              to="/"
+              className="rounded-[16px] border border-border-sub py-[16px] px-[12px] w-full flex flex-col gap-[16px] hover:border-brand-primary transition-border-colors duration-[200ms]"
+            >
+              <div className="flex items-center gap-[8px]">
+                <span className="w-[48px] min-w-[48px] aspect-square flex items-center justify-center rounded-[18px] bg-indigo-300/90 text-indigo-600">
+                  I
+                </span>
+                <strong className="text-text-primary text-[18px] font-bold whitespace-nowrap">
+                  간편한 양식 제작
+                </strong>
+              </div>
+              <p className="desktop:h-[80px] h-fit text-left text-text-tertiary text-[16px] break-keep">
+                드래그 앤 드롭으로 원하는 질문을 자유롭게 구성하고 맞춤형 지원서를 만드세요.
+              </p>
+            </Link>
+
+            <Link
+              to="/"
+              className="rounded-[16px] border border-border-sub py-[16px] px-[12px] w-full flex flex-col gap-[16px] hover:border-brand-primary transition-border-colors duration-[200ms]"
+            >
+              <div className="flex items-center gap-[8px]">
+                <span className="w-[48px] min-w-[48px] aspect-square flex items-center justify-center rounded-[18px] bg-purple-300/90 text-purple-600">
+                  I
+                </span>
+                <strong className="text-text-primary text-[18px] font-bold whitespace-nowrap">
+                  실시간 평가 시스템
+                </strong>
+              </div>
+              <p className="desktop:h-[80px] h-fit text-left text-text-tertiary text-[16px] break-keep">
+                여러 평가자가 동시에 지원서를 검토하고 점수를 부여할 수 있습니다.
+              </p>
+            </Link>
+
+            <Link
+              to="/"
+              className="rounded-[16px] border border-border-sub py-[16px] px-[12px] w-full flex flex-col gap-[16px] hover:border-brand-primary transition-border-colors duration-[200ms]"
+            >
+              <div className="flex items-center gap-[8px]">
+                <span className="w-[48px] min-w-[48px] aspect-square flex items-center justify-center rounded-[18px] bg-green-300/90 text-green-600">
+                  I
+                </span>
+                <strong className="text-text-primary text-[18px] font-bold whitespace-nowrap">
+                  효율적인 선발 과정
+                </strong>
+              </div>
+              <p className="desktop:h-[80px] h-fit text-left text-text-tertiary text-[16px] break-keep">
+                평가 결과를 한눈에 확인하고 합격자를 빠르게 선정하세요.
+              </p>
+            </Link>
+          </div>
+        </div>
+      </main>
+
+      <footer className="w-full h-fit p-[48px] mt-auto flex justify-center items-center bg-bg-default border-t border-t-divider-default">
+        <small className="text-text-secondary">
+          © 2025 indigo-net. CRATE by indigo-net. All rights reserved.
+        </small>
+      </footer>
+    </div>
+  );
+};
+
+export default LandingPage;
+</file>
+
+<file path="src/pages/new-form/hook.ts">
+import { useFormQuestionList } from '@/entities/form-question/store';
+
+const useNewFormPageController = () => {
+  const { formQuestions } = useFormQuestionList();
+  return { formQuestions };
+};
+
+export default useNewFormPageController;
+</file>
+
+<file path="src/pages/new-form/index.tsx">
+import { QuestionAddSection } from '@/features/edit-form/ui';
+import { QuestionEditCard } from '@/features/edit-form/ui';
+
+import useNewFormPageController from './hook';
+
+const NewFormPage = () => {
+  const { formQuestions } = useNewFormPageController();
+
+  return (
+    <div className="w-full h-[100dvh] flex flex-col">
+      <header className="px-[32px] py-[16px] flex justify-center items-center bg-default border-b border-b-divider-default">
+        <div className="mx-auto w-full max-w-[1200px] flex justify-between items-center">
+          {/** 👇 TODO: Button 컴포넌트로 대체 */}
+          <button className="rounded-[8px] w-fit flex items-center justify-center gap-[8px] py-[8px] px-[16px] bg-transparent color-text-tertiary hover:bg-gray-100/90 text-text-primary text-[16px]">
+            {/** 👇 TODO: Icon 컴포넌트로 대체 */}
+            <span>I</span>
+            <span>돌아가기</span>
+          </button>
+
+          <div className="flex items-center gap-[12px]">
+            <button className="border-border-sub rounded-[8px] w-fit flex items-center justify-center gap-[8px] py-[8px] px-[16px] bg-transparent color-text-tertiary hover:bg-gray-100/90">
+              초기화
+            </button>
+            {/** 👇 TODO: Button 컴포넌트로 대체 */}
+            <button className="border-none rounded-[8px] w-fit flex items-center justify-center gap-[8px] py-[8px] px-[16px] bg-brand-primary color-white hover:bg-brand-primary/90">
+              {/** 👇 TODO: Icon 컴포넌트로 대체 */}
+              <span>I</span>
+              <span>저장 및 게시</span>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <main className="flex-1 overflow-y-auto flex flex-col bg-bg-sub items-center h-full w-full">
+        <div className="p-[32px] flex flex-col gap-[24px] w-full max-w-[1200px]">
+          {formQuestions.map(question => {
+            const id = question.getValue('id');
+            return <QuestionEditCard key={id} questionId={id} />;
+          })}
+
+          <QuestionAddSection />
+        </div>
+      </main>
+    </div>
+  );
+};
+
+export default NewFormPage;
+</file>
+
+<file path="src/shared/lib/axios-manager/index.ts">
+import axios, { AxiosInstance, AxiosError, CreateAxiosDefaults } from 'axios';
+
+class AxiosManager {
+  private static instance: AxiosInstance | null = null;
+
+  private static createInstance(config?: CreateAxiosDefaults): AxiosInstance {
+    const defaultConfig: CreateAxiosDefaults = {
+      baseURL: import.meta.env.VITE_API_BASE_URL,
+      timeout: 10000,
+      withCredentials: true, // httpOnly 쿠키 전송을 위해 필요
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+
+    // 기본 설정과 사용자 설정 병합
+    const instance = axios.create({
+      ...defaultConfig,
+      ...config,
+      headers: {
+        ...defaultConfig.headers,
+        ...config?.headers,
+      },
+    });
+
+    instance.interceptors.response.use(
+      response => {
+        return response;
+      },
+      (error: AxiosError) => {
+        if (error.response?.status === 401) {
+          // TODO: refresh token
+        }
+        return Promise.reject(error);
+      },
+    );
+
+    return instance;
+  }
+
+  static getAxiosInstance(config?: CreateAxiosDefaults): AxiosInstance {
+    if (!this.instance) {
+      this.instance = this.createInstance(config);
+    }
+    return this.instance;
+  }
+}
+
+export default AxiosManager;
+</file>
+
+<file path="src/shared/lib/env-manager/index.ts">
+class EnvManager {
+  static getAppEnv(key: AppEnvKey): string | null {
+    return import.meta.env[key] ?? null;
+  }
+
+  static checkDevMode(): boolean {
+    return import.meta.env.DEV;
+  }
+
+  static checkProdMode(): boolean {
+    return import.meta.env.PROD;
+  }
+}
+
+export default EnvManager;
+</file>
+
+<file path="src/shared/lib/type-guard/index.ts">
+class TypeGuard {
+  static checkString(value: unknown): value is string {
+    return typeof value === 'string';
+  }
+
+  static checkNumber(value: unknown): value is number {
+    return typeof value === 'number' && !Number.isNaN(value);
+  }
+
+  static checkBoolean(value: unknown): value is boolean {
+    return typeof value === 'boolean';
+  }
+
+  static checkNull(value: unknown): value is null {
+    return value === null;
+  }
+
+  static checkUndefined(value: unknown): value is undefined {
+    return value === undefined;
+  }
+}
+
+export default TypeGuard;
+</file>
+
+<file path="src/shared/lib/uuid/index.ts">
+class UUID {
+  /**
+   * @description
+   * - 16바이트(128bit) 난수 배열을 반환
+   * - 브라우저 환경: Web Crypto API (crypto.getRandomValues) 사용
+   * - Node.js 환경: crypto.randomBytes 사용
+   */
+  private static getRandomBytes16(): Uint8Array {
+    if (typeof globalThis.crypto !== 'undefined' && globalThis.crypto.getRandomValues) {
+      const out = new Uint8Array(16);
+      globalThis.crypto.getRandomValues(out);
+      return out;
+    }
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const nodeCrypto = require('crypto') as typeof import('crypto');
+    return new Uint8Array(nodeCrypto.randomBytes(16));
+  }
+
+  static v4(): string {
+    const randomBytes = this.getRandomBytes16();
+    randomBytes[6] = (randomBytes[6] & 0x0f) | 0x40;
+    randomBytes[8] = (randomBytes[8] & 0x3f) | 0x80;
+    const hex = Array.from(randomBytes, byte => byte.toString(16).padStart(2, '0')).join('');
+    return [
+      hex.slice(0, 8),
+      hex.slice(8, 12),
+      hex.slice(12, 16),
+      hex.slice(16, 20),
+      hex.slice(20),
+    ].join('-');
+  }
+
+  static isValidV4(uuid: string): boolean {
+    const regex = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+    return regex.test(uuid);
+  }
+}
+export default UUID;
+</file>
+
+<file path="src/shared/lib/index.ts">
+export { default as AxiosManager } from './axios-manager';
+export { default as EnvManager } from './env-manager';
+export { default as TypeGuard } from './type-guard';
+export { default as UUID } from './uuid';
+</file>
+
+<file path="src/shared/model/custom-model/index.ts">
+abstract class CustomModel<T> {
+  // 직렬화용 JSON 객체를 반환해야 한다.
+  abstract toJSON(): T;
+  // 자기 자신을 복제한 새 인스턴스를 반환해야 한다.
+  abstract clone(props?: Partial<T>): CustomModel<T>;
+}
+
+export default CustomModel;
+</file>
+
+<file path="src/shared/model/index.ts">
+export { default as CustomModel } from './custom-model';
+</file>
+
+<file path="src/shared/ui/iconography/logo/kakao-talk/index.tsx">
+import type { SVGProps } from 'react';
+
+const KakaoTalk = (props: SVGProps<SVGSVGElement>) => {
+  const {
+    width = 24,
+    height = 24,
+    'aria-label': ariaLabel = 'kakaotalk',
+    'aria-hidden': ariaHidden = false,
+  } = props;
+
+  return (
+    <svg
+      {...props}
+      width={width}
+      height={height}
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden={ariaHidden}
+    >
+      {!ariaHidden && <title>{ariaLabel}</title>}
+      <path d="M4 11.2C4 7.78 7.58 5 12 5C16.42 5 20 7.78 20 11.2C20 14.62 16.42 17.4 12 17.4C11.19 17.4 10.4 17.31 9.66 17.15L6 19L6.78 15.93C5.05 14.95 4 13.18 4 11.2Z" />
+    </svg>
+  );
+};
+
+export default KakaoTalk;
+</file>
+
+<file path="src/shared/ui/iconography/logo/index.tsx">
+import KakaoTalk from './kakao-talk';
+
+const Logo = {
+  KakaoTalk: KakaoTalk,
+};
+
+export default Logo;
+</file>
+
+<file path="src/shared/ui/iconography/stroke/minus/index.tsx">
+import type { SVGProps } from 'react';
+
+const Minus = (props: SVGProps<SVGSVGElement>) => {
+  const {
+    width = 24,
+    height = 24,
+    'aria-label': ariaLabel = 'minus',
+    'aria-hidden': ariaHidden = false,
+  } = props;
+
+  return (
+    <svg
+      {...props}
+      width={width}
+      height={height}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden={ariaHidden}
+    >
+      {!ariaHidden && <title>{ariaLabel}</title>}
+      <path
+        d="M5 12h14"
+        stroke="currentColor"
+        strokeWidth={1.125}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+};
+
+export default Minus;
+</file>
+
+<file path="src/shared/ui/iconography/stroke/moon/index.tsx">
+import type { SVGProps } from 'react';
+
+const Moon = (props: SVGProps<SVGSVGElement>) => {
+  const {
+    width = 24,
+    height = 24,
+    'aria-label': ariaLabel = 'moon',
+    'aria-hidden': ariaHidden = false,
+  } = props;
+
+  return (
+    <svg
+      {...props}
+      width={width}
+      height={height}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden={ariaHidden}
+    >
+      {!ariaHidden && <title>{ariaLabel}</title>}
+      <path
+        d="M19.2 13.4A7.5 7.5 0 1 1 10.9 4.7A5.2 5.2 0 0 0 19.2 13.4Z"
+        stroke="currentColor"
+        strokeWidth={1.125}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+};
+
+export default Moon;
+</file>
+
+<file path="src/shared/ui/iconography/stroke/plus/index.tsx">
+import type { SVGProps } from 'react';
+
+const Plus = (props: SVGProps<SVGSVGElement>) => {
+  const {
+    width = 24,
+    height = 24,
+    'aria-label': ariaLabel = 'plus',
+    'aria-hidden': ariaHidden = false,
+  } = props;
+
+  return (
+    <svg
+      {...props}
+      width={width}
+      height={height}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden={ariaHidden}
+    >
+      {!ariaHidden && <title>{ariaLabel}</title>}
+      <path
+        d="M12 5v14M5 12h14"
+        stroke="currentColor"
+        strokeWidth={1.125}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+};
+
+export default Plus;
+</file>
+
+<file path="src/shared/ui/iconography/stroke/sun/index.tsx">
+import type { SVGProps } from 'react';
+
+const Sun = (props: SVGProps<SVGSVGElement>) => {
+  const {
+    width = 24,
+    height = 24,
+    'aria-label': ariaLabel = 'sun',
+    'aria-hidden': ariaHidden = false,
+  } = props;
+
+  return (
+    <svg
+      {...props}
+      width={width}
+      height={height}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden={ariaHidden}
+    >
+      {!ariaHidden && <title>{ariaLabel}</title>}
+      <circle cx={12} cy={12} r={5} stroke="currentColor" strokeWidth={1.125} />
+      <line
+        x1={12}
+        y1={0.5}
+        x2={12}
+        y2={3.5}
+        stroke="currentColor"
+        strokeWidth={1.125}
+        strokeLinecap="round"
+      />
+      <line
+        x1={12}
+        y1={20.5}
+        x2={12}
+        y2={23.5}
+        stroke="currentColor"
+        strokeWidth={1.125}
+        strokeLinecap="round"
+      />
+      <line
+        x1={0.5}
+        y1={12}
+        x2={3.5}
+        y2={12}
+        stroke="currentColor"
+        strokeWidth={1.125}
+        strokeLinecap="round"
+      />
+      <line
+        x1={20.5}
+        y1={12}
+        x2={23.5}
+        y2={12}
+        stroke="currentColor"
+        strokeWidth={1.125}
+        strokeLinecap="round"
+      />
+      <line
+        x1={4.2}
+        y1={4.2}
+        x2={6.3}
+        y2={6.3}
+        stroke="currentColor"
+        strokeWidth={1.125}
+        strokeLinecap="round"
+      />
+      <line
+        x1={17.7}
+        y1={17.7}
+        x2={19.8}
+        y2={19.8}
+        stroke="currentColor"
+        strokeWidth={1.125}
+        strokeLinecap="round"
+      />
+      <line
+        x1={17.7}
+        y1={6.3}
+        x2={19.8}
+        y2={4.2}
+        stroke="currentColor"
+        strokeWidth={1.125}
+        strokeLinecap="round"
+      />
+      <line
+        x1={4.2}
+        y1={19.8}
+        x2={6.3}
+        y2={17.7}
+        stroke="currentColor"
+        strokeWidth={1.125}
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+};
+
+export default Sun;
+</file>
+
+<file path="src/shared/ui/iconography/stroke/trash/index.tsx">
+import type { SVGProps } from 'react';
+
+const Trash = (props: SVGProps<SVGSVGElement>) => {
+  const {
+    width = 24,
+    height = 24,
+    'aria-label': ariaLabel = 'trash',
+    'aria-hidden': ariaHidden = false,
+  } = props;
+
+  return (
+    <svg
+      {...props}
+      width={width}
+      height={height}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden={ariaHidden}
+    >
+      {!ariaHidden && <title>{ariaLabel}</title>}
+      <path
+        d="M3 6H21"
+        stroke="currentColor"
+        strokeWidth={1.125}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M8 6V4H16V6"
+        stroke="currentColor"
+        strokeWidth={1.125}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M6 6L7 20H17L18 6"
+        stroke="currentColor"
+        strokeWidth={1.125}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M10 10V17M14 10V17"
+        stroke="currentColor"
+        strokeWidth={1.125}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+};
+
+export default Trash;
+</file>
+
+<file path="src/shared/ui/iconography/stroke/index.tsx">
+import Minus from './minus';
+import Moon from './moon';
+import Plus from './plus';
+import Sun from './sun';
+import Trash from './trash';
+
+const Stroke = {
+  Moon: Moon,
+  Plus: Plus,
+  Sun: Sun,
+  Trash: Trash,
+  Minus: Minus,
+};
+
+export default Stroke;
+</file>
+
+<file path="src/shared/ui/iconography/index.tsx">
+import Logo from './logo';
+import Stroke from './stroke';
+
+const Iconography = {
+  Logo: Logo,
+  Stroke: Stroke,
+};
+
+export default Iconography;
+</file>
+
+<file path="src/shared/ui/index.ts">
+export { default as Iconography } from './iconography';
+</file>
+
+<file path="src/styles/break-point.css">
+@theme {
+  --breakpoint-mobile: 365px;
+  --breakpoint-desktop: 720px;
+}
+</file>
+
+<file path="src/styles/colors.css">
+:root {
+  /* brand */
+  --color-brand-primary: #6366f1;
+
+  /* background */
+  --color-bg-default: #ffffff;
+  --color-bg-sub: #f8f9fa;
+
+  /* text content */
+  --color-text-primary: #212529;
+  --color-text-secondary: #495057;
+  --color-text-tertiary: #adb5bd;
+  --color-text-inverse: #ffffff;
+
+  /* divider / border */
+  --color-divider-default: #e5e7eb;
+  --color-divider-sub: #f3f4f6;
+
+  /* function */
+  --color-info: #3b82f6;
+  --color-success: #22c55e;
+  --color-warning: #eab308;
+  --color-danger: #ef4444;
+
+  /* grayscale */
+  --color-gray-50: #f9fafb;
+  --color-gray-100: #f3f4f6;
+  --color-gray-200: #e5e7eb;
+  --color-gray-300: #d1d5db;
+  --color-gray-400: #9ca3af;
+  --color-gray-500: #6b7280;
+  --color-gray-600: #4b5563;
+  --color-gray-700: #374151;
+  --color-gray-800: #1f2937;
+  --color-gray-900: #111827;
+
+  /* palette */
+  --color-palette-black: #000000;
+  --color-palette-white: #ffffff;
+
+  --color-indigo-50: #f5f7ff;
+  --color-indigo-100: #e9edff;
+  --color-indigo-200: #d6dcff;
+  --color-indigo-300: #b8c1ff;
+  --color-indigo-400: #9aa5ff;
+  --color-indigo-500: #7c89ff;
+  --color-indigo-600: #5f6dff;
+  --color-indigo-700: #4a57db;
+  --color-indigo-800: #3842b0;
+  --color-indigo-900: #2a2f7a;
+
+  --color-purple-50: #faf5ff;
+  --color-purple-100: #f3e8ff;
+  --color-purple-200: #e9d5ff;
+  --color-purple-300: #d8b4fe;
+  --color-purple-400: #c084fc;
+  --color-purple-500: #a855f7;
+  --color-purple-600: #9333ea;
+  --color-purple-700: #7e22ce;
+  --color-purple-800: #6b21a8;
+  --color-purple-900: #581c87;
+
+  --color-green-50: #f0fdf4;
+  --color-green-100: #dcfce7;
+  --color-green-200: #bbf7d0;
+  --color-green-300: #86efac;
+  --color-green-400: #4ade80;
+  --color-green-500: #22c55e;
+  --color-green-600: #16a34a;
+  --color-green-700: #15803d;
+  --color-green-800: #166534;
+  --color-green-900: #14532d;
+}
+
+.dark {
+  /* brand */
+  --color-brand-primary: #818cf8;
+
+  /* background */
+  --color-bg-default: #0a0a0b;
+  --color-bg-sub: #18181b;
+
+  /* text content */
+  --color-text-primary: #fafafa;
+  --color-text-secondary: #e4e4e7;
+  --color-text-tertiary: #a1a1aa;
+  --color-text-inverse: #0a0a0b;
+
+  /* divider / border */
+  --color-divider-default: #27272a;
+  --color-divider-sub: #18181b;
+
+  /* function */
+  --color-info: #60a5fa;
+  --color-success: #4ade80;
+  --color-warning: #fbbf24;
+  --color-danger: #f87171;
+
+  /* grayscale */
+  --color-gray-50: #18181b;
+  --color-gray-100: #27272a;
+  --color-gray-200: #3f3f46;
+  --color-gray-300: #52525b;
+  --color-gray-400: #71717a;
+  --color-gray-500: #a1a1aa;
+  --color-gray-600: #d4d4d8;
+  --color-gray-700: #e4e4e7;
+  --color-gray-800: #f4f4f5;
+  --color-gray-900: #fafafa;
+
+  /* palette */
+  --color-palette-black: #000000;
+  --color-palette-white: #ffffff;
+
+  --color-indigo-50: #f5f7ff;
+  --color-indigo-100: #e9edff;
+  --color-indigo-200: #d6dcff;
+  --color-indigo-300: #b8c1ff;
+  --color-indigo-400: #9aa5ff;
+  --color-indigo-500: #7c89ff;
+  --color-indigo-600: #5f6dff;
+  --color-indigo-700: #4a57db;
+  --color-indigo-800: #3842b0;
+  --color-indigo-900: #2a2f7a;
+
+  --color-purple-50: #faf5ff;
+  --color-purple-100: #f3e8ff;
+  --color-purple-200: #e9d5ff;
+  --color-purple-300: #d8b4fe;
+  --color-purple-400: #c084fc;
+  --color-purple-500: #a855f7;
+  --color-purple-600: #9333ea;
+  --color-purple-700: #7e22ce;
+  --color-purple-800: #6b21a8;
+  --color-purple-900: #581c87;
+
+  --color-green-50: #f0fdf4;
+  --color-green-100: #dcfce7;
+  --color-green-200: #bbf7d0;
+  --color-green-300: #86efac;
+  --color-green-400: #4ade80;
+  --color-green-500: #22c55e;
+  --color-green-600: #16a34a;
+  --color-green-700: #15803d;
+  --color-green-808: #166534;
+  --color-green-900: #14532d;
+}
+
+@theme {
+  /* brand */
+  --color-brand-primary: var(--color-brand-primary);
+
+  /* background */
+  --color-bg-default: var(--color-bg-default);
+  --color-bg-sub: var(--color-bg-sub);
+
+  /* text content */
+  --color-text-primary: var(--color-text-primary);
+  --color-text-secondary: var(--color-text-secondary);
+  --color-text-tertiary: var(--color-text-tertiary);
+  --color-text-inverse: var(--color-text-inverse);
+
+  /* divider / border */
+  --color-divider-default: var(--color-divider-default);
+  --color-divider-sub: var(--color-divider-sub);
+
+  /* function */
+  --color-info: var(--color-info);
+  --color-success: var(--color-success);
+  --color-warning: var(--color-warning);
+  --color-danger: var(--color-danger);
+
+  /* grayscale */
+  --color-gray-50: var(--color-gray-50);
+  --color-gray-100: var(--color-gray-100);
+  --color-gray-200: var(--color-gray-200);
+  --color-gray-300: var(--color-gray-300);
+  --color-gray-400: var(--color-gray-400);
+  --color-gray-500: var(--color-gray-500);
+  --color-gray-600: var(--color-gray-600);
+  --color-gray-700: var(--color-gray-700);
+  --color-gray-800: var(--color-gray-800);
+  --color-gray-900: var(--color-gray-900);
+
+  /* palette */
+  --color-palette-black: var(--color-palette-black);
+  --color-palette-white: var(--color-palette-white);
+
+  --color-indigo-50: var(--color-indigo-50);
+  --color-indigo-100: var(--color-indigo-100);
+  --color-indigo-200: var(--color-indigo-200);
+  --color-indigo-300: var(--color-indigo-300);
+  --color-indigo-400: var(--color-indigo-400);
+  --color-indigo-500: var(--color-indigo-500);
+  --color-indigo-600: var(--color-indigo-600);
+  --color-indigo-700: var(--color-indigo-700);
+  --color-indigo-800: var(--color-indigo-800);
+  --color-indigo-900: var(--color-indigo-900);
+
+  --color-purple-50: var(--color-purple-50);
+  --color-purple-100: var(--color-purple-100);
+  --color-purple-200: var(--color-purple-200);
+  --color-purple-300: var(--color-purple-300);
+  --color-purple-400: var(--color-purple-400);
+  --color-purple-500: var(--color-purple-500);
+  --color-purple-600: var(--color-purple-600);
+  --color-purple-700: var(--color-purple-700);
+  --color-purple-800: var(--color-purple-800);
+  --color-purple-900: var(--color-purple-900);
+
+  --color-green-50: var(--color-green-50);
+  --color-green-100: var(--color-green-100);
+  --color-green-200: var(--color-green-200);
+  --color-green-300: var(--color-green-300);
+  --color-green-400: var(--color-green-400);
+  --color-green-500: var(--color-green-500);
+  --color-green-600: var(--color-green-600);
+  --color-green-700: var(--color-green-700);
+  --color-green-800: var(--color-green-800);
+  --color-green-900: var(--color-green-900);
+}
+</file>
+
+<file path="src/styles/index.css">
+@import 'tailwindcss';
+@import './colors.css';
+@import './break-point.css';
+
+* {
+  /* padding과 border를 width에 포함 */
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  /* 텍스트 렌더링 최적화 */
+  text-rendering: optimizeLegibility;
+  /* Firefox에서 폰트 렌더링 개선 */
+  -webkit-font-smoothing: antialiased;
+  /* macOS/iOS에서 폰트 렌더링 개선 */
+  -moz-osx-font-smoothing: grayscale;
+  /* 테마 색상 적용 */
+  background-color: var(--color-bg-default);
+  color: var(--color-text-primary);
+}
+
+body {
+  line-height: 1.5;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+</file>
+
+<file path="src/App.tsx">
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
+import KakaoRedirectPage from './pages/kakao-redirect';
+import LandingPage from './pages/landing';
+import NewFormPage from './pages/new-form';
+
+const App = () => {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/new-form" element={<NewFormPage />} />
+        <Route path="/kakao-authorize" element={<KakaoRedirectPage />} />
+      </Routes>
+    </BrowserRouter>
+  );
+};
+
+export default App;
+</file>
+
+<file path="src/main.tsx">
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+
+import App from './App';
+
+import './styles/index.css';
+
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
+    <App />
+  </StrictMode>,
+);
+</file>
+
+<file path=".gitignore">
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+.env
+</file>
+
+<file path=".prettierignore">
+dist
+node_modules
+</file>
+
+<file path=".prettierrc">
+{
+  "singleQuote": true,
+  "semi": true,
+  "trailingComma": "all",
+  "printWidth": 100,
+  "tabWidth": 2,
+  "arrowParens": "avoid"
+}
+</file>
+
+<file path="eslint.config.js">
+import js from '@eslint/js';
+import globals from 'globals';
+import reactHooks from 'eslint-plugin-react-hooks';
+import tseslint from 'typescript-eslint';
+import prettier from 'eslint-config-prettier';
+import { defineConfig } from 'eslint/config';
+import importPlugin from 'eslint-plugin-import';
+
+export default defineConfig([
+  {
+    files: ['**/*.{ts,tsx}'],
+    ignores: ['dist'],
+    extends: [
+      js.configs.recommended,
+      tseslint.configs.recommended,
+      reactHooks.configs.flat.recommended,
+      prettier,
+    ],
+    plugins: {
+      import: importPlugin,
+    },
+    rules: {
+      semi: ['error', 'always'],
+      quotes: ['error', 'single'],
+      'import/order': [
+        'error',
+        {
+          groups: [
+            'builtin',
+            'external',
+            'internal',
+            'parent',
+            'sibling',
+            'index',
+            'object',
+            'type',
+          ],
+          pathGroups: [
+            {
+              pattern: './lib/**',
+              group: 'sibling',
+              position: 'before',
+            },
+            {
+              pattern: './model/**',
+              group: 'sibling',
+              position: 'before',
+            },
+            {
+              pattern: './store/**',
+              group: 'sibling',
+              position: 'before',
+            },
+            {
+              pattern: './ui/**',
+              group: 'sibling',
+              position: 'before',
+            },
+            // shared
+            {
+              pattern: '@/shared/lib/**',
+              group: 'internal',
+              position: 'before',
+            },
+            {
+              pattern: '@/shared/model/**',
+              group: 'internal',
+              position: 'before',
+            },
+            {
+              pattern: '@/shared/store/**',
+              group: 'internal',
+              position: 'before',
+            },
+            {
+              pattern: '@/shared/ui/**',
+              group: 'internal',
+              position: 'before',
+            },
+            // entities
+            {
+              pattern: '@/entities/**/lib/**',
+              group: 'internal',
+              position: 'before',
+            },
+            {
+              pattern: '@/entities/**/model/**',
+              group: 'internal',
+              position: 'before',
+            },
+            {
+              pattern: '@/entities/**/store/**',
+              group: 'internal',
+              position: 'before',
+            },
+            {
+              pattern: '@/entities/**/ui/**',
+              group: 'internal',
+              position: 'before',
+            },
+            // features
+            {
+              pattern: '@/features/**/lib/**',
+              group: 'internal',
+              position: 'before',
+            },
+            {
+              pattern: '@/features/**/model/**',
+              group: 'internal',
+              position: 'before',
+            },
+            {
+              pattern: '@/features/**/store/**',
+              group: 'internal',
+              position: 'before',
+            },
+            {
+              pattern: '@/features/**/ui/**',
+              group: 'internal',
+              position: 'before',
+            },
+            // widgets
+            {
+              pattern: '@/widgets/**/lib/**',
+              group: 'internal',
+              position: 'before',
+            },
+            {
+              pattern: '@/widgets/**/model/**',
+              group: 'internal',
+              position: 'before',
+            },
+            {
+              pattern: '@/widgets/**/store/**',
+              group: 'internal',
+              position: 'before',
+            },
+            {
+              pattern: '@/widgets/**/ui/**',
+              group: 'internal',
+              position: 'before',
+            },
+            // pages
+            {
+              pattern: '@/pages/**/lib/**',
+              group: 'internal',
+              position: 'before',
+            },
+            {
+              pattern: '@/pages/**/model/**',
+              group: 'internal',
+              position: 'before',
+            },
+            {
+              pattern: '@/pages/**/store/**',
+              group: 'internal',
+              position: 'before',
+            },
+            {
+              pattern: '@/pages/**/ui/**',
+              group: 'internal',
+              position: 'before',
+            },
+            // apps
+            {
+              pattern: '@/apps/**/lib/**',
+              group: 'internal',
+              position: 'before',
+            },
+            {
+              pattern: '@/apps/**/model/**',
+              group: 'internal',
+              position: 'before',
+            },
+            {
+              pattern: '@/apps/**/store/**',
+              group: 'internal',
+              position: 'before',
+            },
+            {
+              pattern: '@/apps/**/ui/**',
+              group: 'internal',
+              position: 'before',
+            },
+          ],
+          pathGroupsExcludedImportTypes: ['builtin'],
+          'newlines-between': 'always',
+          alphabetize: {
+            order: 'asc',
+            caseInsensitive: true,
+          },
+        },
+      ],
+    },
+    languageOptions: {
+      ecmaVersion: 2020,
+      globals: globals.browser,
+    },
+    settings: {
+      'import/resolver': {
+        typescript: true,
+        node: true,
+      },
+    },
+  },
+]);
+</file>
+
+<file path="index.html">
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>crate</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+</file>
+
+<file path="package.json">
+{
+  "name": "crate",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "format": "prettier --write ."
+  },
+  "dependencies": {
+    "axios": "^1.13.2",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-router-dom": "^7.11.0",
+    "zustand": "^5.0.9"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@tailwindcss/vite": "^4.1.17",
+    "@types/node": "^24.10.1",
+    "@types/react": "^19.2.5",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.1.1",
+    "autoprefixer": "^10.4.22",
+    "eslint": "^9.39.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-import-resolver-typescript": "^4.4.4",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-prettier": "^5.5.4",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.4.24",
+    "globals": "^16.5.0",
+    "postcss": "^8.5.6",
+    "prettier": "^3.7.3",
+    "tailwindcss": "^4.1.17",
+    "typescript": "~5.9.3",
+    "typescript-eslint": "^8.46.4",
+    "vite": "^7.2.4",
+    "vite-plugin-eslint": "^1.8.1"
+  }
+}
+</file>
+
+<file path="README.md">
+# fe-crate
+</file>
+
+<file path="tsconfig.json">
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ESNext",
+    "lib": ["ES2020", "DOM"],
+    "jsx": "react-jsx",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  },
+  "include": ["src"]
+}
+</file>
+
+<file path="vite.config.ts">
+import path from 'path';
+
+import tailwindcss from '@tailwindcss/vite';
+import react from '@vitejs/plugin-react';
+import { defineConfig } from 'vite';
+import eslint from 'vite-plugin-eslint';
+
+// https://vite.dev/config/
+export default defineConfig({
+  plugins: [react(), tailwindcss(), eslint()],
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+    },
+  },
+  server: {
+    host: true,
+  },
+});
+</file>
+
+</files>
