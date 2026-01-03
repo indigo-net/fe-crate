@@ -32,12 +32,25 @@ class FormQuestionOptionModel extends CustomModel<State> {
     };
   }
 
+  getValue<K extends keyof State>(key: K): State[K] {
+    return this.state[key];
+  }
+
+  setValue<K extends keyof State>(key: K, value: State[K]): FormQuestionOptionModel {
+    return this.clone({
+      [key]: value,
+    });
+  }
+
   toJSON(): State {
     return this.state;
   }
 
-  clone(): FormQuestionOptionModel {
-    return new FormQuestionOptionModel(this.toJSON());
+  clone(props?: Partial<State>): FormQuestionOptionModel {
+    return new FormQuestionOptionModel({
+      ...this.toJSON(),
+      ...props,
+    });
   }
 }
 

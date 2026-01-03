@@ -1,5 +1,6 @@
-import { memo } from 'react';
+import { Fragment, memo } from 'react';
 
+import { TypeGuard } from '@/shared/lib';
 import { Iconography } from '@/shared/ui';
 
 import useQuestionEditCardController from './hook';
@@ -12,10 +13,21 @@ interface Props {
 
 const QuestionEditCard = (props: Props) => {
   const { questionId } = props;
-  const { question, handleTitleChange, handleTypeChange, handleDeleteQuestion } =
-    useQuestionEditCardController({
-      questionId,
-    });
+  const {
+    question,
+    handleTitleChange,
+    handleTypeChange,
+    handleDeleteQuestion,
+    handleUpdateOption,
+    handleAddOption,
+    handleRemoveOption,
+  } = useQuestionEditCardController({
+    questionId,
+  });
+
+  if (TypeGuard.checkNull(question)) {
+    return <Fragment />;
+  }
 
   return (
     <section className="w-full flex flex-col gap-[12px] p-[24px] bg-bg-default border border-divider-default rounded-[16px] shadow-sm">
@@ -69,6 +81,47 @@ const QuestionEditCard = (props: Props) => {
               placeholder="단답형 텍스트 (최대 100자)"
               className="w-full px-[12px] py-[10px] text-[14px] rounded-[8px] border border-dashed border-gray-300 bg-gray-100 text-gray-400 cursor-not-allowed select-none"
             />
+          </div>
+        </div>
+      )}
+      {/* (단일) 선택형 답변 영역 프리뷰 */}
+      {question?.getValue('type') === 'SINGLE_CHOICE' && (
+        <div className="w-full pt-[8px]">
+          <div className="w-full flex flex-col gap-[8px]">
+            {question?.getValue('options')?.map(option => {
+              const { id, content } = option.toJSON();
+              return (
+                <div key={id} className="w-full flex items-center gap-[8px]">
+                  <div className="w-[18px] h-[18px] rounded-full border border-gray-300 bg-white flex-shrink-0" />
+                  <input
+                    type="text"
+                    value={content}
+                    placeholder="옵션을 입력해주세요"
+                    className="flex-1 text-[14px] text-text-primary bg-transparent border-b border-transparent focus:border-brand-primary focus:outline-none placeholder:text-text-tertiary transition-colors py-[4px]"
+                    onChange={e => handleUpdateOption(id, e.target.value)}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveOption(id)}
+                    className="p-[4px] rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
+                    aria-label="옵션 삭제"
+                  >
+                    <Iconography.Stroke.Minus
+                      className="w-[20px] h-[20px] text-danger hover:cursor-pointer"
+                      aria-hidden
+                    />
+                  </button>
+                </div>
+              );
+            })}
+            <button
+              type="button"
+              onClick={handleAddOption}
+              className="w-fit flex items-center gap-[4px] px-[8px] py-[4px] rounded-[6px] hover:bg-gray-100 transition-colors text-[13px] text-text-secondary font-medium"
+            >
+              <Iconography.Stroke.Plus className="w-[14px] h-[14px]" />
+              <span>옵션 추가</span>
+            </button>
           </div>
         </div>
       )}
