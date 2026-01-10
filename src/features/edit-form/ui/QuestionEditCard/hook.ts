@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 
 import { QuestionStateService, QuestionListStateService } from '@/entities/form-question/lib';
-import { useFormQuestionList } from '@/entities/form-question/store';
+import { useFormQuestionListStore } from '@/entities/form-question/store';
 import { TypeGuard } from '@/shared/lib';
 
 import type { FormQuestionModel, FormQuestionType } from '@/entities/form-question/model';
@@ -12,7 +12,7 @@ interface Props {
 
 const useQuestionEditCardController = (props: Props) => {
   const { questionId } = props;
-  const { formQuestions, setFormQuestions } = useFormQuestionList();
+  const { formQuestions, setFormQuestions } = useFormQuestionListStore();
 
   const question = useMemo((): FormQuestionModel | null => {
     return QuestionListStateService.findQuestionById(formQuestions, questionId);

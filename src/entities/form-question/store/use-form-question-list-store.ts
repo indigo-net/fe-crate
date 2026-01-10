@@ -9,7 +9,7 @@ interface State {
   ) => void;
 }
 
-const useFormQuestionList = create<State>(set => ({
+const useFormQuestionListStore = create<State>(set => ({
   formQuestions: [],
   setFormQuestions: next => {
     set(state => {
@@ -20,4 +20,4 @@ const useFormQuestionList = create<State>(set => ({
   },
 }));
 
-export default useFormQuestionList;
+export default useFormQuestionListStore;

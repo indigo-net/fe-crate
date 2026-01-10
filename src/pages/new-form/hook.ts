@@ -1,9 +1,9 @@
 import { useEffect, useRef } from 'react';
 
-import { useFormQuestionList } from '@/entities/form-question/store';
+import { useFormQuestionListStore } from '@/entities/form-question/store';
 
 const useNewFormPageController = () => {
-  const { formQuestions } = useFormQuestionList();
+  const { formQuestions } = useFormQuestionListStore();
 
   const listRef = useRef<HTMLDivElement>(null);
 
