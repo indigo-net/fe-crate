@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-import { useFormQuestionListStore } from '@/entities/form-question/store';
+import { useFormQuestionListStore } from '@/entities/form/store';
 
 const useNewFormPageController = () => {
   const { formQuestions } = useFormQuestionListStore();

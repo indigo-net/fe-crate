@@ -1,6 +1,6 @@
 import { memo } from 'react';
 
-import { FormQuestionModel, FormQuestionType } from '@/entities/form-question/model';
+import { FormQuestionModel, FormQuestionType } from '@/entities/form/model';
 import { Iconography } from '@/shared/ui';
 
 interface Props {
