@@ -65,8 +65,9 @@ src/
         cache-model.ts
         index.ts
         type.d.ts
-    form-question/
+    form/
       lib/
+        form-signature-state-service.ts
         index.ts
         question-list-state-service.ts
         question-state-service.ts
@@ -74,11 +75,24 @@ src/
         form-question/
           index.ts
           option.ts
+        form-signature/
+          index.ts
         index.ts
         type.d.ts
       store/
         index.ts
-        use-form-question-list.ts
+        use-form-question-list-store.ts
+        use-form-signature-store.ts
+      ui/
+        LongTextQuestionCard/
+          index.tsx
+        MultipleChoiceQuestionCard/
+          index.tsx
+        ShortTextQuestionCard/
+          index.tsx
+        SingleChoiceQuestionCard/
+          index.tsx
+        index.ts
     README.md
   features/
     authenticate/
@@ -90,12 +104,15 @@ src/
         index.ts
     edit-form/
       ui/
+        FormSignatureEditSection/
+          hook.ts
+          index.tsx
         QuestionAddSection/
           hook.ts
           index.tsx
-        QuestionEditCard/
-          hook.ts
+        QuestionList/
           index.tsx
+          use-question-list.ts
         index.ts
     toggle-theme/
       ui/
@@ -821,12 +838,33 @@ type CacheData = string | number | boolean | object | null;
 export type { CacheData };
 </file>
 
-<file path="src/entities/form-question/lib/index.ts">
+<file path="src/entities/form/lib/form-signature-state-service.ts">
+import { FormSignatureModel } from '../model';
+
+class FormSignatureStateService {
+  static getInitialFormSignature() {
+    return new FormSignatureModel({});
+  }
+
+  static editTitle(prev: FormSignatureModel, title: string) {
+    return prev.setValue('title', title);
+  }
+
+  static editDescription(prev: FormSignatureModel, description: string) {
+    return prev.setValue('description', description);
+  }
+}
+
+export default FormSignatureStateService;
+</file>
+
+<file path="src/entities/form/lib/index.ts">
+export { default as FormSignatureStateService } from './form-signature-state-service';
 export { default as QuestionStateService } from './question-state-service';
 export { default as QuestionListStateService } from './question-list-state-service';
 </file>
 
-<file path="src/entities/form-question/lib/question-list-state-service.ts">
+<file path="src/entities/form/lib/question-list-state-service.ts">
 import type { FormQuestionModel } from '../model';
 
 class QuestionListStateService {
@@ -860,7 +898,7 @@ class QuestionListStateService {
 export default QuestionListStateService;
 </file>
 
-<file path="src/entities/form-question/lib/question-state-service.ts">
+<file path="src/entities/form/lib/question-state-service.ts">
 import { FormQuestionModel, FormQuestionOptionModel, type FormQuestionType } from '../model';
 
 class QuestionStateService {
@@ -936,7 +974,7 @@ class QuestionStateService {
 export default QuestionStateService;
 </file>
 
-<file path="src/entities/form-question/model/form-question/index.ts">
+<file path="src/entities/form/model/form-question/index.ts">
 import { TypeGuard, UUID } from '@/shared/lib';
 import { CustomModel } from '@/shared/model';
 
@@ -1026,7 +1064,7 @@ class FormQuestionModel extends CustomModel<State> {
 export default FormQuestionModel;
 </file>
 
-<file path="src/entities/form-question/model/form-question/option.ts">
+<file path="src/entities/form/model/form-question/option.ts">
 import { UUID } from '@/shared/lib';
 import { CustomModel } from '@/shared/model';
 
@@ -1086,24 +1124,83 @@ class FormQuestionOptionModel extends CustomModel<State> {
 export default FormQuestionOptionModel;
 </file>
 
-<file path="src/entities/form-question/model/index.ts">
+<file path="src/entities/form/model/form-signature/index.ts">
+import { UUID } from '@/shared/lib';
+import { CustomModel } from '@/shared/model';
+
+interface State {
+  id: string;
+  title: string;
+  description: string;
+  questionIds: string[];
+}
+
+interface Props {
+  id?: string;
+  title?: string;
+  description?: string;
+  questionIds?: string[];
+}
+
+class FormSignatureModel extends CustomModel<State> {
+  private state: State;
+
+  constructor(props: Props) {
+    super();
+    const { id, title, description, questionIds } = props;
+    this.state = {
+      id: id || UUID.v4(),
+      title: title || '',
+      description: description || '',
+      questionIds: questionIds || [],
+    };
+  }
+
+  getValue<K extends keyof State>(key: K): State[K] {
+    return this.state[key];
+  }
+
+  setValue<K extends keyof State>(key: K, value: State[K]): FormSignatureModel {
+    return this.clone({
+      [key]: value,
+    });
+  }
+
+  toJSON(): State {
+    return this.state;
+  }
+
+  clone(props?: Partial<State>): FormSignatureModel {
+    return new FormSignatureModel({
+      ...this.toJSON(),
+      ...props,
+    });
+  }
+}
+
+export default FormSignatureModel;
+</file>
+
+<file path="src/entities/form/model/index.ts">
 export { default as FormQuestionModel } from './form-question';
 export { default as FormQuestionOptionModel } from './form-question/option';
+export { default as FormSignatureModel } from './form-signature';
 
 export * from './type.d';
 </file>
 
-<file path="src/entities/form-question/model/type.d.ts">
+<file path="src/entities/form/model/type.d.ts">
 type FormQuestionType = 'SINGLE_CHOICE' | 'MULTIPLE_CHOICE' | 'SHORT_TEXT' | 'LONG_TEXT';
 
 export type { FormQuestionType };
 </file>
 
-<file path="src/entities/form-question/store/index.ts">
-export { default as useFormQuestionList } from './use-form-question-list';
+<file path="src/entities/form/store/index.ts">
+export { default as useFormSignatureStore } from './use-form-signature-store';
+export { default as useFormQuestionListStore } from './use-form-question-list-store';
 </file>
 
-<file path="src/entities/form-question/store/use-form-question-list.ts">
+<file path="src/entities/form/store/use-form-question-list-store.ts">
 import { create } from 'zustand';
 
 import type { FormQuestionModel } from '../model';
@@ -1115,7 +1212,7 @@ interface State {
   ) => void;
 }
 
-const useFormQuestionList = create<State>(set => ({
+const useFormQuestionListStore = create<State>(set => ({
   formQuestions: [],
   setFormQuestions: next => {
     set(state => {
@@ -1126,7 +1223,421 @@ const useFormQuestionList = create<State>(set => ({
   },
 }));
 
-export default useFormQuestionList;
+export default useFormQuestionListStore;
+</file>
+
+<file path="src/entities/form/store/use-form-signature-store.ts">
+import { create } from 'zustand';
+
+import FormSignatureModel from '../model/form-signature';
+
+interface State {
+  formSignature: null | FormSignatureModel;
+  setFormSignature: (
+    next: FormSignatureModel | ((prev: null | FormSignatureModel) => FormSignatureModel),
+  ) => void;
+}
+
+const useFormSignatureStore = create<State>(set => ({
+  formSignature: null,
+  setFormSignature: next => {
+    set(state => {
+      return {
+        formSignature: typeof next === 'function' ? next(state.formSignature) : next,
+      };
+    });
+  },
+}));
+
+export default useFormSignatureStore;
+</file>
+
+<file path="src/entities/form/ui/LongTextQuestionCard/index.tsx">
+import { memo } from 'react';
+
+import { FormQuestionModel, FormQuestionType } from '@/entities/form/model';
+import { Iconography } from '@/shared/ui';
+
+interface Props {
+  question: FormQuestionModel;
+  onChangeTitle?: (questionId: string, value: string) => void;
+  onTypeChange?: (questionId: string, value: FormQuestionType) => void;
+  onDeleteQuestion?: (questionId: string) => void;
+}
+
+const LongTextQuestionCard = (props: Props) => {
+  const { question, onChangeTitle, onTypeChange, onDeleteQuestion } = props;
+
+  return (
+    <section className="w-full flex flex-col gap-[12px] p-[24px] bg-bg-default border border-divider-default rounded-[16px] shadow-sm">
+      <div className="w-full flex justify-between items-center">
+        {/* 질문 타입 선택 */}
+        <select
+          value={question?.getValue('type') ?? 'SHORT_TEXT'}
+          className="appearance-none cursor-pointer px-[8px] py-[4px] text-[12px] rounded-[6px] bg-bg-sub border border-divider-default text-text-secondary transition-colors"
+          onChange={e =>
+            onTypeChange?.(question.getValue('id'), e.target.value as FormQuestionType)
+          }
+        >
+          <option value="SHORT_TEXT">단답형</option>
+          <option value="LONG_TEXT">장답형</option>
+          <option value="MULTIPLE_CHOICE">객관식(복수선택)</option>
+          <option value="SINGLE_CHOICE">객관식(단일선택)</option>
+        </select>
+
+        <button
+          type="button"
+          aria-label="질문 삭제"
+          className="group rounded-full aspect-square p-[8px] flex items-center justify-center bg-gray-100 hover:bg-gray-200 transition-colors cursor-pointer"
+          onClick={() => onDeleteQuestion?.(question.getValue('id'))}
+        >
+          <Iconography.Stroke.Trash
+            className="text-gray-500 group-hover:text-danger transition-colors duration-200"
+            aria-hidden
+          />
+        </button>
+      </div>
+
+      <div className="w-full flex flex-col gap-[12px]">
+        <div className="w-full">
+          <input
+            type="text"
+            placeholder="질문을 입력해주세요. (최대 50자)"
+            className="w-full py-[4px] text-[18px] font-bold bg-transparent border-b border-gray-200 text-text-primary focus:border-brand-primary focus:outline-none placeholder:text-text-tertiary transition-colors"
+            maxLength={50}
+            value={question.getValue('title')}
+            onChange={e => onChangeTitle?.(question.getValue('id'), e.target.value)}
+          />
+        </div>
+
+        <div className="w-full pt-[8px]">
+          <div className="w-full max-w-[400px]">
+            <textarea
+              disabled
+              placeholder="장문형 텍스트 (최대 1000자)"
+              className="resize-none w-full h-[100px] px-[12px] py-[10px] text-[14px] rounded-[8px] border border-dashed border-gray-300 bg-gray-100 text-gray-400 cursor-not-allowed select-none"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default memo(LongTextQuestionCard);
+</file>
+
+<file path="src/entities/form/ui/MultipleChoiceQuestionCard/index.tsx">
+import { memo } from 'react';
+
+import { FormQuestionModel, FormQuestionType } from '@/entities/form/model';
+import { Iconography } from '@/shared/ui';
+
+interface Props {
+  question: FormQuestionModel;
+  onChangeTitle?: (questionId: string, value: string) => void;
+  onTypeChange?: (questionId: string, value: FormQuestionType) => void;
+  onDeleteQuestion?: (questionId: string) => void;
+  onAddOption?: (questionId: string) => void;
+  onRemoveOption?: (questionId: string, optionId: string) => void;
+  onUpdateOption?: (questionId: string, optionId: string, value: string) => void;
+}
+
+const MultipleChoiceQuestionCard = (props: Props) => {
+  const {
+    question,
+    onChangeTitle,
+    onTypeChange,
+    onDeleteQuestion,
+    onAddOption,
+    onRemoveOption,
+    onUpdateOption,
+  } = props;
+
+  return (
+    <section className="w-full flex flex-col gap-[12px] p-[24px] bg-bg-default border border-divider-default rounded-[16px] shadow-sm">
+      <div className="w-full flex justify-between items-center">
+        {/* 질문 타입 선택 */}
+        <select
+          value={question?.getValue('type') ?? 'SHORT_TEXT'}
+          className="appearance-none cursor-pointer px-[8px] py-[4px] text-[12px] rounded-[6px] bg-bg-sub border border-divider-default text-text-secondary transition-colors"
+          onChange={e =>
+            onTypeChange?.(question.getValue('id'), e.target.value as FormQuestionType)
+          }
+        >
+          <option value="SHORT_TEXT">단답형</option>
+          <option value="LONG_TEXT">장답형</option>
+          <option value="MULTIPLE_CHOICE">객관식(복수선택)</option>
+          <option value="SINGLE_CHOICE">객관식(단일선택)</option>
+        </select>
+
+        <button
+          type="button"
+          aria-label="질문 삭제"
+          className="group rounded-full aspect-square p-[8px] flex items-center justify-center bg-gray-100 hover:bg-gray-200 transition-colors cursor-pointer"
+          onClick={() => onDeleteQuestion?.(question.getValue('id'))}
+        >
+          <Iconography.Stroke.Trash
+            className="text-gray-500 group-hover:text-danger transition-colors duration-200"
+            aria-hidden
+          />
+        </button>
+      </div>
+      <div className="w-full flex flex-col gap-[12px]">
+        <div className="w-full">
+          <input
+            type="text"
+            placeholder="질문을 입력해주세요. (최대 50자)"
+            className="w-full py-[4px] text-[18px] font-bold bg-transparent border-b border-gray-200 text-text-primary focus:border-brand-primary focus:outline-none placeholder:text-text-tertiary transition-colors"
+            maxLength={50}
+            value={question.getValue('title')}
+            onChange={e => onChangeTitle?.(question.getValue('id'), e.target.value)}
+          />
+        </div>
+
+        <div className="w-full pt-[8px]">
+          <div className="w-full flex flex-col gap-[8px]">
+            {question.getValue('options')?.map(option => {
+              const { id, content } = option.toJSON();
+              return (
+                <div key={id} className="w-full flex items-center gap-[8px]">
+                  <div className="w-[18px] h-[18px] border border-gray-300 bg-white flex-shrink-0 rounded-[4px]" />
+                  <input
+                    type="text"
+                    value={content}
+                    placeholder="옵션을 입력해주세요"
+                    className="flex-1 text-[14px] text-text-primary bg-transparent border-b border-transparent focus:border-brand-primary focus:outline-none placeholder:text-text-tertiary transition-colors py-[4px]"
+                    onChange={e => onUpdateOption?.(question.getValue('id'), id, e.target.value)}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => onRemoveOption?.(question.getValue('id'), id)}
+                    className="p-[4px] rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
+                    aria-label="옵션 삭제"
+                  >
+                    <Iconography.Stroke.Minus
+                      className="w-[20px] h-[20px] text-danger hover:cursor-pointer"
+                      aria-hidden
+                    />
+                  </button>
+                </div>
+              );
+            })}
+
+            <button
+              type="button"
+              onClick={() => onAddOption?.(question.getValue('id'))}
+              className="w-fit flex items-center gap-[4px] px-[8px] py-[4px] rounded-[6px] hover:bg-gray-100 transition-colors text-[13px] text-text-secondary font-medium"
+            >
+              <Iconography.Stroke.Plus className="w-[14px] h-[14px]" />
+              <span>옵션 추가</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default memo(MultipleChoiceQuestionCard);
+</file>
+
+<file path="src/entities/form/ui/ShortTextQuestionCard/index.tsx">
+import { memo } from 'react';
+
+import { Iconography } from '@/shared/ui';
+
+import type { FormQuestionModel, FormQuestionType } from '@/entities/form/model';
+
+interface Props {
+  question: FormQuestionModel;
+  onChangeTitle?: (questionId: string, value: string) => void;
+  onTypeChange?: (questionId: string, value: FormQuestionType) => void;
+  onDeleteQuestion?: (questionId: string) => void;
+}
+
+const ShortTextQuestionCard = (props: Props) => {
+  const { question, onChangeTitle, onTypeChange, onDeleteQuestion } = props;
+
+  return (
+    <section className="w-full flex flex-col gap-[12px] p-[24px] bg-bg-default border border-divider-default rounded-[16px] shadow-sm">
+      <div className="w-full flex justify-between items-center">
+        {/* 질문 타입 선택 */}
+        <select
+          value={question?.getValue('type') ?? 'SHORT_TEXT'}
+          className="appearance-none cursor-pointer px-[8px] py-[4px] text-[12px] rounded-[6px] bg-bg-sub border border-divider-default text-text-secondary transition-colors"
+          onChange={e =>
+            onTypeChange?.(question.getValue('id'), e.target.value as FormQuestionType)
+          }
+        >
+          <option value="SHORT_TEXT">단답형</option>
+          <option value="LONG_TEXT">장답형</option>
+          <option value="MULTIPLE_CHOICE">객관식(복수선택)</option>
+          <option value="SINGLE_CHOICE">객관식(단일선택)</option>
+        </select>
+
+        <button
+          type="button"
+          aria-label="질문 삭제"
+          className="group rounded-full aspect-square p-[8px] flex items-center justify-center bg-gray-100 hover:bg-gray-200 transition-colors cursor-pointer"
+          onClick={() => onDeleteQuestion?.(question.getValue('id'))}
+        >
+          <Iconography.Stroke.Trash
+            className="text-gray-500 group-hover:text-danger transition-colors duration-200"
+            aria-hidden
+          />
+        </button>
+      </div>
+      <div className="w-full flex flex-col gap-[12px]">
+        <div className="w-full">
+          <input
+            type="text"
+            placeholder="질문을 입력해주세요. (최대 50자)"
+            className="w-full py-[4px] text-[18px] font-bold bg-transparent border-b border-gray-200 text-text-primary focus:border-brand-primary focus:outline-none placeholder:text-text-tertiary transition-colors"
+            maxLength={50}
+            value={question.getValue('title')}
+            onChange={e => onChangeTitle?.(question.getValue('id'), e.target.value)}
+          />
+        </div>
+
+        <div className="w-full pt-[8px]">
+          <div className="w-full max-w-[400px]">
+            <input
+              disabled
+              type="text"
+              placeholder="단답형 텍스트 (최대 100자)"
+              className="w-full px-[12px] py-[10px] text-[14px] rounded-[8px] border border-dashed border-gray-300 bg-gray-100 text-gray-400 cursor-not-allowed select-none"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default memo(ShortTextQuestionCard);
+</file>
+
+<file path="src/entities/form/ui/SingleChoiceQuestionCard/index.tsx">
+import { memo } from 'react';
+
+import { FormQuestionModel, FormQuestionType } from '@/entities/form/model';
+import { Iconography } from '@/shared/ui';
+
+interface Props {
+  question: FormQuestionModel;
+  onTypeChange?: (questionId: string, value: FormQuestionType) => void;
+  onDeleteQuestion?: (questionId: string) => void;
+  onChangeTitle?: (questionId: string, value: string) => void;
+  onAddOption?: (questionId: string) => void;
+  onRemoveOption?: (questionId: string, optionId: string) => void;
+  onUpdateOption?: (questionId: string, optionId: string, value: string) => void;
+}
+
+const SingleChoiceQuestionCard = (props: Props) => {
+  const {
+    question,
+    onChangeTitle,
+    onAddOption,
+    onRemoveOption,
+    onUpdateOption,
+    onTypeChange,
+    onDeleteQuestion,
+  } = props;
+
+  return (
+    <section className="w-full flex flex-col gap-[12px] p-[24px] bg-bg-default border border-divider-default rounded-[16px] shadow-sm">
+      <div className="w-full flex justify-between items-center">
+        {/* 질문 타입 선택 */}
+        <select
+          value={question?.getValue('type') ?? 'SHORT_TEXT'}
+          className="appearance-none cursor-pointer px-[8px] py-[4px] text-[12px] rounded-[6px] bg-bg-sub border border-divider-default text-text-secondary transition-colors"
+          onChange={e =>
+            onTypeChange?.(question.getValue('id'), e.target.value as FormQuestionType)
+          }
+        >
+          <option value="SHORT_TEXT">단답형</option>
+          <option value="LONG_TEXT">장답형</option>
+          <option value="MULTIPLE_CHOICE">객관식(복수선택)</option>
+          <option value="SINGLE_CHOICE">객관식(단일선택)</option>
+        </select>
+
+        <button
+          type="button"
+          aria-label="질문 삭제"
+          className="group rounded-full aspect-square p-[8px] flex items-center justify-center bg-gray-100 hover:bg-gray-200 transition-colors cursor-pointer"
+          onClick={() => onDeleteQuestion?.(question.getValue('id'))}
+        >
+          <Iconography.Stroke.Trash
+            className="text-gray-500 group-hover:text-danger transition-colors duration-200"
+            aria-hidden
+          />
+        </button>
+      </div>
+      <div className="w-full flex flex-col gap-[12px]">
+        <div className="w-full">
+          <input
+            type="text"
+            placeholder="질문을 입력해주세요. (최대 50자)"
+            className="w-full py-[4px] text-[18px] font-bold bg-transparent border-b border-gray-200 text-text-primary focus:border-brand-primary focus:outline-none placeholder:text-text-tertiary transition-colors"
+            maxLength={50}
+            value={question.getValue('title')}
+            onChange={e => onChangeTitle?.(question.getValue('id'), e.target.value)}
+          />
+        </div>
+
+        <div className="w-full pt-[8px]">
+          <div className="w-full flex flex-col gap-[8px]">
+            {question.getValue('options')?.map(option => {
+              const { id, content } = option.toJSON();
+              return (
+                <div key={id} className="w-full flex items-center gap-[8px]">
+                  <div className="w-[18px] h-[18px] border border-gray-300 bg-white flex-shrink-0 rounded-full" />
+                  <input
+                    type="text"
+                    value={content}
+                    placeholder="옵션을 입력해주세요"
+                    className="flex-1 text-[14px] text-text-primary bg-transparent border-b border-transparent focus:border-brand-primary focus:outline-none placeholder:text-text-tertiary transition-colors py-[4px]"
+                    onChange={e => onUpdateOption?.(question.getValue('id'), id, e.target.value)}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => onRemoveOption?.(question.getValue('id'), id)}
+                    className="p-[4px] rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
+                    aria-label="옵션 삭제"
+                  >
+                    <Iconography.Stroke.Minus
+                      className="w-[20px] h-[20px] text-danger hover:cursor-pointer"
+                      aria-hidden
+                    />
+                  </button>
+                </div>
+              );
+            })}
+
+            <button
+              type="button"
+              onClick={() => onAddOption?.(question.getValue('id'))}
+              className="w-fit flex items-center gap-[4px] px-[8px] py-[4px] rounded-[6px] hover:bg-gray-100 transition-colors text-[13px] text-text-secondary font-medium"
+            >
+              <Iconography.Stroke.Plus className="w-[14px] h-[14px]" />
+              <span>옵션 추가</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default memo(SingleChoiceQuestionCard);
+</file>
+
+<file path="src/entities/form/ui/index.ts">
+export { default as ShortTextQuestionCard } from './ShortTextQuestionCard';
+export { default as LongTextQuestionCard } from './LongTextQuestionCard';
+export { default as SingleChoiceQuestionCard } from './SingleChoiceQuestionCard';
+export { default as MultipleChoiceQuestionCard } from './MultipleChoiceQuestionCard';
 </file>
 
 <file path="src/entities/README.md">
@@ -1171,16 +1682,104 @@ export default LoginButton;
 export { default as LoginButton } from './login-button';
 </file>
 
+<file path="src/features/edit-form/ui/FormSignatureEditSection/hook.ts">
+import { useCallback } from 'react';
+
+import { FormSignatureStateService } from '@/entities/form/lib';
+import { useFormSignatureStore } from '@/entities/form/store';
+import { TypeGuard } from '@/shared/lib';
+
+const useFormSignatureEditSectionController = () => {
+  const { formSignature, setFormSignature } = useFormSignatureStore();
+
+  const handleTitleChange = useCallback(
+    (title: string) => {
+      setFormSignature(prev => {
+        if (TypeGuard.checkNull(prev)) {
+          const newFormSignature = FormSignatureStateService.getInitialFormSignature();
+          return FormSignatureStateService.editTitle(newFormSignature, title);
+        }
+        const clonedFormSignature = prev.clone();
+        return FormSignatureStateService.editTitle(clonedFormSignature, title);
+      });
+    },
+    [setFormSignature],
+  );
+
+  const handleDescriptionChange = useCallback(
+    (description: string) => {
+      setFormSignature(prev => {
+        if (TypeGuard.checkNull(prev)) {
+          const newFormSignature = FormSignatureStateService.getInitialFormSignature();
+          return FormSignatureStateService.editDescription(newFormSignature, description);
+        }
+        const clonedFormSignature = prev.clone();
+        return FormSignatureStateService.editDescription(clonedFormSignature, description);
+      });
+    },
+    [setFormSignature],
+  );
+
+  return {
+    formSignature,
+    handleTitleChange,
+    handleDescriptionChange,
+  };
+};
+
+export default useFormSignatureEditSectionController;
+</file>
+
+<file path="src/features/edit-form/ui/FormSignatureEditSection/index.tsx">
+import { memo } from 'react';
+
+import useFormSignatureEditSectionController from './hook';
+
+const FormSignatureEditSection = memo(() => {
+  const { formSignature, handleTitleChange, handleDescriptionChange } =
+    useFormSignatureEditSectionController();
+
+  return (
+    <section className="w-full flex flex-col gap-[12px] p-[24px] bg-bg-default border-t-[8px] border-x border-b border-t-brand-primary border-x-divider-default border-b-divider-default rounded-[12px] shadow-sm">
+      <div className="w-full">
+        <input
+          type="text"
+          placeholder="제목을 입력해주세요."
+          className="w-full py-[8px] text-[32px] font-bold bg-transparent border-b border-gray-200 text-text-primary focus:border-brand-primary focus:outline-none placeholder:text-text-tertiary transition-colors"
+          maxLength={100}
+          value={formSignature?.getValue('title') ?? ''}
+          onChange={e => handleTitleChange(e.target.value)}
+        />
+      </div>
+
+      <div className="w-full">
+        <input
+          type="text"
+          placeholder="필요할 경우, 추가적인 설명을 입력해주세요."
+          className="w-full py-[4px] text-[14px] bg-transparent border-b border-gray-200 text-text-secondary focus:border-brand-primary focus:outline-none placeholder:text-text-tertiary transition-colors"
+          maxLength={200}
+          value={formSignature?.getValue('description') ?? ''}
+          onChange={e => handleDescriptionChange(e.target.value)}
+        />
+      </div>
+    </section>
+  );
+});
+FormSignatureEditSection.displayName = 'FormSignatureEditSection';
+
+export default FormSignatureEditSection;
+</file>
+
 <file path="src/features/edit-form/ui/QuestionAddSection/hook.ts">
 import { useCallback } from 'react';
 
-import { QuestionListStateService, QuestionStateService } from '@/entities/form-question/lib';
-import { useFormQuestionList } from '@/entities/form-question/store';
+import { QuestionListStateService, QuestionStateService } from '@/entities/form/lib';
+import { useFormQuestionListStore } from '@/entities/form/store';
 
-import type { FormQuestionType } from '@/entities/form-question/model';
+import type { FormQuestionType } from '@/entities/form/model';
 
 const useQuestionAddSectionController = () => {
-  const { setFormQuestions } = useFormQuestionList();
+  const { setFormQuestions } = useFormQuestionListStore();
 
   // 질문 추가 핸들러
   const handleAddQuestion = useCallback(
@@ -1246,28 +1845,104 @@ const QuestionAddSection = () => {
 export default memo(QuestionAddSection);
 </file>
 
-<file path="src/features/edit-form/ui/QuestionEditCard/hook.ts">
-import { useMemo } from 'react';
+<file path="src/features/edit-form/ui/QuestionList/index.tsx">
+import { memo } from 'react';
 
-import { QuestionStateService, QuestionListStateService } from '@/entities/form-question/lib';
-import { useFormQuestionList } from '@/entities/form-question/store';
+import {
+  ShortTextQuestionCard,
+  LongTextQuestionCard,
+  SingleChoiceQuestionCard,
+  MultipleChoiceQuestionCard,
+} from '@/entities/form/ui';
+
+import useQeustionListController from './use-question-list';
+
+const QuestionList = () => {
+  const {
+    questions,
+    handleTitleChange,
+    handleTypeChange,
+    handleDeleteQuestion,
+    handleUpdateOption,
+    handleAddOption,
+    handleRemoveOption,
+  } = useQeustionListController();
+
+  return (
+    <div className="flex flex-col gap-[24px] w-full">
+      {questions.map(question => {
+        const questionId = question.getValue('id');
+        const questionType = question.getValue('type');
+
+        switch (questionType) {
+          case 'SHORT_TEXT':
+            return (
+              <ShortTextQuestionCard
+                key={questionId}
+                question={question}
+                onChangeTitle={handleTitleChange}
+                onDeleteQuestion={handleDeleteQuestion}
+                onTypeChange={handleTypeChange}
+              />
+            );
+          case 'LONG_TEXT':
+            return (
+              <LongTextQuestionCard
+                key={questionId}
+                question={question}
+                onChangeTitle={handleTitleChange}
+                onDeleteQuestion={handleDeleteQuestion}
+                onTypeChange={handleTypeChange}
+              />
+            );
+          case 'SINGLE_CHOICE':
+            return (
+              <SingleChoiceQuestionCard
+                key={questionId}
+                question={question}
+                onChangeTitle={handleTitleChange}
+                onAddOption={handleAddOption}
+                onRemoveOption={handleRemoveOption}
+                onUpdateOption={handleUpdateOption}
+                onDeleteQuestion={handleDeleteQuestion}
+                onTypeChange={handleTypeChange}
+              />
+            );
+          case 'MULTIPLE_CHOICE':
+            return (
+              <MultipleChoiceQuestionCard
+                key={questionId}
+                question={question}
+                onChangeTitle={handleTitleChange}
+                onAddOption={handleAddOption}
+                onRemoveOption={handleRemoveOption}
+                onUpdateOption={handleUpdateOption}
+                onDeleteQuestion={handleDeleteQuestion}
+                onTypeChange={handleTypeChange}
+              />
+            );
+          default:
+            return null;
+        }
+      })}
+    </div>
+  );
+};
+
+export default memo(QuestionList);
+</file>
+
+<file path="src/features/edit-form/ui/QuestionList/use-question-list.ts">
+import { QuestionStateService, QuestionListStateService } from '@/entities/form/lib';
+import { useFormQuestionListStore } from '@/entities/form/store';
 import { TypeGuard } from '@/shared/lib';
 
-import type { FormQuestionModel, FormQuestionType } from '@/entities/form-question/model';
+import type { FormQuestionType } from '@/entities/form/model';
 
-interface Props {
-  questionId: string;
-}
+const useQeustionListController = () => {
+  const { formQuestions, setFormQuestions } = useFormQuestionListStore();
 
-const useQuestionEditCardController = (props: Props) => {
-  const { questionId } = props;
-  const { formQuestions, setFormQuestions } = useFormQuestionList();
-
-  const question = useMemo((): FormQuestionModel | null => {
-    return QuestionListStateService.findQuestionById(formQuestions, questionId);
-  }, [formQuestions, questionId]);
-
-  const handleTitleChange = (title: string) => {
+  const handleTitleChange = (questionId: string, title: string) => {
     setFormQuestions(prevList => {
       const prevQuestion = QuestionListStateService.findQuestionById(prevList, questionId);
       if (TypeGuard.checkNull(prevQuestion)) {
@@ -1278,7 +1953,7 @@ const useQuestionEditCardController = (props: Props) => {
     });
   };
 
-  const handleTypeChange = (type: FormQuestionType) => {
+  const handleTypeChange = (questionId: string, type: FormQuestionType) => {
     setFormQuestions(prevList => {
       const prevQuestion = QuestionListStateService.findQuestionById(prevList, questionId);
       if (TypeGuard.checkNull(prevQuestion)) {
@@ -1289,13 +1964,13 @@ const useQuestionEditCardController = (props: Props) => {
     });
   };
 
-  const handleDeleteQuestion = () => {
+  const handleDeleteQuestion = (questionId: string) => {
     setFormQuestions(prevList => {
       return QuestionListStateService.removeQuestionFromList(prevList, questionId);
     });
   };
 
-  const handleUpdateOption = (optionId: string, content: string) => {
+  const handleUpdateOption = (questionId: string, optionId: string, content: string) => {
     setFormQuestions(prevList => {
       const prevQuestion = QuestionListStateService.findQuestionById(prevList, questionId);
       if (TypeGuard.checkNull(prevQuestion)) {
@@ -1306,7 +1981,7 @@ const useQuestionEditCardController = (props: Props) => {
     });
   };
 
-  const handleAddOption = () => {
+  const handleAddOption = (questionId: string) => {
     setFormQuestions(prevList => {
       const prevQuestion = QuestionListStateService.findQuestionById(prevList, questionId);
       if (TypeGuard.checkNull(prevQuestion)) {
@@ -1317,7 +1992,7 @@ const useQuestionEditCardController = (props: Props) => {
     });
   };
 
-  const handleRemoveOption = (optionId: string) => {
+  const handleRemoveOption = (questionId: string, optionId: string) => {
     setFormQuestions(prevList => {
       const prevQuestion = QuestionListStateService.findQuestionById(prevList, questionId);
       if (TypeGuard.checkNull(prevQuestion)) {
@@ -1329,7 +2004,7 @@ const useQuestionEditCardController = (props: Props) => {
   };
 
   return {
-    question,
+    questions: formQuestions,
     handleTitleChange,
     handleTypeChange,
     handleDeleteQuestion,
@@ -1339,166 +2014,13 @@ const useQuestionEditCardController = (props: Props) => {
   };
 };
 
-export default useQuestionEditCardController;
-</file>
-
-<file path="src/features/edit-form/ui/QuestionEditCard/index.tsx">
-import { Fragment, memo } from 'react';
-
-import { TypeGuard } from '@/shared/lib';
-import { Iconography } from '@/shared/ui';
-
-import useQuestionEditCardController from './hook';
-
-import type { FormQuestionType } from '@/entities/form-question/model';
-
-interface Props {
-  questionId: string;
-}
-
-const QuestionEditCard = (props: Props) => {
-  const { questionId } = props;
-  const {
-    question,
-    handleTitleChange,
-    handleTypeChange,
-    handleDeleteQuestion,
-    handleUpdateOption,
-    handleAddOption,
-    handleRemoveOption,
-  } = useQuestionEditCardController({
-    questionId,
-  });
-
-  if (TypeGuard.checkNull(question)) {
-    return <Fragment />;
-  }
-
-  return (
-    <section className="w-full flex flex-col gap-[12px] p-[24px] bg-bg-default border border-divider-default rounded-[16px] shadow-sm">
-      <div className="w-full flex justify-between items-center">
-        {/* 질문 타입 선택 */}
-        <select
-          value={question?.getValue('type') ?? 'SHORT_TEXT'}
-          className="appearance-none cursor-pointer px-[8px] py-[4px] text-[12px] rounded-[6px] bg-bg-sub border border-divider-default text-text-secondary transition-colors"
-          onChange={e => handleTypeChange(e.target.value as FormQuestionType)}
-        >
-          <option value="SHORT_TEXT">단답형</option>
-          <option value="LONG_TEXT">장답형</option>
-          <option value="MULTIPLE_CHOICE">객관식(복수선택)</option>
-          <option value="SINGLE_CHOICE">객관식(단일선택)</option>
-        </select>
-
-        <button
-          type="button"
-          aria-label="질문 삭제"
-          className="group rounded-full aspect-square p-[8px] flex items-center justify-center bg-gray-100 hover:bg-gray-200 transition-colors cursor-pointer"
-          onClick={handleDeleteQuestion}
-        >
-          <Iconography.Stroke.Trash
-            className="text-gray-500 group-hover:text-danger transition-colors duration-200"
-            aria-hidden
-          />
-        </button>
-      </div>
-
-      {/* 질문 제목 입력 */}
-      <div className="w-full">
-        <input
-          type="text"
-          placeholder="질문을 입력해주세요. (최대 50자)"
-          className="w-full py-[4px] text-[18px] font-bold bg-transparent border-b border-gray-200 text-text-primary focus:border-brand-primary focus:outline-none placeholder:text-text-tertiary transition-colors"
-          maxLength={50}
-          value={question?.getValue('title') ?? ''}
-          onChange={e => {
-            handleTitleChange(e.target.value);
-          }}
-        />
-      </div>
-
-      {/* 단답형 답변 영역 프리뷰 */}
-      {question?.getValue('type') === 'SHORT_TEXT' && (
-        <div className="w-full pt-[8px]">
-          <div className="w-full max-w-[400px]">
-            <input
-              disabled
-              type="text"
-              placeholder="단답형 텍스트 (최대 100자)"
-              className="w-full px-[12px] py-[10px] text-[14px] rounded-[8px] border border-dashed border-gray-300 bg-gray-100 text-gray-400 cursor-not-allowed select-none"
-            />
-          </div>
-        </div>
-      )}
-      {/* 장문형 답변 영역 프리뷰 */}
-      {question?.getValue('type') === 'LONG_TEXT' && (
-        <div className="w-full pt-[8px]">
-          <div className="w-full max-w-[400px]">
-            <textarea
-              disabled
-              placeholder="장문형 텍스트 (최대 1000자)"
-              className="resize-none w-full h-[100px] px-[12px] py-[10px] text-[14px] rounded-[8px] border border-dashed border-gray-300 bg-gray-100 text-gray-400 cursor-not-allowed select-none"
-            />
-          </div>
-        </div>
-      )}
-      {/* 선택형 답변 영역 프리뷰 */}
-      {(question?.getValue('type') === 'SINGLE_CHOICE' ||
-        question?.getValue('type') === 'MULTIPLE_CHOICE') && (
-        <div className="w-full pt-[8px]">
-          <div className="w-full flex flex-col gap-[8px]">
-            {question?.getValue('options')?.map(option => {
-              const { id, content } = option.toJSON();
-              return (
-                <div key={id} className="w-full flex items-center gap-[8px]">
-                  <div
-                    className={`w-[18px] h-[18px] border border-gray-300 bg-white flex-shrink-0 ${
-                      question?.getValue('type') === 'SINGLE_CHOICE'
-                        ? 'rounded-full'
-                        : 'rounded-[4px]'
-                    }`}
-                  />
-                  <input
-                    type="text"
-                    value={content}
-                    placeholder="옵션을 입력해주세요"
-                    className="flex-1 text-[14px] text-text-primary bg-transparent border-b border-transparent focus:border-brand-primary focus:outline-none placeholder:text-text-tertiary transition-colors py-[4px]"
-                    onChange={e => handleUpdateOption(id, e.target.value)}
-                  />
-                  <button
-                    type="button"
-                    onClick={() => handleRemoveOption(id)}
-                    className="p-[4px] rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
-                    aria-label="옵션 삭제"
-                  >
-                    <Iconography.Stroke.Minus
-                      className="w-[20px] h-[20px] text-danger hover:cursor-pointer"
-                      aria-hidden
-                    />
-                  </button>
-                </div>
-              );
-            })}
-            <button
-              type="button"
-              onClick={handleAddOption}
-              className="w-fit flex items-center gap-[4px] px-[8px] py-[4px] rounded-[6px] hover:bg-gray-100 transition-colors text-[13px] text-text-secondary font-medium"
-            >
-              <Iconography.Stroke.Plus className="w-[14px] h-[14px]" />
-              <span>옵션 추가</span>
-            </button>
-          </div>
-        </div>
-      )}
-    </section>
-  );
-};
-
-export default memo(QuestionEditCard);
+export default useQeustionListController;
 </file>
 
 <file path="src/features/edit-form/ui/index.ts">
-export { default as QuestionEditCard } from './QuestionEditCard';
+export { default as FormSignatureEditSection } from './FormSignatureEditSection';
 export { default as QuestionAddSection } from './QuestionAddSection';
+export { default as QuestionList } from './QuestionList';
 </file>
 
 <file path="src/features/toggle-theme/ui/dark-mode-button/index.tsx">
@@ -1745,10 +2267,10 @@ export default LandingPage;
 <file path="src/pages/new-form/hook.ts">
 import { useEffect, useRef } from 'react';
 
-import { useFormQuestionList } from '@/entities/form-question/store';
+import { useFormQuestionListStore } from '@/entities/form/store';
 
 const useNewFormPageController = () => {
-  const { formQuestions } = useFormQuestionList();
+  const { formQuestions } = useFormQuestionListStore();
 
   const listRef = useRef<HTMLDivElement>(null);
 
@@ -1769,13 +2291,16 @@ export default useNewFormPageController;
 </file>
 
 <file path="src/pages/new-form/index.tsx">
-import { QuestionAddSection } from '@/features/edit-form/ui';
-import { QuestionEditCard } from '@/features/edit-form/ui';
+import {
+  QuestionList,
+  QuestionAddSection,
+  FormSignatureEditSection,
+} from '@/features/edit-form/ui';
 
 import useNewFormPageController from './hook';
 
 const NewFormPage = () => {
-  const { formQuestions, listRef } = useNewFormPageController();
+  const { listRef } = useNewFormPageController();
 
   return (
     <div className="w-full h-[100dvh] flex flex-col">
@@ -1804,11 +2329,8 @@ const NewFormPage = () => {
 
       <main className="flex-1 overflow-y-auto flex flex-col bg-bg-sub items-center h-full w-full">
         <div ref={listRef} className="p-[32px] flex flex-col gap-[24px] w-full max-w-[1200px]">
-          {formQuestions.map(question => {
-            const id = question.getValue('id');
-            return <QuestionEditCard key={id} questionId={id} />;
-          })}
-
+          <FormSignatureEditSection />
+          <QuestionList />
           <QuestionAddSection />
         </div>
       </main>
