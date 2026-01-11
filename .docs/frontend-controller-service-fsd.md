@@ -134,6 +134,6 @@
 
 이 문서에 적힌 내용은 단순한 가이드가 아닙니다.
 
-📂 **`.agent/rules/frontend-controller-service-fsd-rules.md`** 에 동일한 규칙이 작성되어 있으며,
+📂 **`.agent/rules/frontend-architecture.md`** 에 동일한 규칙이 작성되어 있으며,
 
 🤖 **AI 에이전트에게도 동일하게 공유되고 적용되는 규칙**입니다.
