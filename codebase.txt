@@ -130,6 +130,10 @@ src/
       hook.ts
       index.tsx
   shared/
+    context/
+      ToastContext/
+        index.tsx
+      index.ts
     lib/
       axios-manager/
         index.ts
@@ -162,6 +166,8 @@ src/
           trash/
             index.tsx
           index.tsx
+        index.tsx
+      Toast/
         index.tsx
       index.ts
   styles/
@@ -2341,6 +2347,74 @@ const NewFormPage = () => {
 export default NewFormPage;
 </file>
 
+<file path="src/shared/context/ToastContext/index.tsx">
+import { createContext, useContext, useEffect, useRef, useState } from 'react';
+
+import { Toast } from '@/shared/ui';
+
+import type { ReactNode } from 'react';
+
+interface State {
+  showToast: (message: string) => void;
+}
+
+const ToastContext = createContext<State | null>(null);
+
+interface Props {
+  children: ReactNode;
+}
+
+const ToastProvider = ({ children }: Props) => {
+  const [message, setMessage] = useState<string>('');
+  const [isVisible, setIsVisible] = useState(false);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const showToast = (newMessage: string) => {
+    // 이전 타이머 제거
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+
+    setMessage(newMessage);
+    setIsVisible(true);
+
+    // 3초 후 자동 숨김
+    timerRef.current = setTimeout(() => {
+      setIsVisible(false);
+    }, 3000);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+    };
+  }, []);
+
+  return (
+    <ToastContext.Provider value={{ showToast }}>
+      {children}
+      <Toast message={message} isVisible={isVisible} />
+    </ToastContext.Provider>
+  );
+};
+
+const useToastContext = () => {
+  const context = useContext(ToastContext);
+  if (!context) {
+    throw new Error('useToastContext must be used within a ToastProvider');
+  }
+  return context;
+};
+
+export { ToastProvider, useToastContext };
+</file>
+
+<file path="src/shared/context/index.ts">
+export { ToastProvider, useToastContext } from './ToastContext';
+</file>
+
 <file path="src/shared/lib/axios-manager/index.ts">
 import axios, { AxiosInstance, AxiosError, CreateAxiosDefaults } from 'axios';
 
@@ -2837,8 +2911,38 @@ const Iconography = {
 export default Iconography;
 </file>
 
+<file path="src/shared/ui/Toast/index.tsx">
+import { createPortal } from 'react-dom';
+
+interface Props {
+  message: string;
+  isVisible: boolean;
+}
+
+const Toast = (props: Props) => {
+  const { message, isVisible } = props;
+
+  return createPortal(
+    <div
+      className={`fixed bottom-[98px] left-1/2 -translate-x-1/2 z-50 flex items-center justify-center transition-opacity duration-300 ease-in-out ${
+        isVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'
+      }`}
+    >
+      <div className="bg-gray-600 text-white px-[20px] py-[12px] rounded-[8px] shadow-lg max-w-[90vw] break-words text-[14px]">
+        {message}
+      </div>
+    </div>,
+    document.body,
+  );
+};
+Toast.displayName = 'Toast';
+
+export default Toast;
+</file>
+
 <file path="src/shared/ui/index.ts">
 export { default as Iconography } from './iconography';
+export { default as Toast } from './Toast';
 </file>
 
 <file path="src/styles/break-point.css">
@@ -3109,16 +3213,19 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import KakaoRedirectPage from './pages/kakao-redirect';
 import LandingPage from './pages/landing';
 import NewFormPage from './pages/new-form';
+import { ToastProvider } from './shared/context';
 
 const App = () => {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/new-form" element={<NewFormPage />} />
-        <Route path="/kakao-authorize" element={<KakaoRedirectPage />} />
-      </Routes>
-    </BrowserRouter>
+    <ToastProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/new-form" element={<NewFormPage />} />
+          <Route path="/kakao-authorize" element={<KakaoRedirectPage />} />
+        </Routes>
+      </BrowserRouter>
+    </ToastProvider>
   );
 };
 
