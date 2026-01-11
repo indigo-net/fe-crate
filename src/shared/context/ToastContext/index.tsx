@@ -1,4 +1,4 @@
-import { createContext, useContext, useRef, useState } from 'react';
+import { createContext, useContext, useEffect, useRef, useState } from 'react';
 
 import { Toast } from '@/shared/ui';
 
@@ -17,7 +17,7 @@ interface Props {
 const ToastProvider = ({ children }: Props) => {
   const [message, setMessage] = useState<string>('');
   const [isVisible, setIsVisible] = useState(false);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const showToast = (newMessage: string) => {
     // 이전 타이머 제거
@@ -33,6 +33,14 @@ const ToastProvider = ({ children }: Props) => {
       setIsVisible(false);
     }, 3000);
   };
+
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+    };
+  }, []);
 
   return (
     <ToastContext.Provider value={{ showToast }}>
