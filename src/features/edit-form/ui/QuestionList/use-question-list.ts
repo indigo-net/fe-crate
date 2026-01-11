@@ -1,24 +1,13 @@
-import { useMemo } from 'react';
-
 import { QuestionStateService, QuestionListStateService } from '@/entities/form-question/lib';
 import { useFormQuestionListStore } from '@/entities/form-question/store';
 import { TypeGuard } from '@/shared/lib';
 
-import type { FormQuestionModel, FormQuestionType } from '@/entities/form-question/model';
+import type { FormQuestionType } from '@/entities/form-question/model';
 
-interface Props {
-  questionId: string;
-}
-
-const useQuestionEditCardController = (props: Props) => {
-  const { questionId } = props;
+const useQeustionListController = () => {
   const { formQuestions, setFormQuestions } = useFormQuestionListStore();
 
-  const question = useMemo((): FormQuestionModel | null => {
-    return QuestionListStateService.findQuestionById(formQuestions, questionId);
-  }, [formQuestions, questionId]);
-
-  const handleTitleChange = (title: string) => {
+  const handleTitleChange = (questionId: string, title: string) => {
     setFormQuestions(prevList => {
       const prevQuestion = QuestionListStateService.findQuestionById(prevList, questionId);
       if (TypeGuard.checkNull(prevQuestion)) {
@@ -29,7 +18,7 @@ const useQuestionEditCardController = (props: Props) => {
     });
   };
 
-  const handleTypeChange = (type: FormQuestionType) => {
+  const handleTypeChange = (questionId: string, type: FormQuestionType) => {
     setFormQuestions(prevList => {
       const prevQuestion = QuestionListStateService.findQuestionById(prevList, questionId);
       if (TypeGuard.checkNull(prevQuestion)) {
@@ -40,13 +29,13 @@ const useQuestionEditCardController = (props: Props) => {
     });
   };
 
-  const handleDeleteQuestion = () => {
+  const handleDeleteQuestion = (questionId: string) => {
     setFormQuestions(prevList => {
       return QuestionListStateService.removeQuestionFromList(prevList, questionId);
     });
   };
 
-  const handleUpdateOption = (optionId: string, content: string) => {
+  const handleUpdateOption = (questionId: string, optionId: string, content: string) => {
     setFormQuestions(prevList => {
       const prevQuestion = QuestionListStateService.findQuestionById(prevList, questionId);
       if (TypeGuard.checkNull(prevQuestion)) {
@@ -57,7 +46,7 @@ const useQuestionEditCardController = (props: Props) => {
     });
   };
 
-  const handleAddOption = () => {
+  const handleAddOption = (questionId: string) => {
     setFormQuestions(prevList => {
       const prevQuestion = QuestionListStateService.findQuestionById(prevList, questionId);
       if (TypeGuard.checkNull(prevQuestion)) {
@@ -68,7 +57,7 @@ const useQuestionEditCardController = (props: Props) => {
     });
   };
 
-  const handleRemoveOption = (optionId: string) => {
+  const handleRemoveOption = (questionId: string, optionId: string) => {
     setFormQuestions(prevList => {
       const prevQuestion = QuestionListStateService.findQuestionById(prevList, questionId);
       if (TypeGuard.checkNull(prevQuestion)) {
@@ -80,7 +69,7 @@ const useQuestionEditCardController = (props: Props) => {
   };
 
   return {
-    question,
+    questions: formQuestions,
     handleTitleChange,
     handleTypeChange,
     handleDeleteQuestion,
@@ -90,4 +79,4 @@ const useQuestionEditCardController = (props: Props) => {
   };
 };
 
-export default useQuestionEditCardController;
+export default useQeustionListController;

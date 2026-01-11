@@ -1,10 +1,9 @@
-import { QuestionAddSection } from '@/features/edit-form/ui';
-import { QuestionEditCard } from '@/features/edit-form/ui';
+import { QuestionList, QuestionAddSection } from '@/features/edit-form/ui';
 
 import useNewFormPageController from './hook';
 
 const NewFormPage = () => {
-  const { formQuestions, listRef } = useNewFormPageController();
+  const { listRef } = useNewFormPageController();
 
   return (
     <div className="w-full h-[100dvh] flex flex-col">
@@ -33,11 +32,7 @@ const NewFormPage = () => {
 
       <main className="flex-1 overflow-y-auto flex flex-col bg-bg-sub items-center h-full w-full">
         <div ref={listRef} className="p-[32px] flex flex-col gap-[24px] w-full max-w-[1200px]">
-          {formQuestions.map(question => {
-            const id = question.getValue('id');
-            return <QuestionEditCard key={id} questionId={id} />;
-          })}
-
+          <QuestionList />
           <QuestionAddSection />
         </div>
       </main>
