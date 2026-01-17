@@ -1,39 +1,15 @@
-import Angry from './angry';
-import Balance from './balance';
-import Dizzy from './dizzy';
-import Document from './Document';
-import Flash from './flash';
-import Graduation from './graduation';
 import Minus from './minus';
-import Monitor from './monitor';
 import Moon from './moon';
 import Plus from './plus';
-import Rocket from './rocket';
-import Sad from './sad';
-import Sparkles from './sparkles';
 import Sun from './sun';
-import Target from './target';
 import Trash from './trash';
-import Users from './users';
 
 const Stroke = {
-  Angry,
-  Balance,
-  Dizzy,
-  Document,
-  Flash,
-  Graduation,
-  Minus,
-  Monitor,
-  Moon,
-  Plus,
-  Rocket,
-  Sad,
-  Sparkles,
-  Sun,
-  Target,
-  Trash,
-  Users,
+  Moon: Moon,
+  Plus: Plus,
+  Sun: Sun,
+  Trash: Trash,
+  Minus: Minus,
 };
 
 export default Stroke;
