@@ -50,7 +50,7 @@ The content is organized as follows:
   frontend-controller-service-fsd.md
 .github/
   workflows/
-    deploy
+    deploy.yml
     update-codebase.yml
 public/
   vite.svg
@@ -156,37 +156,15 @@ src/
             index.tsx
           index.tsx
         stroke/
-          angry/
-            index.tsx
-          balance/
-            index.tsx
-          dizzy/
-            index.tsx
-          Document/
-            index.tsx
-          flash/
-            index.tsx
-          graduation/
-            index.tsx
           minus/
-            index.tsx
-          monitor/
             index.tsx
           moon/
             index.tsx
           plus/
             index.tsx
-          rocket/
-            index.tsx
-          sad/
-            index.tsx
-          sparkles/
-            index.tsx
           sun/
             index.tsx
           trash/
-            index.tsx
-          users/
             index.tsx
           index.tsx
         index.tsx
@@ -194,11 +172,8 @@ src/
         index.tsx
       index.ts
   styles/
-    border-radius.css
-    border-width.css
     break-point.css
     colors.css
-    font-weight.css
     index.css
   App.tsx
   main.tsx
@@ -689,7 +664,7 @@ Follow these rules when you write code:
 🤖 **AI 에이전트에게도 동일하게 공유되고 적용되는 규칙**입니다.
 </file>
 
-<file path=".github/workflows/deploy">
+<file path=".github/workflows/deploy.yml">
 name: Deploy Frontend to AWS Amplify (Dev)
 
 on:
@@ -2213,9 +2188,8 @@ export default useLandingPageController;
 <file path="src/pages/landing/index.tsx">
 import { Link } from 'react-router-dom';
 
-// import { LoginButton } from '@/features/authenticate/ui';
+import { LoginButton } from '@/features/authenticate/ui';
 import { DarkModeButton } from '@/features/toggle-theme/ui';
-import { Iconography } from '@/shared/ui';
 
 import useLandingPageController from './hook';
 
@@ -2223,313 +2197,113 @@ const LandingPage = () => {
   const { isLoggined } = useLandingPageController();
 
   return (
-    <div className="w-full min-h-[100dvh] overflow-y-auto flex flex-col bg-bg-base text-text-primary">
-      <header className="w-full px-6 py-4 flex justify-between items-center bg-bg-base border-b border-border-default sticky top-0 z-50">
-        <div className="flex items-center gap-3">
-          <Link to="/" aria-label="CRATE 홈" className="flex items-center gap-3 group">
-            <div className="bg-brand-primary w-10 h-10 rounded-slim-xl flex justify-center items-center text-text-inverse font-slim-bold text-lg group-hover:scale-105 transition-transform">
-              C
-            </div>
-            <span className="text-xl font-slim-bold tracking-tight text-text-primary group-hover:text-brand-primary transition-colors">
-              CRATE
-            </span>
-          </Link>
+    <div className="w-full h-[100dvh] overflow-y-auto flex flex-col">
+      <header className="w-full p-[24px] h-fit bg-default flex justify-between items-center border-b border-b-divider-default">
+        <div className="flex items-center gap-[12px]">
+          {/** 👇 TODO: Icon 컴포넌트로 대체 (서비스 로고) */}
+          <div className="bg-brand-primary w-10 h-10 color-white rounded-[12px] flex justify-center items-center overflow-hidden">
+            i
+          </div>
+          <strong className="color-text-primary cursor-default">CRATE</strong>
         </div>
-        <nav className="flex items-center gap-3">
+        <div className="flex items-center gap-[12px]">
           <DarkModeButton />
-          <Link
-            to="/dashboard"
-            className="px-4 py-2 text-sm font-slim-semibold text-text-secondary hover:text-text-primary rounded-slim-lg hover:bg-bg-subtle transition-all"
-          >
-            대시보드
-          </Link>
           {isLoggined ? (
-            <span className="px-4 py-2 text-sm font-slim-semibold text-brand-primary bg-brand-primary/10 rounded-slim-lg">
-              로그인됨
-            </span>
+            <button className="py-[8px] px-[16px] text-brand-primary rounded-[8px] hover:bg-brand-primary/10">
+              대시보드
+            </button>
           ) : (
-            <div className="flex items-center gap-2">
-              <Link
-                to="/login"
-                className="px-4 py-2 text-sm font-slim-semibold text-text-secondary hover:text-text-primary rounded-slim-lg hover:bg-bg-subtle transition-all"
-              >
-                로그인
-              </Link>
-              <Link
-                to="/signup"
-                className="px-4 py-2 text-sm font-slim-semibold text-text-inverse bg-brand-primary rounded-slim-lg hover:bg-brand-primary-hover transition-all"
-              >
-                회원가입
-              </Link>
-            </div>
+            <LoginButton.Kakao />
           )}
-        </nav>
+        </div>
       </header>
 
-      <main className="flex-1">
-        <section className="w-full px-6 py-24 flex flex-col items-center gap-8 bg-bg-base">
-          <div className="flex flex-col items-center gap-6 max-w-4xl text-center">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-neon-pink-50 dark:bg-neon-pink-950/30 border border-neon-pink-200 dark:border-neon-pink-800 text-neon-pink-600 dark:text-neon-pink-400 font-slim-semibold rounded-slim-xl text-sm">
-              <Iconography.Stroke.Sparkles className="w-4 h-4" />
-              <span>선발의 새로운 기준</span>
-            </div>
-
-            <h1 className="text-5xl desktop:text-7xl font-slim-bold text-center leading-tight tracking-tight text-text-primary">
-              <span className="text-neon-pink-600 dark:text-neon-pink-400">선발,</span> 이제{' '}
-              <span className="text-neon-green-600 dark:text-neon-green-400">쉽게</span>!
-            </h1>
-
-            <p className="text-xl desktop:text-2xl text-text-secondary text-center font-medium max-w-2xl leading-relaxed">
-              흩어진 도구와 복잡한 과정은 이제{' '}
-              <span className="font-bold text-brand-primary">CRATE</span>로 끝.
-            </p>
-
-            <div className="flex flex-wrap justify-center gap-4">
-              <Link
-                to="/new-form"
-                className="px-8 py-4 bg-brand-primary text-text-inverse font-slim-semibold text-lg rounded-slim-xl shadow-md hover:shadow-lg transform hover:scale-105 transition-all flex items-center gap-3"
-              >
-                <Iconography.Stroke.Rocket className="w-6 h-6" />
-                <span>지금 시작하기</span>
-              </Link>
-              <Link
-                to="/login"
-                className="px-8 py-4 bg-bg-subtle text-text-primary font-slim-semibold text-lg rounded-slim-xl border border-border-default hover:border-brand-primary hover:shadow-sm transform hover:scale-105 transition-all flex items-center gap-3"
-              >
-                <Iconography.Stroke.Monitor className="w-6 h-6" />
-                <span>로그인하기</span>
-              </Link>
-            </div>
-          </div>
-        </section>
-
-        <section className="w-full px-6 py-20 bg-bg-subtle">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl desktop:text-5xl font-slim-bold mb-4 text-text-primary">
-                이런 경험 있으신가요?
-              </h2>
-            </div>
-
-            <div className="grid grid-cols-1 desktop:grid-cols-3 gap-6">
-              <article className="p-8 bg-bg-base rounded-slim-2xl border border-border-default shadow-sm hover:shadow-md hover:border-brand-primary transition-all group">
-                <div className="w-12 h-12 flex items-center justify-center bg-neon-pink-50 dark:bg-neon-pink-950/30 rounded-slim-xl mb-6 group-hover:scale-110 transition-transform">
-                  <Iconography.Stroke.Dizzy className="w-6 h-6 text-neon-pink-600 dark:text-neon-pink-400" />
-                </div>
-                <h3 className="text-xl font-slim-bold text-text-primary mb-3">
-                  도구가 너무 많아요
-                </h3>
-                <p className="text-text-secondary text-sm leading-relaxed">
-                  구글 폼으로 수집, 엑셀로 정리, 메신저로 논의... 너무 복잡해요.
-                </p>
-              </article>
-
-              <article className="p-8 bg-bg-base rounded-slim-2xl border border-border-default shadow-sm hover:shadow-md hover:border-neon-green-500 transition-all group">
-                <div className="w-12 h-12 flex items-center justify-center bg-neon-green-50 dark:bg-neon-green-950/30 rounded-slim-xl mb-6 group-hover:scale-110 transition-transform">
-                  <Iconography.Stroke.Angry className="w-6 h-6 text-neon-green-600 dark:text-neon-green-400" />
-                </div>
-                <h3 className="text-xl font-slim-bold text-text-primary mb-3">공정하지 않아요</h3>
-                <p className="text-text-secondary text-sm leading-relaxed">
-                  모집 중에 평가하면 먼저 지원한 사람이 유리하고, 일관성도 떨어져요.
-                </p>
-              </article>
-
-              <article className="p-8 bg-bg-base rounded-slim-2xl border border-border-default shadow-sm hover:shadow-md hover:border-neon-violet-500 transition-all group">
-                <div className="w-12 h-12 flex items-center justify-center bg-neon-violet-50 dark:bg-neon-violet-950/30 rounded-slim-xl mb-6 group-hover:scale-110 transition-transform">
-                  <Iconography.Stroke.Sad className="w-6 h-6 text-neon-violet-600 dark:text-neon-violet-400" />
-                </div>
-                <h3 className="text-xl font-slim-bold text-text-primary mb-3">협업이 어려워요</h3>
-                <p className="text-text-secondary text-sm leading-relaxed">
-                  여러 운영진이 함께 평가하려면 파일 공유하고 취합하고... 너무 복잡해요.
-                </p>
-              </article>
-            </div>
-          </div>
-        </section>
-
-        <section className="w-full px-6 py-20 bg-bg-base">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl desktop:text-5xl font-slim-bold mb-4 text-text-primary">
-                CRATE가 해결해요!
-              </h2>
-              <p className="text-xl text-text-secondary font-medium">
-                선발에 집중할 수 있는 올인원 플랫폼
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 desktop:grid-cols-2 gap-6">
-              <article className="group relative p-8 bg-bg-subtle border-2 border-transparent rounded-slim-2xl shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
-                <div className="flex items-start gap-6">
-                  <div className="w-16 h-16 flex items-center justify-center bg-brand-primary rounded-slim-xl shrink-0 group-hover:scale-110 transition-transform duration-300">
-                    <Iconography.Stroke.Target className="w-8 h-8 text-white" />
-                  </div>
-                  <div>
-                    <h3 className="text-2xl font-slim-bold text-text-primary mb-2 group-hover:text-brand-primary transition-colors">
-                      통합 워크플로우
-                    </h3>
-                    <p className="text-text-secondary">
-                      양식 제작부터 합격 통보까지, 한 곳에서 끝
-                    </p>
-                  </div>
-                </div>
-              </article>
-
-              <article className="group relative p-8 bg-bg-subtle border-2 border-transparent rounded-slim-2xl shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
-                <div className="flex items-start gap-6">
-                  <div className="w-16 h-16 flex items-center justify-center bg-neon-pink-500 rounded-slim-xl shrink-0 group-hover:scale-110 transition-transform duration-300">
-                    <Iconography.Stroke.Balance className="w-8 h-8 text-white" />
-                  </div>
-                  <div>
-                    <h3 className="text-2xl font-slim-bold text-text-primary mb-2 group-hover:text-neon-pink-500 transition-colors">
-                      공정한 평가
-                    </h3>
-                    <p className="text-text-secondary">
-                      모집 마감 후 일괄 평가로 완벽한 공정성
-                    </p>
-                  </div>
-                </div>
-              </article>
-
-              <article className="group relative p-8 bg-bg-subtle border-2 border-transparent rounded-slim-2xl shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
-                <div className="flex items-start gap-6">
-                  <div className="w-16 h-16 flex items-center justify-center bg-neon-violet-500 rounded-slim-xl shrink-0 group-hover:scale-110 transition-transform duration-300">
-                    <Iconography.Stroke.Users className="w-8 h-8 text-white" />
-                  </div>
-                  <div>
-                    <h3 className="text-2xl font-slim-bold text-text-primary mb-2 group-hover:text-neon-violet-500 transition-colors">
-                      팀 협업
-                    </h3>
-                    <p className="text-text-secondary">
-                      여러 운영진이 함께 평가, 파일 공유 없이 즉시 협업
-                    </p>
-                  </div>
-                </div>
-              </article>
-
-              <article className="group relative p-8 bg-bg-subtle border-2 border-transparent rounded-slim-2xl shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
-                <div className="flex items-start gap-6">
-                  <div className="w-16 h-16 flex items-center justify-center bg-neon-green-500 rounded-slim-xl shrink-0 group-hover:scale-110 transition-transform duration-300">
-                    <Iconography.Stroke.Flash className="w-8 h-8 text-white" />
-                  </div>
-                  <div>
-                    <h3 className="text-2xl font-slim-bold text-text-primary mb-2 group-hover:text-neon-green-500 transition-colors">
-                      단순함
-                    </h3>
-                    <p className="text-text-secondary">
-                      직관적인 드래그 앤 드롭으로 5분 만에 모집 시작
-                    </p>
-                  </div>
-                </div>
-              </article>
-            </div>
-          </div>
-        </section>
-
-        <section className="w-full px-6 py-20 bg-gradient-to-b from-bg-subtle via-bg-base to-bg-subtle">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-4xl desktop:text-5xl font-slim-bold mb-4 text-text-primary">
-                이런 분들께 추천해요
-              </h2>
-            </div>
-
-            <div className="grid grid-cols-1 desktop:grid-cols-3 gap-8">
-              <article className="group relative overflow-hidden p-10 bg-gradient-to-br from-brand-primary via-brand-primary/90 to-brand-primary/80 rounded-slim-2xl shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-3xl group-hover:bg-white/20 transition-all" />
-                <div className="absolute bottom-0 left-0 w-24 h-24 bg-black/5 rounded-full blur-2xl" />
-                <div className="relative z-10 flex flex-col h-full">
-                  <div className="w-16 h-16 flex items-center justify-center bg-white/20 backdrop-blur-sm rounded-slim-xl mb-6 group-hover:scale-110 transition-transform">
-                    <Iconography.Stroke.Graduation className="w-10 h-10 text-white" />
-                  </div>
-                  <h3 className="text-3xl font-slim-bold text-white mb-4">대학 동아리</h3>
-                  <p className="text-white/90 leading-relaxed">
-                    부원 모집부터 선정까지 한 번에.
-                  </p>
-                </div>
-              </article>
-
-              <article className="group relative overflow-hidden p-10 bg-gradient-to-br from-neon-pink-500 via-neon-pink-400 to-neon-pink-600 rounded-slim-2xl shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-3xl group-hover:bg-white/20 transition-all" />
-                <div className="absolute bottom-0 left-0 w-24 h-24 bg-black/5 rounded-full blur-2xl" />
-                <div className="relative z-10 flex flex-col h-full">
-                  <div className="w-16 h-16 flex items-center justify-center bg-white/20 backdrop-blur-sm rounded-slim-xl mb-6 group-hover:scale-110 transition-transform">
-                    <Iconography.Stroke.Rocket className="w-10 h-10 text-white" />
-                  </div>
-                  <h3 className="text-3xl font-slim-bold text-white mb-4">스타트업</h3>
-                  <p className="text-white/90 leading-relaxed">
-                    전문가 없이도 완벽한 채용 프로세스.
-                  </p>
-                </div>
-              </article>
-
-              <article className="group relative overflow-hidden p-10 bg-gradient-to-br from-neon-violet-500 via-neon-violet-400 to-neon-violet-600 rounded-slim-2xl shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-3xl group-hover:bg-white/20 transition-all" />
-                <div className="absolute bottom-0 left-0 w-24 h-24 bg-black/5 rounded-full blur-2xl" />
-                <div className="relative z-10 flex flex-col h-full">
-                  <div className="w-16 h-16 flex items-center justify-center bg-white/20 backdrop-blur-sm rounded-slim-xl mb-6 group-hover:scale-110 transition-transform">
-                    <Iconography.Stroke.Document className="w-10 h-10 text-white" />
-                  </div>
-                  <h3 className="text-3xl font-slim-bold text-white mb-4">행사 운영진</h3>
-                  <p className="text-white/90 leading-relaxed">
-                    공정하고 빠른 참가자 모집.
-                  </p>
-                </div>
-              </article>
-            </div>
-          </div>
-        </section>
-
-        <article className="w-full px-6 py-20 bg-brand-primary text-text-inverse relative overflow-hidden">
-          <div className="max-w-4xl mx-auto text-center relative z-10">
-            <h2 className="text-4xl desktop:text-6xl font-slim-bold mb-6 leading-tight tracking-tight">
-              선발의 새로운 기준,
-              <br />
-              지금 시작하세요
-            </h2>
-            <p className="text-xl desktop:text-2xl mb-10 font-slim-normal flex items-center justify-center gap-2 opacity-90">
-              복잡한 설정 없이 5분 만에 모집 시작 <Iconography.Stroke.Flash className="w-5 h-5" />
-            </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <Link
-                to="/new-form"
-                className="px-10 py-5 bg-bg-base text-brand-primary font-slim-bold text-xl rounded-slim-2xl shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all flex items-center gap-3"
-              >
-                <Iconography.Stroke.Target className="w-8 h-8" />
-                <span>무료로 시작하기</span>
-              </Link>
-              {!isLoggined && (
-                <Link
-                  to="/signup"
-                  className="px-10 py-5 bg-brand-secondary text-text-inverse font-slim-bold text-xl rounded-slim-2xl shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all flex items-center gap-3"
-                >
-                  <Iconography.Stroke.Rocket className="w-8 h-8" />
-                  <span>회원가입</span>
-                </Link>
-              )}
-            </div>
-            <p className="mt-8 text-sm font-slim-normal flex items-center justify-center gap-2 opacity-75">
-              <Iconography.Stroke.Sparkles className="w-4 h-4" /> 신용카드 등록 불필요 · 언제든
-              무료로 시작
-            </p>
-          </div>
-        </article>
-      </main>
-
-      <footer className="w-full px-6 py-12 bg-bg-subtle border-t border-border-default text-text-primary">
-        <div className="max-w-6xl mx-auto flex flex-col desktop:flex-row justify-between items-center gap-6">
-          <div className="flex items-center gap-3">
-            <div className="bg-brand-primary w-10 h-10 rounded-slim-xl flex justify-center items-center text-text-inverse font-slim-bold text-lg">
-              C
-            </div>
-            <span className="text-xl font-slim-bold tracking-tight">CRATE</span>
-          </div>
-          <div className="text-center desktop:text-right">
-            <p className="text-text-secondary text-sm">
-              © 2025 indigo-net. CRATE by indigo-net. All rights reserved.
-            </p>
+      <main className="m-0 p-0 w-full flex flex-col bg-transparent">
+        <div className="w-full h-fit bg-bg-sub flex flex-col gap-[32px] justify-center items-center py-[80px]">
+          <h1 className="text-text-primary text-[24px] font-bold text-center">
+            지원서 평가, 이제 한 곳에서!
+          </h1>
+          <h2 className="text-text-secondary text-[20px] whitespace-pre-line text-center">
+            {'양식 제작부터 지원 접수, 평가, 선발까지\n모집 과정의 모든 것을 효율적으로 관리하세요'}
+          </h2>
+          <div className="w-full flex justify-center items-center gap-[24px]">
+            <Link
+              to="/new-form"
+              className="border-none rounded-[8px] w-fit min-w-[180px] flex items-center justify-center gap-[8px] py-[12px] px-[32px] bg-brand-primary color-white hover:bg-brand-primary/90"
+            >
+              {/** 👇 TODO: Icon 컴포넌트로 대체 */}
+              <span>I</span>
+              <span>양식 만들기</span>
+            </Link>
+            {/** 👇 TODO: Button 컴포넌트로 대체 */}
+            <button className="border-[0.5px] border-border-sub rounded-[8px] w-fit min-w-[180px] flex items-center justify-center gap-[8px] py-[12px] px-[32px] bg-transparent color-text-tertiary hover:bg-gray-100/90">
+              {/** 👇 TODO: Icon 컴포넌트로 대체 */}
+              <span>I</span>
+              <span>대시보드 만들기</span>
+            </button>
           </div>
         </div>
+
+        <div className="py-[80px] w-full h-fit flex items-center justify-center">
+          <div className="px-[24px] grid w-full max-w-[1200px] grid-cols-1 desktop:grid-cols-3 justify-center items-center gap-[20px]">
+            <Link
+              to="/"
+              className="rounded-[16px] border border-border-sub py-[16px] px-[12px] w-full flex flex-col gap-[16px] hover:border-brand-primary transition-border-colors duration-[200ms]"
+            >
+              <div className="flex items-center gap-[8px]">
+                <span className="w-[48px] min-w-[48px] aspect-square flex items-center justify-center rounded-[18px] bg-indigo-300/90 text-indigo-600">
+                  I
+                </span>
+                <strong className="text-text-primary text-[18px] font-bold whitespace-nowrap">
+                  간편한 양식 제작
+                </strong>
+              </div>
+              <p className="desktop:h-[80px] h-fit text-left text-text-tertiary text-[16px] break-keep">
+                드래그 앤 드롭으로 원하는 질문을 자유롭게 구성하고 맞춤형 지원서를 만드세요.
+              </p>
+            </Link>
+
+            <Link
+              to="/"
+              className="rounded-[16px] border border-border-sub py-[16px] px-[12px] w-full flex flex-col gap-[16px] hover:border-brand-primary transition-border-colors duration-[200ms]"
+            >
+              <div className="flex items-center gap-[8px]">
+                <span className="w-[48px] min-w-[48px] aspect-square flex items-center justify-center rounded-[18px] bg-purple-300/90 text-purple-600">
+                  I
+                </span>
+                <strong className="text-text-primary text-[18px] font-bold whitespace-nowrap">
+                  실시간 평가 시스템
+                </strong>
+              </div>
+              <p className="desktop:h-[80px] h-fit text-left text-text-tertiary text-[16px] break-keep">
+                여러 평가자가 동시에 지원서를 검토하고 점수를 부여할 수 있습니다.
+              </p>
+            </Link>
+
+            <Link
+              to="/"
+              className="rounded-[16px] border border-border-sub py-[16px] px-[12px] w-full flex flex-col gap-[16px] hover:border-brand-primary transition-border-colors duration-[200ms]"
+            >
+              <div className="flex items-center gap-[8px]">
+                <span className="w-[48px] min-w-[48px] aspect-square flex items-center justify-center rounded-[18px] bg-green-300/90 text-green-600">
+                  I
+                </span>
+                <strong className="text-text-primary text-[18px] font-bold whitespace-nowrap">
+                  효율적인 선발 과정
+                </strong>
+              </div>
+              <p className="desktop:h-[80px] h-fit text-left text-text-tertiary text-[16px] break-keep">
+                평가 결과를 한눈에 확인하고 합격자를 빠르게 선정하세요.
+              </p>
+            </Link>
+          </div>
+        </div>
+      </main>
+
+      <footer className="w-full h-fit p-[48px] mt-auto flex justify-center items-center bg-bg-default border-t border-t-divider-default">
+        <small className="text-text-secondary">
+          © 2025 indigo-net. CRATE by indigo-net. All rights reserved.
+        </small>
       </footer>
     </div>
   );
@@ -2882,238 +2656,6 @@ const Logo = {
 export default Logo;
 </file>
 
-<file path="src/shared/ui/iconography/stroke/angry/index.tsx">
-import type { SVGProps } from 'react';
-
-const Angry = (props: SVGProps<SVGSVGElement>) => {
-  const {
-    width = 24,
-    height = 24,
-    'aria-label': ariaLabel = 'angry',
-    'aria-hidden': ariaHidden = false,
-  } = props;
-
-  return (
-    <svg
-      {...props}
-      width={width}
-      height={height}
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden={ariaHidden}
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      {!ariaHidden && <title>{ariaLabel}</title>}
-      <circle cx="12" cy="12" r="10" />
-      <path d="M16 16s-1.5-2-4-2-4 2-4 2" />
-      <path d="M7.5 8 9 9" />
-      <path d="m15 9 1.5-1" />
-      <path d="M9 10h.01" />
-      <path d="M15 10h.01" />
-    </svg>
-  );
-};
-
-export default Angry;
-</file>
-
-<file path="src/shared/ui/iconography/stroke/balance/index.tsx">
-import type { SVGProps } from 'react';
-
-const Balance = (props: SVGProps<SVGSVGElement>) => {
-  const {
-    width = 24,
-    height = 24,
-    'aria-label': ariaLabel = 'balance',
-    'aria-hidden': ariaHidden = false,
-  } = props;
-
-  return (
-    <svg
-      {...props}
-      width={width}
-      height={height}
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden={ariaHidden}
-    >
-      {!ariaHidden && <title>{ariaLabel}</title>}
-
-      <path d="M12 3V21" stroke="currentColor" strokeWidth={1.125} strokeLinecap="round" />
-      <path d="M8 21H16" stroke="currentColor" strokeWidth={1.125} strokeLinecap="round" />
-      <path d="M3 6H21" stroke="currentColor" strokeWidth={1.125} strokeLinecap="round" />
-
-      <path d="M6 6L2.5 12" stroke="currentColor" strokeWidth={1.125} strokeLinecap="round" />
-      <path d="M6 6L9.5 12" stroke="currentColor" strokeWidth={1.125} strokeLinecap="round" />
-      <path d="M18 6L14.5 12" stroke="currentColor" strokeWidth={1.125} strokeLinecap="round" />
-      <path d="M18 6L21.5 12" stroke="currentColor" strokeWidth={1.125} strokeLinecap="round" />
-
-      <path d="M3.5 12H8.5" stroke="currentColor" strokeWidth={1.125} strokeLinecap="round" />
-      <path d="M15.5 12H20.5" stroke="currentColor" strokeWidth={1.125} strokeLinecap="round" />
-    </svg>
-  );
-};
-
-export default Balance;
-</file>
-
-<file path="src/shared/ui/iconography/stroke/dizzy/index.tsx">
-import type { SVGProps } from 'react';
-
-const Dizzy = (props: SVGProps<SVGSVGElement>) => {
-  const {
-    width = 24,
-    height = 24,
-    'aria-label': ariaLabel = 'dizzy',
-    'aria-hidden': ariaHidden = false,
-  } = props;
-
-  return (
-    <svg
-      {...props}
-      width={width}
-      height={height}
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden={ariaHidden}
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      {!ariaHidden && <title>{ariaLabel}</title>}
-      <circle cx="12" cy="12" r="10" />
-      <path d="M8 9h.01" />
-      <path d="M16 9h.01" />
-      <path d="M10 15c.5-1 1-1.5 2-1.5s1.5.5 2 1.5" />
-      <path d="M8 9.01V9" />
-      <path d="M16 9.01V9" />
-      <path d="M12 12c-2 0-3.5 1-4 2.5" />
-      <path d="M12 12c2 0 3.5 1 4 2.5" />
-    </svg>
-  );
-};
-
-export default Dizzy;
-</file>
-
-<file path="src/shared/ui/iconography/stroke/Document/index.tsx">
-import type { SVGProps } from 'react';
-
-const Document = (props: SVGProps<SVGSVGElement>) => {
-  const {
-    width = 24,
-    height = 24,
-    'aria-label': ariaLabel = 'document',
-    'aria-hidden': ariaHidden = false,
-  } = props;
-
-  return (
-    <svg
-      {...props}
-      width={width}
-      height={height}
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden={ariaHidden}
-    >
-      {!ariaHidden && <title>{ariaLabel}</title>}
-      <path
-        d="M7 3.75H14L18.25 8V20.25H7V3.75Z"
-        stroke="currentColor"
-        strokeWidth={1.125}
-        strokeLinejoin="round"
-      />
-      <path d="M14 3.75V8H18.25" stroke="currentColor" strokeWidth={1.125} strokeLinejoin="round" />
-      <path
-        d="M9.5 12H15.5M9.5 15.5H15.5"
-        stroke="currentColor"
-        strokeWidth={1.125}
-        strokeLinecap="round"
-      />
-    </svg>
-  );
-};
-
-export default Document;
-</file>
-
-<file path="src/shared/ui/iconography/stroke/flash/index.tsx">
-import type { SVGProps } from 'react';
-
-const Flash = (props: SVGProps<SVGSVGElement>) => {
-  const {
-    width = 24,
-    height = 24,
-    'aria-label': ariaLabel = 'flash',
-    'aria-hidden': ariaHidden = false,
-  } = props;
-
-  return (
-    <svg
-      {...props}
-      width={width}
-      height={height}
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden={ariaHidden}
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      {!ariaHidden && <title>{ariaLabel}</title>}
-      <path d="M13 2 L3 14 L12 14 L11 22 L21 10 L12 10 L13 2 Z" />
-    </svg>
-  );
-};
-
-export default Flash;
-</file>
-
-<file path="src/shared/ui/iconography/stroke/graduation/index.tsx">
-import type { SVGProps } from 'react';
-
-const Graduation = (props: SVGProps<SVGSVGElement>) => {
-  const {
-    width = 24,
-    height = 24,
-    'aria-label': ariaLabel = 'graduation',
-    'aria-hidden': ariaHidden = false,
-  } = props;
-
-  return (
-    <svg
-      {...props}
-      width={width}
-      height={height}
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden={ariaHidden}
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      {!ariaHidden && <title>{ariaLabel}</title>}
-      <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
-      <path d="M6 12v5c3 3 9 3 12 0v-5" />
-    </svg>
-  );
-};
-
-export default Graduation;
-</file>
-
 <file path="src/shared/ui/iconography/stroke/minus/index.tsx">
 import type { SVGProps } from 'react';
 
@@ -3148,42 +2690,6 @@ const Minus = (props: SVGProps<SVGSVGElement>) => {
 };
 
 export default Minus;
-</file>
-
-<file path="src/shared/ui/iconography/stroke/monitor/index.tsx">
-import type { SVGProps } from 'react';
-
-const Monitor = (props: SVGProps<SVGSVGElement>) => {
-  const {
-    width = 24,
-    height = 24,
-    'aria-label': ariaLabel = 'monitor',
-    'aria-hidden': ariaHidden = false,
-  } = props;
-
-  return (
-    <svg
-      {...props}
-      width={width}
-      height={height}
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden={ariaHidden}
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      {!ariaHidden && <title>{ariaLabel}</title>}
-      <rect width="20" height="14" x="2" y="3" rx="2" />
-      <line x1="8" x2="16" y1="21" y2="21" />
-      <line x1="12" x2="12" y1="17" y2="21" />
-    </svg>
-  );
-};
-
-export default Monitor;
 </file>
 
 <file path="src/shared/ui/iconography/stroke/moon/index.tsx">
@@ -3256,151 +2762,6 @@ const Plus = (props: SVGProps<SVGSVGElement>) => {
 };
 
 export default Plus;
-</file>
-
-<file path="src/shared/ui/iconography/stroke/rocket/index.tsx">
-import type { SVGProps } from 'react';
-
-const Rocket = (props: SVGProps<SVGSVGElement>) => {
-  const {
-    width = 24,
-    height = 24,
-    'aria-label': ariaLabel = 'rocket',
-    'aria-hidden': ariaHidden = false,
-  } = props;
-
-  return (
-    <svg
-      {...props}
-      width={width}
-      height={height}
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      stroke="currentColor"
-      strokeWidth={1.125}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden={ariaHidden}
-    >
-      {!ariaHidden && <title>{ariaLabel}</title>}
-      <g transform="rotate(45 12 12)">
-        <path
-          d="M12 2C15.5 4 18 7.5 18 11.5V14.5C18 16 16.5 17.5 15 17.5H9C7.5 17.5 6 16 6 14.5V11.5C6 7.5 8.5 4 12 2Z"
-          stroke="currentColor"
-          strokeWidth={1.125}
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-
-        <circle cx="12" cy="9" r="1.75" stroke="currentColor" strokeWidth={1.125} />
-
-        <path
-          d="M6 12L3.5 15V11L6 10"
-          stroke="currentColor"
-          strokeWidth={1.125}
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <path
-          d="M18 12L20.5 15V11L18 10"
-          stroke="currentColor"
-          strokeWidth={1.125}
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-
-        <path
-          d="M12 17.5
-             C11.5 18.2 10.8 19.2 10.6 20.3
-             C10.4 21.3 11.1 22.1 12 22.6
-             C12.9 22.1 13.6 21.3 13.4 20.3
-             C13.2 19.2 12.5 18.2 12 17.5Z"
-          stroke="currentColor"
-          strokeWidth={1.125}
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          fill="none"
-        />
-      </g>
-    </svg>
-  );
-};
-
-export default Rocket;
-</file>
-
-<file path="src/shared/ui/iconography/stroke/sad/index.tsx">
-import type { SVGProps } from 'react';
-
-const Sad = (props: SVGProps<SVGSVGElement>) => {
-  const {
-    width = 24,
-    height = 24,
-    'aria-label': ariaLabel = 'sad',
-    'aria-hidden': ariaHidden = false,
-  } = props;
-
-  return (
-    <svg
-      {...props}
-      width={width}
-      height={height}
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden={ariaHidden}
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      {!ariaHidden && <title>{ariaLabel}</title>}
-      <circle cx="12" cy="12" r="10" />
-      <path d="M16 16s-1.5-2-4-2-4 2-4 2" />
-      <line x1="9" x2="9.01" y1="9" y2="9" />
-      <line x1="15" x2="15.01" y1="9" y2="9" />
-    </svg>
-  );
-};
-
-export default Sad;
-</file>
-
-<file path="src/shared/ui/iconography/stroke/sparkles/index.tsx">
-import type { SVGProps } from 'react';
-
-const Sparkles = (props: SVGProps<SVGSVGElement>) => {
-  const {
-    width = 24,
-    height = 24,
-    'aria-label': ariaLabel = 'sparkles',
-    'aria-hidden': ariaHidden = false,
-  } = props;
-
-  return (
-    <svg
-      {...props}
-      width={width}
-      height={height}
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden={ariaHidden}
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      {!ariaHidden && <title>{ariaLabel}</title>}
-      <path d="m12 3 1.912 5.886L20 10.8l-5.888 1.914L12 18.6l-1.912-5.886L4.2 10.8l5.888-1.914z" />
-      <path d="m19 19 1.5-1.5L22 19l-1.5 1.5z" />
-      <path d="m5 5 1.5-1.5L8 5 6.5 6.5z" />
-    </svg>
-  );
-};
-
-export default Sparkles;
 </file>
 
 <file path="src/shared/ui/iconography/stroke/sun/index.tsx">
@@ -3562,80 +2923,19 @@ const Trash = (props: SVGProps<SVGSVGElement>) => {
 export default Trash;
 </file>
 
-<file path="src/shared/ui/iconography/stroke/users/index.tsx">
-import type { SVGProps } from 'react';
-
-const Users = (props: SVGProps<SVGSVGElement>) => {
-  const {
-    width = 24,
-    height = 24,
-    'aria-label': ariaLabel = 'users',
-    'aria-hidden': ariaHidden = false,
-  } = props;
-
-  return (
-    <svg
-      {...props}
-      width={width}
-      height={height}
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden={ariaHidden}
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      {!ariaHidden && <title>{ariaLabel}</title>}
-      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-      <circle cx="9" cy="7" r="4" />
-      <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
-      <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-    </svg>
-  );
-};
-
-export default Users;
-</file>
-
 <file path="src/shared/ui/iconography/stroke/index.tsx">
-import Angry from './angry';
-import Balance from './balance';
-import Dizzy from './dizzy';
-import Document from './Document';
-import Flash from './flash';
-import Graduation from './graduation';
 import Minus from './minus';
-import Monitor from './monitor';
 import Moon from './moon';
 import Plus from './plus';
-import Rocket from './rocket';
-import Sad from './sad';
-import Sparkles from './sparkles';
 import Sun from './sun';
-import Target from './target';
 import Trash from './trash';
-import Users from './users';
 
 const Stroke = {
-  Angry,
-  Balance,
-  Dizzy,
-  Document,
-  Flash,
-  Graduation,
-  Minus,
-  Monitor,
-  Moon,
-  Plus,
-  Rocket,
-  Sad,
-  Sparkles,
-  Sun,
-  Target,
-  Trash,
-  Users,
+  Moon: Moon,
+  Plus: Plus,
+  Sun: Sun,
+  Trash: Trash,
+  Minus: Minus,
 };
 
 export default Stroke;
@@ -3687,23 +2987,6 @@ export { default as Iconography } from './iconography';
 export { default as Toast } from './Toast';
 </file>
 
-<file path="src/styles/border-radius.css">
-@theme {
-  --radius-slim-sm: 4px;
-  --radius-slim-md: 8px;
-  --radius-slim-lg: 12px;
-  --radius-slim-xl: 16px;
-  --radius-slim-2xl: 24px;
-}
-</file>
-
-<file path="src/styles/border-width.css">
-@theme {
-  --border-width-slim: 0.5px;
-  --border-width-thin: 1px;
-}
-</file>
-
 <file path="src/styles/break-point.css">
 @theme {
   --breakpoint-mobile: 365px;
@@ -3712,99 +2995,31 @@ export { default as Toast } from './Toast';
 </file>
 
 <file path="src/styles/colors.css">
-/* ============================================
- * CRATE Color Token System
- * Primary: Indigo | Secondary: Orange
- * Supports Light & Dark Modes
- * WCAG AA Compliant
- * ============================================ */
-
 :root {
-  /* ==================== BRAND COLORS ==================== */
+  /* brand */
+  --color-brand-primary: #6366f1;
 
-  /* Primary (Indigo) - Main brand color */
-  --color-primary-50: #eef2ff;
-  --color-primary-100: #e0e7ff;
-  --color-primary-200: #c7d2fe;
-  --color-primary-300: #a5b4fc;
-  --color-primary-400: #818cf8;
-  --color-primary-500: #6366f1;
-  --color-primary-600: #4f46e5;
-  --color-primary-700: #4338ca;
-  --color-primary-800: #3730a3;
-  --color-primary-900: #312e81;
+  /* background */
+  --color-bg-default: #ffffff;
+  --color-bg-sub: #f8f9fa;
 
-  /* Secondary (Orange) - Accent color */
-  --color-secondary-50: #fff7ed;
-  --color-secondary-100: #ffedd5;
-  --color-secondary-200: #fed7aa;
-  --color-secondary-300: #fdba74;
-  --color-secondary-400: #fb923c;
-  --color-secondary-500: #f97316;
-  --color-secondary-600: #ea580c;
-  --color-secondary-700: #c2410c;
-  --color-secondary-800: #9a3412;
-  --color-secondary-900: #7c2d12;
-
-  /* ==================== SEMANTIC TOKENS ==================== */
-
-  /* Brand */
-  --color-brand-primary: var(--color-primary-600);
-  --color-brand-secondary: var(--color-secondary-500);
-
-  /* Backgrounds */
-  --color-bg-base: #ffffff;
-  --color-bg-subtle: #f9fafb;
-  --color-bg-muted: #f3f4f6;
-
-  /* Text */
-  --color-text-primary: #111827;
-  --color-text-secondary: #4b5563;
-  --color-text-tertiary: #9ca3af;
+  /* text content */
+  --color-text-primary: #212529;
+  --color-text-secondary: #495057;
+  --color-text-tertiary: #adb5bd;
   --color-text-inverse: #ffffff;
 
-  /* Borders */
-  --color-border-default: #e5e7eb;
-  --color-border-subtle: #f3f4f6;
-  --color-border-strong: #d1d5db;
+  /* divider / border */
+  --color-divider-default: #e5e7eb;
+  --color-divider-sub: #f3f4f6;
 
-  /* Interactive States */
-  --color-interactive-primary: var(--color-primary-600);
-  --color-interactive-primary-hover: var(--color-primary-700);
-  --color-interactive-primary-active: var(--color-primary-800);
-  --color-interactive-secondary: var(--color-secondary-500);
-  --color-interactive-secondary-hover: var(--color-secondary-600);
-  --color-interactive-secondary-active: var(--color-secondary-700);
-
-  /* ==================== FUNCTIONAL COLORS ==================== */
-
-  /* Success (Green) */
-  --color-success: #10b981;
-  --color-success-bg: #d1fae5;
-  --color-success-border: #6ee7b7;
-
-  /* Warning (Amber) */
-  --color-warning: #f59e0b;
-  --color-warning-bg: #fef3c7;
-  --color-warning-border: #fcd34d;
-
-  /* Error (Red) */
-  --color-error: #ef4444;
-  --color-error-bg: #fee2e2;
-  --color-error-border: #fca5a5;
-
-  /* Info (Blue) */
+  /* function */
   --color-info: #3b82f6;
-  --color-info-bg: #dbeafe;
-  --color-info-border: #93c5fd;
+  --color-success: #22c55e;
+  --color-warning: #eab308;
+  --color-danger: #ef4444;
 
-  /* ==================== SURFACE COLORS ==================== */
-
-  --color-surface-overlay: rgba(0, 0, 0, 0.5);
-  --color-surface-elevated: #ffffff;
-
-  /* ==================== GRAYSCALE ==================== */
-
+  /* grayscale */
   --color-gray-50: #f9fafb;
   --color-gray-100: #f3f4f6;
   --color-gray-200: #e5e7eb;
@@ -3816,105 +3031,21 @@ export { default as Toast } from './Toast';
   --color-gray-800: #1f2937;
   --color-gray-900: #111827;
 
-  /* ==================== ADDITIONAL PALETTES ==================== */
+  /* palette */
+  --color-palette-black: #000000;
+  --color-palette-white: #ffffff;
 
-  /* Blue */
-  --color-blue-50: #eff6ff;
-  --color-blue-100: #dbeafe;
-  --color-blue-200: #bfdbfe;
-  --color-blue-300: #93c5fd;
-  --color-blue-400: #60a5fa;
-  --color-blue-500: #3b82f6;
-  --color-blue-600: #2563eb;
-  --color-blue-700: #1d4ed8;
-  --color-blue-800: #1e40af;
-  --color-blue-900: #1e3a8a;
+  --color-indigo-50: #f5f7ff;
+  --color-indigo-100: #e9edff;
+  --color-indigo-200: #d6dcff;
+  --color-indigo-300: #b8c1ff;
+  --color-indigo-400: #9aa5ff;
+  --color-indigo-500: #7c89ff;
+  --color-indigo-600: #5f6dff;
+  --color-indigo-700: #4a57db;
+  --color-indigo-800: #3842b0;
+  --color-indigo-900: #2a2f7a;
 
-  /* Green */
-  --color-green-50: #f0fdf4;
-  --color-green-100: #dcfce7;
-  --color-green-200: #bbf7d0;
-  --color-green-300: #86efac;
-  --color-green-400: #4ade80;
-  --color-green-500: #22c55e;
-  --color-green-600: #16a34a;
-  --color-green-700: #15803d;
-  --color-green-800: #166534;
-  --color-green-900: #14532d;
-
-  /* Red */
-  --color-red-50: #fef2f2;
-  --color-red-100: #fee2e2;
-  --color-red-200: #fecaca;
-  --color-red-300: #fca5a5;
-  --color-red-400: #f87171;
-  --color-red-500: #ef4444;
-  --color-red-600: #dc2626;
-  --color-red-700: #b91c1c;
-  --color-red-800: #991b1b;
-  --color-red-900: #7f1d1d;
-
-  /* Amber */
-  --color-amber-50: #fffbeb;
-  --color-amber-100: #fef3c7;
-  --color-amber-200: #fde68a;
-  --color-amber-300: #fcd34d;
-  --color-amber-400: #fbbf24;
-  --color-amber-500: #f59e0b;
-  --color-amber-600: #d97706;
-  --color-amber-700: #b45309;
-  --color-amber-800: #92400e;
-  --color-amber-900: #78350f;
-
-  /* Indigo (extended) */
-  --color-indigo-50: #eef2ff;
-  --color-indigo-100: #e0e7ff;
-  --color-indigo-200: #c7d2fe;
-  --color-indigo-300: #a5b4fc;
-  --color-indigo-400: #818cf8;
-  --color-indigo-500: #6366f1;
-  --color-indigo-600: #4f46e5;
-  --color-indigo-700: #4338ca;
-  --color-indigo-800: #3730a3;
-  --color-indigo-900: #312e81;
-
-  /* Orange (extended) */
-  --color-orange-50: #fff7ed;
-  --color-orange-100: #ffedd5;
-  --color-orange-200: #fed7aa;
-  --color-orange-300: #fdba74;
-  --color-orange-400: #fb923c;
-  --color-orange-500: #f97316;
-  --color-orange-600: #ea580c;
-  --color-orange-700: #c2410c;
-  --color-orange-800: #9a3412;
-  --color-orange-900: #7c2d12;
-
-  /* Cyan */
-  --color-cyan-50: #ecfeff;
-  --color-cyan-100: #cffafe;
-  --color-cyan-200: #a5f3fc;
-  --color-cyan-300: #67e8f9;
-  --color-cyan-400: #22d3ee;
-  --color-cyan-500: #06b6d4;
-  --color-cyan-600: #0891b2;
-  --color-cyan-700: #0e7490;
-  --color-cyan-800: #155e75;
-  --color-cyan-900: #164e63;
-
-  /* Pink */
-  --color-pink-50: #fdf2f8;
-  --color-pink-100: #fce7f3;
-  --color-pink-200: #fbcfe8;
-  --color-pink-300: #f9a8d4;
-  --color-pink-400: #f472b6;
-  --color-pink-500: #ec4899;
-  --color-pink-600: #db2777;
-  --color-pink-700: #be185d;
-  --color-pink-800: #9d174d;
-  --color-pink-900: #831843;
-
-  /* Purple */
   --color-purple-50: #faf5ff;
   --color-purple-100: #f3e8ff;
   --color-purple-200: #e9d5ff;
@@ -3926,226 +3057,117 @@ export { default as Toast } from './Toast';
   --color-purple-800: #6b21a8;
   --color-purple-900: #581c87;
 
-  /* Neon Pink (Hot) */
-  --color-neon-pink-50: #fdf2f8;
-  --color-neon-pink-100: #fce7f3;
-  --color-neon-pink-200: #fbcfe8;
-  --color-neon-pink-300: #f9a8d4;
-  --color-neon-pink-400: #f472b6;
-  --color-neon-pink-500: #ec4899;
-  --color-neon-pink-600: #db2777;
-  --color-neon-pink-700: #be185d;
-  --color-neon-pink-800: #9d174d;
-  --color-neon-pink-900: #831843;
-
-  /* Neon Green (Lime) */
-  --color-neon-green-50: #f0fdf4;
-  --color-neon-green-100: #dcfce7;
-  --color-neon-green-200: #bbf7d0;
-  --color-neon-green-300: #86efac;
-  --color-neon-green-400: #4ade80;
-  --color-neon-green-500: #22c55e;
-  --color-neon-green-600: #16a34a;
-  --color-neon-green-700: #15803d;
-  --color-neon-green-800: #166534;
-  --color-neon-green-900: #14532d;
-
-  /* Neon Violet (Electric) */
-  --color-neon-violet-50: #f5f3ff;
-  --color-neon-violet-100: #ede9fe;
-  --color-neon-violet-200: #ddd6fe;
-  --color-neon-violet-300: #c4b5fd;
-  --color-neon-violet-400: #a78bfa;
-  --color-neon-violet-500: #8b5cf6;
-  --color-neon-violet-600: #7c3aed;
-  --color-neon-violet-700: #6d28d9;
-  --color-neon-violet-800: #5b21b6;
-  --color-neon-violet-900: #4c1d95;
-
-  /* ==================== UTILITY ==================== */
-
-  --color-white: #ffffff;
-  --color-black: #000000;
+  --color-green-50: #f0fdf4;
+  --color-green-100: #dcfce7;
+  --color-green-200: #bbf7d0;
+  --color-green-300: #86efac;
+  --color-green-400: #4ade80;
+  --color-green-500: #22c55e;
+  --color-green-600: #16a34a;
+  --color-green-700: #15803d;
+  --color-green-800: #166534;
+  --color-green-900: #14532d;
 }
-
-/* ============================================
- * DARK MODE
- * ============================================ */
 
 .dark {
-  /* ==================== SEMANTIC TOKENS (DARK) ==================== */
+  /* brand */
+  --color-brand-primary: #818cf8;
 
-  /* Brand (lighter for dark backgrounds) */
-  --color-brand-primary: var(--color-primary-400);
-  --color-brand-secondary: var(--color-secondary-400);
+  /* background */
+  --color-bg-default: #0a0a0b;
+  --color-bg-sub: #18181b;
 
-  /* Backgrounds */
-  --color-bg-base: #0f172a;
-  --color-bg-subtle: #1e293b;
-  --color-bg-muted: #334155;
+  /* text content */
+  --color-text-primary: #fafafa;
+  --color-text-secondary: #e4e4e7;
+  --color-text-tertiary: #a1a1aa;
+  --color-text-inverse: #0a0a0b;
 
-  /* Text */
-  --color-text-primary: #f1f5f9;
-  --color-text-secondary: #cbd5e1;
-  --color-text-tertiary: #94a3b8;
-  --color-text-inverse: #0f172a;
+  /* divider / border */
+  --color-divider-default: #27272a;
+  --color-divider-sub: #18181b;
 
-  /* Borders */
-  --color-border-default: #334155;
-  --color-border-subtle: #1e293b;
-  --color-border-strong: #475569;
-
-  /* Interactive States (lighter for visibility) */
-  --color-interactive-primary: var(--color-primary-500);
-  --color-interactive-primary-hover: var(--color-primary-400);
-  --color-interactive-primary-active: var(--color-primary-300);
-  --color-interactive-secondary: var(--color-secondary-500);
-  --color-interactive-secondary-hover: var(--color-secondary-400);
-  --color-interactive-secondary-active: var(--color-secondary-300);
-
-  /* ==================== FUNCTIONAL COLORS (DARK) ==================== */
-
-  /* Success */
-  --color-success: #34d399;
-  --color-success-bg: #064e3b;
-  --color-success-border: #059669;
-
-  /* Warning */
-  --color-warning: #fbbf24;
-  --color-warning-bg: #78350f;
-  --color-warning-border: #d97706;
-
-  /* Error */
-  --color-error: #f87171;
-  --color-error-bg: #7f1d1d;
-  --color-error-border: #dc2626;
-
-  /* Info */
+  /* function */
   --color-info: #60a5fa;
-  --color-info-bg: #1e3a8a;
-  --color-info-border: #2563eb;
+  --color-success: #4ade80;
+  --color-warning: #fbbf24;
+  --color-danger: #f87171;
 
-  /* ==================== SURFACE COLORS (DARK) ==================== */
+  /* grayscale */
+  --color-gray-50: #18181b;
+  --color-gray-100: #27272a;
+  --color-gray-200: #3f3f46;
+  --color-gray-300: #52525b;
+  --color-gray-400: #71717a;
+  --color-gray-500: #a1a1aa;
+  --color-gray-600: #d4d4d8;
+  --color-gray-700: #e4e4e7;
+  --color-gray-800: #f4f4f5;
+  --color-gray-900: #fafafa;
 
-  --color-surface-overlay: rgba(0, 0, 0, 0.7);
-  --color-surface-elevated: #1e293b;
+  /* palette */
+  --color-palette-black: #000000;
+  --color-palette-white: #ffffff;
 
-  /* Neon Pink (Hot) */
-  --color-neon-pink-50: #fce7f3;
-  --color-neon-pink-100: #fbcfe8;
-  --color-neon-pink-200: #f9a8d4;
-  --color-neon-pink-300: #f472b6;
-  --color-neon-pink-400: #ec4899;
-  --color-neon-pink-500: #db2777;
-  --color-neon-pink-600: #be185d;
-  --color-neon-pink-700: #9d174d;
-  --color-neon-pink-800: #831843;
-  --color-neon-pink-900: #701a75;
+  --color-indigo-50: #f5f7ff;
+  --color-indigo-100: #e9edff;
+  --color-indigo-200: #d6dcff;
+  --color-indigo-300: #b8c1ff;
+  --color-indigo-400: #9aa5ff;
+  --color-indigo-500: #7c89ff;
+  --color-indigo-600: #5f6dff;
+  --color-indigo-700: #4a57db;
+  --color-indigo-800: #3842b0;
+  --color-indigo-900: #2a2f7a;
 
-  /* Neon Green (Lime) */
-  --color-neon-green-50: #dcfce7;
-  --color-neon-green-100: #bbf7d0;
-  --color-neon-green-200: #86efac;
-  --color-neon-green-300: #4ade80;
-  --color-neon-green-400: #22c55e;
-  --color-neon-green-500: #16a34a;
-  --color-neon-green-600: #15803d;
-  --color-neon-green-700: #166534;
-  --color-neon-green-800: #14532d;
-  --color-neon-green-900: #064e3b;
+  --color-purple-50: #faf5ff;
+  --color-purple-100: #f3e8ff;
+  --color-purple-200: #e9d5ff;
+  --color-purple-300: #d8b4fe;
+  --color-purple-400: #c084fc;
+  --color-purple-500: #a855f7;
+  --color-purple-600: #9333ea;
+  --color-purple-700: #7e22ce;
+  --color-purple-800: #6b21a8;
+  --color-purple-900: #581c87;
 
-  /* Neon Violet (Electric) */
-  --color-neon-violet-50: #ede9fe;
-  --color-neon-violet-100: #ddd6fe;
-  --color-neon-violet-200: #c4b5fd;
-  --color-neon-violet-300: #a78bfa;
-  --color-neon-violet-400: #8b5cf6;
-  --color-neon-violet-500: #7c3aed;
-  --color-neon-violet-600: #6d28d9;
-  --color-neon-violet-700: #5b21b6;
-  --color-neon-violet-800: #4c1d95;
-  --color-neon-violet-900: #3b0764;
+  --color-green-50: #f0fdf4;
+  --color-green-100: #dcfce7;
+  --color-green-200: #bbf7d0;
+  --color-green-300: #86efac;
+  --color-green-400: #4ade80;
+  --color-green-500: #22c55e;
+  --color-green-600: #16a34a;
+  --color-green-700: #15803d;
+  --color-green-808: #166534;
+  --color-green-900: #14532d;
 }
 
-/* ============================================
- * TAILWIND V4 THEME INTEGRATION
- * ============================================ */
-
 @theme {
-  /* ==================== BRAND ==================== */
+  /* brand */
   --color-brand-primary: var(--color-brand-primary);
-  --color-brand-secondary: var(--color-brand-secondary);
 
-  /* ==================== SEMANTIC ==================== */
-  --color-bg-base: var(--color-bg-base);
-  --color-bg-subtle: var(--color-bg-subtle);
-  --color-bg-muted: var(--color-bg-muted);
+  /* background */
+  --color-bg-default: var(--color-bg-default);
+  --color-bg-sub: var(--color-bg-sub);
 
+  /* text content */
   --color-text-primary: var(--color-text-primary);
   --color-text-secondary: var(--color-text-secondary);
   --color-text-tertiary: var(--color-text-tertiary);
   --color-text-inverse: var(--color-text-inverse);
 
-  --color-border-default: var(--color-border-default);
-  --color-border-subtle: var(--color-border-subtle);
-  --color-border-strong: var(--color-border-strong);
+  /* divider / border */
+  --color-divider-default: var(--color-divider-default);
+  --color-divider-sub: var(--color-divider-sub);
 
-  /* ==================== INTERACTIVE ==================== */
-  --color-interactive-primary: var(--color-interactive-primary);
-  --color-interactive-primary-hover: var(--color-interactive-primary-hover);
-  --color-interactive-primary-active: var(--color-interactive-primary-active);
-  --color-interactive-secondary: var(--color-interactive-secondary);
-  --color-interactive-secondary-hover: var(--color-interactive-secondary-hover);
-  --color-interactive-secondary-active: var(--color-interactive-secondary-active);
-
-  /* ==================== FUNCTIONAL ==================== */
-  --color-success: var(--color-success);
-  --color-success-bg: var(--color-success-bg);
-  --color-success-border: var(--color-success-border);
-
-  --color-warning: var(--color-warning);
-  --color-warning-bg: var(--color-warning-bg);
-  --color-warning-border: var(--color-warning-border);
-
-  --color-error: var(--color-error);
-  --color-error-bg: var(--color-error-bg);
-  --color-error-border: var(--color-error-border);
-
+  /* function */
   --color-info: var(--color-info);
-  --color-info-bg: var(--color-info-bg);
-  --color-info-border: var(--color-info-border);
+  --color-success: var(--color-success);
+  --color-warning: var(--color-warning);
+  --color-danger: var(--color-danger);
 
-  /* ==================== SURFACE ==================== */
-  --color-surface-overlay: var(--color-surface-overlay);
-  --color-surface-elevated: var(--color-surface-elevated);
-
-  /* ==================== PALETTES ==================== */
-
-  /* Primary (Indigo) */
-  --color-primary-50: var(--color-primary-50);
-  --color-primary-100: var(--color-primary-100);
-  --color-primary-200: var(--color-primary-200);
-  --color-primary-300: var(--color-primary-300);
-  --color-primary-400: var(--color-primary-400);
-  --color-primary-500: var(--color-primary-500);
-  --color-primary-600: var(--color-primary-600);
-  --color-primary-700: var(--color-primary-700);
-  --color-primary-800: var(--color-primary-800);
-  --color-primary-900: var(--color-primary-900);
-
-  /* Secondary (Orange) */
-  --color-secondary-50: var(--color-secondary-50);
-  --color-secondary-100: var(--color-secondary-100);
-  --color-secondary-200: var(--color-secondary-200);
-  --color-secondary-300: var(--color-secondary-300);
-  --color-secondary-400: var(--color-secondary-400);
-  --color-secondary-500: var(--color-secondary-500);
-  --color-secondary-600: var(--color-secondary-600);
-  --color-secondary-700: var(--color-secondary-700);
-  --color-secondary-800: var(--color-secondary-800);
-  --color-secondary-900: var(--color-secondary-900);
-
-  /* Grayscale */
+  /* grayscale */
   --color-gray-50: var(--color-gray-50);
   --color-gray-100: var(--color-gray-100);
   --color-gray-200: var(--color-gray-200);
@@ -4157,55 +3179,10 @@ export { default as Toast } from './Toast';
   --color-gray-800: var(--color-gray-800);
   --color-gray-900: var(--color-gray-900);
 
-  /* Blue */
-  --color-blue-50: var(--color-blue-50);
-  --color-blue-100: var(--color-blue-100);
-  --color-blue-200: var(--color-blue-200);
-  --color-blue-300: var(--color-blue-300);
-  --color-blue-400: var(--color-blue-400);
-  --color-blue-500: var(--color-blue-500);
-  --color-blue-600: var(--color-blue-600);
-  --color-blue-700: var(--color-blue-700);
-  --color-blue-800: var(--color-blue-800);
-  --color-blue-900: var(--color-blue-900);
+  /* palette */
+  --color-palette-black: var(--color-palette-black);
+  --color-palette-white: var(--color-palette-white);
 
-  /* Green */
-  --color-green-50: var(--color-green-50);
-  --color-green-100: var(--color-green-100);
-  --color-green-200: var(--color-green-200);
-  --color-green-300: var(--color-green-300);
-  --color-green-400: var(--color-green-400);
-  --color-green-500: var(--color-green-500);
-  --color-green-600: var(--color-green-600);
-  --color-green-700: var(--color-green-700);
-  --color-green-800: var(--color-green-800);
-  --color-green-900: var(--color-green-900);
-
-  /* Red */
-  --color-red-50: var(--color-red-50);
-  --color-red-100: var(--color-red-100);
-  --color-red-200: var(--color-red-200);
-  --color-red-300: var(--color-red-300);
-  --color-red-400: var(--color-red-400);
-  --color-red-500: var(--color-red-500);
-  --color-red-600: var(--color-red-600);
-  --color-red-700: var(--color-red-700);
-  --color-red-800: var(--color-red-800);
-  --color-red-900: var(--color-red-900);
-
-  /* Amber */
-  --color-amber-50: var(--color-amber-50);
-  --color-amber-100: var(--color-amber-100);
-  --color-amber-200: var(--color-amber-200);
-  --color-amber-300: var(--color-amber-300);
-  --color-amber-400: var(--color-amber-400);
-  --color-amber-500: var(--color-amber-500);
-  --color-amber-600: var(--color-amber-600);
-  --color-amber-700: var(--color-amber-700);
-  --color-amber-800: var(--color-amber-800);
-  --color-amber-900: var(--color-amber-900);
-
-  /* Indigo */
   --color-indigo-50: var(--color-indigo-50);
   --color-indigo-100: var(--color-indigo-100);
   --color-indigo-200: var(--color-indigo-200);
@@ -4217,43 +3194,6 @@ export { default as Toast } from './Toast';
   --color-indigo-800: var(--color-indigo-800);
   --color-indigo-900: var(--color-indigo-900);
 
-  /* Orange */
-  --color-orange-50: var(--color-orange-50);
-  --color-orange-100: var(--color-orange-100);
-  --color-orange-200: var(--color-orange-200);
-  --color-orange-300: var(--color-orange-300);
-  --color-orange-400: var(--color-orange-400);
-  --color-orange-500: var(--color-orange-500);
-  --color-orange-600: var(--color-orange-600);
-  --color-orange-700: var(--color-orange-700);
-  --color-orange-800: var(--color-orange-800);
-  --color-orange-900: var(--color-orange-900);
-
-  /* Cyan */
-  --color-cyan-50: var(--color-cyan-50);
-  --color-cyan-100: var(--color-cyan-100);
-  --color-cyan-200: var(--color-cyan-200);
-  --color-cyan-300: var(--color-cyan-300);
-  --color-cyan-400: var(--color-cyan-400);
-  --color-cyan-500: var(--color-cyan-500);
-  --color-cyan-600: var(--color-cyan-600);
-  --color-cyan-700: var(--color-cyan-700);
-  --color-cyan-800: var(--color-cyan-800);
-  --color-cyan-900: var(--color-cyan-900);
-
-  /* Pink */
-  --color-pink-50: var(--color-pink-50);
-  --color-pink-100: var(--color-pink-100);
-  --color-pink-200: var(--color-pink-200);
-  --color-pink-300: var(--color-pink-300);
-  --color-pink-400: var(--color-pink-400);
-  --color-pink-500: var(--color-pink-500);
-  --color-pink-600: var(--color-pink-600);
-  --color-pink-700: var(--color-pink-700);
-  --color-pink-800: var(--color-pink-800);
-  --color-pink-900: var(--color-pink-900);
-
-  /* Purple */
   --color-purple-50: var(--color-purple-50);
   --color-purple-100: var(--color-purple-100);
   --color-purple-200: var(--color-purple-200);
@@ -4265,65 +3205,23 @@ export { default as Toast } from './Toast';
   --color-purple-800: var(--color-purple-800);
   --color-purple-900: var(--color-purple-900);
 
-  /* Neon Pink */
-  --color-neon-pink-50: var(--color-neon-pink-50);
-  --color-neon-pink-100: var(--color-neon-pink-100);
-  --color-neon-pink-200: var(--color-neon-pink-200);
-  --color-neon-pink-300: var(--color-neon-pink-300);
-  --color-neon-pink-400: var(--color-neon-pink-400);
-  --color-neon-pink-500: var(--color-neon-pink-500);
-  --color-neon-pink-600: var(--color-neon-pink-600);
-  --color-neon-pink-700: var(--color-neon-pink-700);
-  --color-neon-pink-800: var(--color-neon-pink-800);
-  --color-neon-pink-900: var(--color-neon-pink-900);
-
-  /* Neon Green */
-  --color-neon-green-50: var(--color-neon-green-50);
-  --color-neon-green-100: var(--color-neon-green-100);
-  --color-neon-green-200: var(--color-neon-green-200);
-  --color-neon-green-300: var(--color-neon-green-300);
-  --color-neon-green-400: var(--color-neon-green-400);
-  --color-neon-green-500: var(--color-neon-green-500);
-  --color-neon-green-600: var(--color-neon-green-600);
-  --color-neon-green-700: var(--color-neon-green-700);
-  --color-neon-green-800: var(--color-neon-green-800);
-  --color-neon-green-900: var(--color-neon-green-900);
-
-  /* Neon Violet */
-  --color-neon-violet-50: var(--color-neon-violet-50);
-  --color-neon-violet-100: var(--color-neon-violet-100);
-  --color-neon-violet-200: var(--color-neon-violet-200);
-  --color-neon-violet-300: var(--color-neon-violet-300);
-  --color-neon-violet-400: var(--color-neon-violet-400);
-  --color-neon-violet-500: var(--color-neon-violet-500);
-  --color-neon-violet-600: var(--color-neon-violet-600);
-  --color-neon-violet-700: var(--color-neon-violet-700);
-  --color-neon-violet-800: var(--color-neon-violet-800);
-  --color-neon-violet-900: var(--color-neon-violet-900);
-
-  /* Utility */
-  --color-white: var(--color-white);
-  --color-black: var(--color-black);
-}
-</file>
-
-<file path="src/styles/font-weight.css">
-@theme {
-  --font-weight-slim-thin: 300;
-  --font-weight-slim-normal: 400;
-  --font-weight-slim-semibold: 600;
-  --font-weight-slim-bold: 700;
+  --color-green-50: var(--color-green-50);
+  --color-green-100: var(--color-green-100);
+  --color-green-200: var(--color-green-200);
+  --color-green-300: var(--color-green-300);
+  --color-green-400: var(--color-green-400);
+  --color-green-500: var(--color-green-500);
+  --color-green-600: var(--color-green-600);
+  --color-green-700: var(--color-green-700);
+  --color-green-800: var(--color-green-800);
+  --color-green-900: var(--color-green-900);
 }
 </file>
 
 <file path="src/styles/index.css">
 @import 'tailwindcss';
-
-@import './border-radius.css';
-@import './border-width.css';
-@import './break-point.css';
 @import './colors.css';
-@import './font-weight.css';
+@import './break-point.css';
 
 * {
   /* padding과 border를 width에 포함 */
@@ -4339,12 +3237,13 @@ html {
   /* macOS/iOS에서 폰트 렌더링 개선 */
   -moz-osx-font-smoothing: grayscale;
   /* 테마 색상 적용 */
-  background-color: var(--color-bg-base);
+  background-color: var(--color-bg-default);
   color: var(--color-text-primary);
 }
 
 body {
   line-height: 1.5;
+  overflow: hidden;
   margin: 0;
   padding: 0;
 }
