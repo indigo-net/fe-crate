@@ -1,6 +1,10 @@
 @import 'tailwindcss';
-@import './colors.css';
+
+@import './border-radius.css';
+@import './border-width.css';
 @import './break-point.css';
+@import './colors.css';
+@import './font-weight.css';
 
 * {
   /* padding과 border를 width에 포함 */
@@ -16,13 +20,12 @@ html {
   /* macOS/iOS에서 폰트 렌더링 개선 */
   -moz-osx-font-smoothing: grayscale;
   /* 테마 색상 적용 */
-  background-color: var(--color-bg-default);
+  background-color: var(--color-bg-base);
   color: var(--color-text-primary);
 }
 
 body {
   line-height: 1.5;
-  overflow: hidden;
   margin: 0;
   padding: 0;
 }
