@@ -1,0 +1,307 @@
+This file is a merged representation of the entire codebase, combined into a single document by Repomix.
+
+# File Summary
+
+## Purpose
+This file contains a packed representation of the entire repository's contents.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+
+## File Format
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  a. A header with the file path (## File: path/to/file)
+  b. The full contents of the file in a code block
+
+## Usage Guidelines
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+
+## Notes
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Files are sorted by Git change count (files with more changes are at the bottom)
+
+# Directory Structure
+```
+break-point.css
+colors.css
+index.css
+```
+
+# Files
+
+## File: break-point.css
+```css
+@theme {
+  --breakpoint-mobile: 365px;
+  --breakpoint-desktop: 720px;
+}
+```
+
+## File: colors.css
+```css
+:root {
+  /* brand */
+  --color-brand-primary: #6366f1;
+
+  /* background */
+  --color-bg-default: #ffffff;
+  --color-bg-sub: #f8f9fa;
+
+  /* text content */
+  --color-text-primary: #212529;
+  --color-text-secondary: #495057;
+  --color-text-tertiary: #adb5bd;
+  --color-text-inverse: #ffffff;
+
+  /* divider / border */
+  --color-divider-default: #e5e7eb;
+  --color-divider-sub: #f3f4f6;
+
+  /* function */
+  --color-info: #3b82f6;
+  --color-success: #22c55e;
+  --color-warning: #eab308;
+  --color-danger: #ef4444;
+
+  /* grayscale */
+  --color-gray-50: #f9fafb;
+  --color-gray-100: #f3f4f6;
+  --color-gray-200: #e5e7eb;
+  --color-gray-300: #d1d5db;
+  --color-gray-400: #9ca3af;
+  --color-gray-500: #6b7280;
+  --color-gray-600: #4b5563;
+  --color-gray-700: #374151;
+  --color-gray-800: #1f2937;
+  --color-gray-900: #111827;
+
+  /* palette */
+  --color-palette-black: #000000;
+  --color-palette-white: #ffffff;
+
+  --color-indigo-50: #f5f7ff;
+  --color-indigo-100: #e9edff;
+  --color-indigo-200: #d6dcff;
+  --color-indigo-300: #b8c1ff;
+  --color-indigo-400: #9aa5ff;
+  --color-indigo-500: #7c89ff;
+  --color-indigo-600: #5f6dff;
+  --color-indigo-700: #4a57db;
+  --color-indigo-800: #3842b0;
+  --color-indigo-900: #2a2f7a;
+
+  --color-purple-50: #faf5ff;
+  --color-purple-100: #f3e8ff;
+  --color-purple-200: #e9d5ff;
+  --color-purple-300: #d8b4fe;
+  --color-purple-400: #c084fc;
+  --color-purple-500: #a855f7;
+  --color-purple-600: #9333ea;
+  --color-purple-700: #7e22ce;
+  --color-purple-800: #6b21a8;
+  --color-purple-900: #581c87;
+
+  --color-green-50: #f0fdf4;
+  --color-green-100: #dcfce7;
+  --color-green-200: #bbf7d0;
+  --color-green-300: #86efac;
+  --color-green-400: #4ade80;
+  --color-green-500: #22c55e;
+  --color-green-600: #16a34a;
+  --color-green-700: #15803d;
+  --color-green-800: #166534;
+  --color-green-900: #14532d;
+}
+
+.dark {
+  /* brand */
+  --color-brand-primary: #818cf8;
+
+  /* background */
+  --color-bg-default: #0a0a0b;
+  --color-bg-sub: #18181b;
+
+  /* text content */
+  --color-text-primary: #fafafa;
+  --color-text-secondary: #e4e4e7;
+  --color-text-tertiary: #a1a1aa;
+  --color-text-inverse: #0a0a0b;
+
+  /* divider / border */
+  --color-divider-default: #27272a;
+  --color-divider-sub: #18181b;
+
+  /* function */
+  --color-info: #60a5fa;
+  --color-success: #4ade80;
+  --color-warning: #fbbf24;
+  --color-danger: #f87171;
+
+  /* grayscale */
+  --color-gray-50: #18181b;
+  --color-gray-100: #27272a;
+  --color-gray-200: #3f3f46;
+  --color-gray-300: #52525b;
+  --color-gray-400: #71717a;
+  --color-gray-500: #a1a1aa;
+  --color-gray-600: #d4d4d8;
+  --color-gray-700: #e4e4e7;
+  --color-gray-800: #f4f4f5;
+  --color-gray-900: #fafafa;
+
+  /* palette */
+  --color-palette-black: #000000;
+  --color-palette-white: #ffffff;
+
+  --color-indigo-50: #f5f7ff;
+  --color-indigo-100: #e9edff;
+  --color-indigo-200: #d6dcff;
+  --color-indigo-300: #b8c1ff;
+  --color-indigo-400: #9aa5ff;
+  --color-indigo-500: #7c89ff;
+  --color-indigo-600: #5f6dff;
+  --color-indigo-700: #4a57db;
+  --color-indigo-800: #3842b0;
+  --color-indigo-900: #2a2f7a;
+
+  --color-purple-50: #faf5ff;
+  --color-purple-100: #f3e8ff;
+  --color-purple-200: #e9d5ff;
+  --color-purple-300: #d8b4fe;
+  --color-purple-400: #c084fc;
+  --color-purple-500: #a855f7;
+  --color-purple-600: #9333ea;
+  --color-purple-700: #7e22ce;
+  --color-purple-800: #6b21a8;
+  --color-purple-900: #581c87;
+
+  --color-green-50: #f0fdf4;
+  --color-green-100: #dcfce7;
+  --color-green-200: #bbf7d0;
+  --color-green-300: #86efac;
+  --color-green-400: #4ade80;
+  --color-green-500: #22c55e;
+  --color-green-600: #16a34a;
+  --color-green-700: #15803d;
+  --color-green-808: #166534;
+  --color-green-900: #14532d;
+}
+
+@theme {
+  /* brand */
+  --color-brand-primary: var(--color-brand-primary);
+
+  /* background */
+  --color-bg-default: var(--color-bg-default);
+  --color-bg-sub: var(--color-bg-sub);
+
+  /* text content */
+  --color-text-primary: var(--color-text-primary);
+  --color-text-secondary: var(--color-text-secondary);
+  --color-text-tertiary: var(--color-text-tertiary);
+  --color-text-inverse: var(--color-text-inverse);
+
+  /* divider / border */
+  --color-divider-default: var(--color-divider-default);
+  --color-divider-sub: var(--color-divider-sub);
+
+  /* function */
+  --color-info: var(--color-info);
+  --color-success: var(--color-success);
+  --color-warning: var(--color-warning);
+  --color-danger: var(--color-danger);
+
+  /* grayscale */
+  --color-gray-50: var(--color-gray-50);
+  --color-gray-100: var(--color-gray-100);
+  --color-gray-200: var(--color-gray-200);
+  --color-gray-300: var(--color-gray-300);
+  --color-gray-400: var(--color-gray-400);
+  --color-gray-500: var(--color-gray-500);
+  --color-gray-600: var(--color-gray-600);
+  --color-gray-700: var(--color-gray-700);
+  --color-gray-800: var(--color-gray-800);
+  --color-gray-900: var(--color-gray-900);
+
+  /* palette */
+  --color-palette-black: var(--color-palette-black);
+  --color-palette-white: var(--color-palette-white);
+
+  --color-indigo-50: var(--color-indigo-50);
+  --color-indigo-100: var(--color-indigo-100);
+  --color-indigo-200: var(--color-indigo-200);
+  --color-indigo-300: var(--color-indigo-300);
+  --color-indigo-400: var(--color-indigo-400);
+  --color-indigo-500: var(--color-indigo-500);
+  --color-indigo-600: var(--color-indigo-600);
+  --color-indigo-700: var(--color-indigo-700);
+  --color-indigo-800: var(--color-indigo-800);
+  --color-indigo-900: var(--color-indigo-900);
+
+  --color-purple-50: var(--color-purple-50);
+  --color-purple-100: var(--color-purple-100);
+  --color-purple-200: var(--color-purple-200);
+  --color-purple-300: var(--color-purple-300);
+  --color-purple-400: var(--color-purple-400);
+  --color-purple-500: var(--color-purple-500);
+  --color-purple-600: var(--color-purple-600);
+  --color-purple-700: var(--color-purple-700);
+  --color-purple-800: var(--color-purple-800);
+  --color-purple-900: var(--color-purple-900);
+
+  --color-green-50: var(--color-green-50);
+  --color-green-100: var(--color-green-100);
+  --color-green-200: var(--color-green-200);
+  --color-green-300: var(--color-green-300);
+  --color-green-400: var(--color-green-400);
+  --color-green-500: var(--color-green-500);
+  --color-green-600: var(--color-green-600);
+  --color-green-700: var(--color-green-700);
+  --color-green-800: var(--color-green-800);
+  --color-green-900: var(--color-green-900);
+}
+```
+
+## File: index.css
+```css
+@import 'tailwindcss';
+@import './colors.css';
+@import './break-point.css';
+
+* {
+  /* padding과 border를 width에 포함 */
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  /* 텍스트 렌더링 최적화 */
+  text-rendering: optimizeLegibility;
+  /* Firefox에서 폰트 렌더링 개선 */
+  -webkit-font-smoothing: antialiased;
+  /* macOS/iOS에서 폰트 렌더링 개선 */
+  -moz-osx-font-smoothing: grayscale;
+  /* 테마 색상 적용 */
+  background-color: var(--color-bg-default);
+  color: var(--color-text-primary);
+}
+
+body {
+  line-height: 1.5;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+```
