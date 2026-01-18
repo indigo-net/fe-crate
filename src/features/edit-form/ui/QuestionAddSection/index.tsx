@@ -26,7 +26,11 @@ const QuestionAddSection = () => {
       </div>
 
       <div className="grid grid-cols-2 desktop:grid-cols-4 gap-4 w-full">
-        <button className={buttonClass} onClick={() => handleAddQuestion('SHORT_TEXT')}>
+        <button
+          type="button"
+          className={buttonClass}
+          onClick={() => handleAddQuestion('SHORT_TEXT')}
+        >
           <div className={iconBoxClass}>
             <Iconography.Stroke.Document className="w-6 h-6 text-text-secondary group-hover:text-brand-primary" />
           </div>
@@ -35,7 +39,11 @@ const QuestionAddSection = () => {
           </span>
         </button>
 
-        <button className={buttonClass} onClick={() => handleAddQuestion('LONG_TEXT')}>
+        <button
+          type="button"
+          className={buttonClass}
+          onClick={() => handleAddQuestion('LONG_TEXT')}
+        >
           <div className={iconBoxClass}>
             <Iconography.Stroke.Document className="w-6 h-6 text-text-secondary group-hover:text-brand-primary" />
           </div>
@@ -44,7 +52,11 @@ const QuestionAddSection = () => {
           </span>
         </button>
 
-        <button className={buttonClass} onClick={() => handleAddQuestion('MULTIPLE_CHOICE')}>
+        <button
+          type="button"
+          className={buttonClass}
+          onClick={() => handleAddQuestion('MULTIPLE_CHOICE')}
+        >
           <div className={iconBoxClass}>
             <Iconography.Stroke.Plus className="w-6 h-6 text-text-secondary group-hover:text-brand-primary" />
           </div>
@@ -53,7 +65,11 @@ const QuestionAddSection = () => {
           </span>
         </button>
 
-        <button className={buttonClass} onClick={() => handleAddQuestion('SINGLE_CHOICE')}>
+        <button
+          type="button"
+          className={buttonClass}
+          onClick={() => handleAddQuestion('SINGLE_CHOICE')}
+        >
           <div className={iconBoxClass}>
             <Iconography.Stroke.Plus className="w-6 h-6 text-text-secondary group-hover:text-brand-primary" />
           </div>
