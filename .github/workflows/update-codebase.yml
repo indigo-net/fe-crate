@@ -33,9 +33,9 @@ jobs:
               dirname=$(basename "$dir")
               echo "Processing directory: $dirname"
               
-              # 해당 디렉토리에 대해 repomix 실행 및 src/{dirname}.md로 저장
+              # 해당 디렉토리에 대해 repomix 실행 및 해당 디렉토리의 {dirname}.md로 저장
               # --style markdown 사용하여 .md 형식으로 생성
-              npx -y repomix "$dir" --output "src/${dirname}.md" --style markdown
+              npx -y repomix "$dir" --output "${dir}${dirname}.md" --style markdown
             fi
           done
 
