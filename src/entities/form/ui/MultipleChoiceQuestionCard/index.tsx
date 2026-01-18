@@ -29,6 +29,7 @@ const MultipleChoiceQuestionCard = (props: Props) => {
       <div className="w-full flex justify-between items-center">
         <div className="relative">
           <select
+            aria-label={'질문 유형'}
             value={question?.getValue('type') ?? 'MULTIPLE_CHOICE'}
             className="cursor-pointer px-3 py-1.5 text-xs font-slim-semibold rounded-slim-lg bg-bg-subtle border border-transparent hover:border-border-default text-text-secondary transition-all outline-none"
             onChange={e =>
