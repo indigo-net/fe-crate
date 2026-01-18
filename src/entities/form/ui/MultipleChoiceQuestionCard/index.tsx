@@ -84,7 +84,7 @@ const MultipleChoiceQuestionCard = (props: Props) => {
                   <button
                     type="button"
                     onClick={() => onRemoveOption?.(question.getValue('id'), id)}
-                    className="p-1.5 rounded-slim-md bg-bg-subtle hover:bg-neon-pink-50 dark:hover:bg-neon-pink-950/30 opacity-0 group-hover/option:opacity-100 transition-all"
+                    className="p-1.5 rounded-slim-md bg-bg-subtle hover:bg-neon-pink-50 dark:hover:bg-neon-pink-950/30 opacity-0 group-hover/option:opacity-100 group-focus-within/option:opacity-100 transition-all"
                     aria-label="옵션 삭제"
                   >
                     <Iconography.Stroke.Minus
