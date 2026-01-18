@@ -1,14 +1,12 @@
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css');
+
 @import 'tailwindcss';
 @import './fonts.css';
-@import './colors.css';
+@import './border-radius.css';
+@import './border-width.css';
 @import './break-point.css';
-
-@theme {
-  --font-sans:
-    'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto,
-    'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic',
-    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
-}
+@import './colors.css';
+@import './font-weight.css';
 
 * {
   /* padding과 border를 width에 포함 */
@@ -25,13 +23,12 @@ html {
   /* macOS/iOS에서 폰트 렌더링 개선 */
   -moz-osx-font-smoothing: grayscale;
   /* 테마 색상 적용 */
-  background-color: var(--color-bg-default);
+  background-color: var(--color-bg-base);
   color: var(--color-text-primary);
 }
 
 body {
   line-height: 1.5;
-  overflow: hidden;
   margin: 0;
   padding: 0;
 }

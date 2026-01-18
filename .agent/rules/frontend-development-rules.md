@@ -2,9 +2,9 @@
 trigger: always_on
 ---
 
-# Frontend Architecture Rules (FSD-based)
+# Frontend Development Rules (FSD-Based Architecture & Implementation)
 
-## 1.0 Core Architectural Principles: Controller-Service Separation (FSD-Based)
+## 1.0 Core Architectural Principles: Controller-Service Separation
 
 The strategic application of a Controller-Service architectural pattern, inspired by backend design and aligned with Feature-Sliced Design (FSD), is a non-negotiable foundation of this project. This separation of concerns is critical for maintaining a scalable, testable, and maintainable codebase. Logic must be strictly segregated into the following three layers. The data and dependency flow is strictly unidirectional:
 
@@ -28,7 +28,7 @@ Located within `features/ui`, this layer is exclusively for presentation. Compon
 
 - Containing any business logic, state modification, or data transformation.
 - Calling any Service layer logic directly.
-- It is strictly forbidden to use any React hooks directly. This includes useState, useEffect, useCallback, useMemo, and all other hooks. All state and effects must be managed by the Controller.
+- **Hook Restriction**: It is strictly forbidden to use any React hooks directly (useState, useEffect, useMemo, etc.). All state and effects must be managed by the Controller.
 
 ---
 
@@ -41,7 +41,7 @@ Implemented as custom React hooks within `features/ui/hooks`, this layer acts as
 - Receive user events and intents forwarded from the UI Layer.
 - Orchestrate and delegate calls to the appropriate Service layer logic.
 - Read from and write to state management stores (e.g., Zustand).
-- Manage all component-level state, side effects, and memoization by exclusively using all React hooks (useState, useEffect, useMemo, etc.).
+- Manage all component-level state, side effects, and memoization by exclusively using React hooks.
 
 ### Strict Prohibitions
 
@@ -53,7 +53,7 @@ Implemented as custom React hooks within `features/ui/hooks`, this layer acts as
 
 ## 1.3 Service Layer (Domain Logic)
 
-Located within `entities/**/lib`, the Service layer is the brain of the application, containing all pure, framework-agnostic business and domain logic.
+Located within `entities/**/lib`, the Service layer contains all pure, framework-agnostic business and domain logic.
 
 ### Responsibilities & Attributes
 
@@ -83,12 +83,47 @@ The flow of dependencies is strictly unidirectional to prevent coupling and main
 - UI → Services (directly) ✘
 - Services → UI ✘
 
----
-
 ### 2.2 Naming Conventions
 
-- **Controller Hooks**  
-  Must follow the `use*Controller` pattern (e.g., `useQuestionListController`).
+- **Controller Hooks**: Must follow the `use*Controller` pattern (e.g., `useQuestionListController`).
+- **Service Layer Files**: Must follow either `*StateService` or `*DomainService` patterns (e.g., `FormSignatureStateService`).
 
-- **Service Layer Files**  
-  Must follow either `*StateService` or `*DomainService` patterns (e.g., `FormSignatureStateService`).
+---
+
+## 3.0 Code Implementation Guidelines
+
+Beyond the architectural structure, you must adhere to precise coding standards for consistency and readability.
+
+- **Readability**: Use early returns (guard clauses) to reduce nested logic.
+- **Styling**: Use Tailwind classes exclusively. Do not use plain CSS or `<style>` tags. Follow latest Tailwind v4 conventions.
+- **Conditional Styling**: Use class-based conditional syntax for Tailwind classes.
+- **Naming**: Use descriptive names for all variables. Event handlers must be prefixed with `handle` (e.g., `handleClick`).
+- **Accessibility**: Implement accessibility features (tabIndex, aria-label, Keyboard events) on all interactive elements.
+- **Function Syntax**: Define functions using `const` arrow function syntax and apply TypeScript types.
+
+---
+
+## 4.0 React Hooks Usage Rules (Detailed)
+
+### Core Rule: Hard View–Controller Boundary
+
+UI components (`features/ui`) must **NOT** use any React hooks directly (useState, useEffect, useMemo, useCallback, useRef, useReducer, etc.). This rule is absolute.
+
+### Where Hooks Are Allowed
+
+All React hooks must be declared and managed **only inside Controller hooks** (`use*Controller`).
+
+- **UI Components**:
+  - Receive values and handlers from the controller.
+  - Call functions passed from the controller.
+  - Render JSX only.
+  - Must NOT: Declare local state, use memoization, contain side effects, or derive state from props/stores.
+
+- **Controller Hooks**:
+  - Own all state (useState, external stores).
+  - Manage memoization (useMemo, useCallback).
+  - Handle side effects (useEffect).
+  - Derive computed values for the UI.
+  - Expose only plain values and functions (No JSX).
+
+Any violation of this boundary is considered an **architectural error**.
