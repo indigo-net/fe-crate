@@ -13,7 +13,6 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      # 1. pnpm 설치 (GitHub Runner에는 pnpm이 기본 설치되어 있지 않습니다)
       - name: Install pnpm
         uses: pnpm/action-setup@v2
         with:
@@ -23,15 +22,17 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 18
-          cache: 'pnpm' # npm 대신 pnpm 캐시를 사용하여 속도 향상
+          cache: 'pnpm'
 
-      # 2. 의존성 설치 (pnpm-lock.yaml 기준 설치)
       - name: Install Dependencies
-        run: pnpm install --frozen-lockfile
+        run: |
+          echo "🚀 의존성 설치를 시작합니다..."
+          pnpm install --frozen-lockfile
 
-      # 3. 빌드 (pnpm run build)
       - name: Build Project
-        run: pnpm run build
+        run: |
+          echo "🏗️ 프로젝트 빌드 중 (Vite)..."
+          pnpm run build
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -42,14 +43,27 @@ jobs:
 
       - name: Deploy to AWS Amplify
         run: |
-          # 1. 빌드 결과물 압축 (Vite+pnpm은 기본적으로 dist 폴더를 생성합니다)
+          echo "📦 1. 빌드 결과물(dist) 압축 중..."
           cd dist && zip -r ../deploy.zip . && cd ..
+          echo "✅ 압축 완료: deploy.zip"
 
-          # 2. 배포 업로드 URL 생성 (브랜치명 dev 확인)
-          UPLOAD_URL=$(aws amplify create-deployment --app-id ${{ secrets.AMPLIFY_APP_ID }} --branch-name dev --query 'zipUploadUrl' --output text)
+          echo "🔗 2. AWS Amplify 배포 생성 중..."
+          DEPLOY_INFO=$(aws amplify create-deployment --app-id ${{ secrets.AMPLIFY_APP_ID }} --branch-name dev --output json)
+          
+          # 값 추출
+          UPLOAD_URL=$(echo $DEPLOY_INFO | jq -r '.zipUploadUrl')
+          JOB_ID=$(echo $DEPLOY_INFO | jq -r '.jobId')
 
-          # 3. 파일 업로드
-          curl -X PUT --upload-file deploy.zip "$UPLOAD_URL"
+          echo "ℹ️ 생성된 Job ID: $JOB_ID"
+          # 보안을 위해 URL 전체보다는 성공 여부만 확인
+          if [ -n "$UPLOAD_URL" ]; then echo "✅ 업로드 URL 생성 성공"; fi
 
-          # 4. 배포 시작
-          aws amplify start-deployment --app-id ${{ secrets.AMPLIFY_APP_ID }} --branch-name dev
+          echo "📤 3. AWS S3로 파일 업로드 시작..."
+          curl -s -X PUT --upload-file deploy.zip "$UPLOAD_URL"
+          echo "✅ 업로드 완료"
+
+          echo "🚀 4. Amplify 배포 프로세스 시작 (Job ID: $JOB_ID)..."
+          aws amplify start-deployment --app-id ${{ secrets.AMPLIFY_APP_ID }} --branch-name dev --job-id $JOB_ID
+          
+          echo "🎉 모든 배포 명령이 성공적으로 전달되었습니다!"
+          echo "🌐 AWS 콘솔에서 배포 진행 상황을 확인하세요."
