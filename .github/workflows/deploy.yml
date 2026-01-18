@@ -5,6 +5,11 @@ on:
     branches:
       - dev
 
+# 동일 브랜치에 대한 중복 배포 방지
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -13,23 +18,20 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      # 1. pnpm 설치 (GitHub Runner에는 pnpm이 기본 설치되어 있지 않습니다)
       - name: Install pnpm
-        uses: pnpm/action-setup@v2
+        uses: pnpm/action-setup@v4
         with:
           version: 10
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18
-          cache: 'pnpm' # npm 대신 pnpm 캐시를 사용하여 속도 향상
+          node-version: 20
+          cache: 'pnpm'
 
-      # 2. 의존성 설치 (pnpm-lock.yaml 기준 설치)
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile
 
-      # 3. 빌드 (pnpm run build)
       - name: Build Project
         run: pnpm run build
 
@@ -42,14 +44,14 @@ jobs:
 
       - name: Deploy to AWS Amplify
         run: |
-          # 1. 빌드 결과물 압축 (Vite+pnpm은 기본적으로 dist 폴더를 생성합니다)
+          # 1. 빌드 결과물 압축
           cd dist && zip -r ../deploy.zip . && cd ..
 
-          # 2. 배포 업로드 URL 생성 (브랜치명 dev 확인)
+          # 2. 배포 업로드 URL 생성
           UPLOAD_URL=$(aws amplify create-deployment --app-id ${{ secrets.AMPLIFY_APP_ID }} --branch-name dev --query 'zipUploadUrl' --output text)
 
           # 3. 파일 업로드
-          curl -X PUT --upload-file deploy.zip "$UPLOAD_URL"
+          curl -H "Content-Type: application/zip" -X PUT --upload-file deploy.zip "$UPLOAD_URL"
 
           # 4. 배포 시작
           aws amplify start-deployment --app-id ${{ secrets.AMPLIFY_APP_ID }} --branch-name dev
