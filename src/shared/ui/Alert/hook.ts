@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { BaseSyntheticEvent, useCallback } from 'react';
 
 import { useAlertContext } from '@/shared/context';
 
@@ -11,16 +11,24 @@ const useAlertController = (props: Props) => {
   const { id, confirmCallback } = props;
   const { hideAlert } = useAlertContext();
 
-  const handleClose = useCallback(() => {
-    hideAlert(id);
-  }, [hideAlert, id]);
-
-  const handleConfirm = useCallback(() => {
-    confirmCallback?.();
-    setTimeout(() => {
+  const handleClose = useCallback(
+    (e: BaseSyntheticEvent) => {
+      e.stopPropagation();
       hideAlert(id);
-    });
-  }, [confirmCallback, hideAlert, id]);
+    },
+    [hideAlert, id],
+  );
+
+  const handleConfirm = useCallback(
+    (e: BaseSyntheticEvent) => {
+      e.stopPropagation();
+      confirmCallback?.();
+      setTimeout(() => {
+        hideAlert(id);
+      });
+    },
+    [confirmCallback, hideAlert, id],
+  );
 
   return { handleClose, handleConfirm };
 };

@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { BaseSyntheticEvent, useCallback } from 'react';
 
 import { useModalContext } from '@/shared/context';
 
@@ -12,23 +12,35 @@ const useModalController = (props: Props) => {
   const { id, confirmCallback, cancelCallback } = props;
   const { closeModal } = useModalContext();
 
-  const handleClose = useCallback(() => {
-    closeModal(id);
-  }, [id, closeModal]);
-
-  const handleConfirm = useCallback(() => {
-    confirmCallback?.();
-    setTimeout(() => {
+  const handleClose = useCallback(
+    (e: BaseSyntheticEvent) => {
+      e.stopPropagation();
       closeModal(id);
-    });
-  }, [id, closeModal, confirmCallback]);
+    },
+    [id, closeModal],
+  );
 
-  const handleCancel = useCallback(() => {
-    cancelCallback?.();
-    setTimeout(() => {
-      closeModal(id);
-    });
-  }, [id, closeModal, cancelCallback]);
+  const handleConfirm = useCallback(
+    (e: BaseSyntheticEvent) => {
+      e.stopPropagation();
+      confirmCallback?.();
+      setTimeout(() => {
+        closeModal(id);
+      });
+    },
+    [id, closeModal, confirmCallback],
+  );
+
+  const handleCancel = useCallback(
+    (e: BaseSyntheticEvent) => {
+      e.stopPropagation();
+      cancelCallback?.();
+      setTimeout(() => {
+        closeModal(id);
+      });
+    },
+    [id, closeModal, cancelCallback],
+  );
 
   return {
     handleClose,
