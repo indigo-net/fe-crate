@@ -1,5 +1,6 @@
 import Angry from './angry';
 import Balance from './balance';
+import Cancel from './Cancel';
 import Dizzy from './dizzy';
 import Document from './Document';
 import Flash from './flash';
@@ -19,6 +20,7 @@ import Users from './users';
 const Stroke = {
   Angry,
   Balance,
+  Cancel,
   Dizzy,
   Document,
   Flash,
