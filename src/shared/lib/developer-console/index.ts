@@ -1,6 +1,6 @@
 type PrintType = 'log' | 'warn' | 'error';
 
-interface ILog<T extends unknown> {
+interface ILog<T> {
   message: string;
   data?: T;
   location?: string;

@@ -1,7 +1,8 @@
 import { BaseSyntheticEvent, useCallback } from 'react';
 
-import { useModalContext } from '@/shared/context';
 import DeveloperConsole from '@/shared/lib/developer-console';
+
+import { useModalContext } from '@/shared/context';
 
 interface Props {
   id: string;

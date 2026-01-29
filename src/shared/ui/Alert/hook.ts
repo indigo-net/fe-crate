@@ -1,7 +1,8 @@
 import { BaseSyntheticEvent, useCallback } from 'react';
 
-import { useAlertContext } from '@/shared/context';
 import DeveloperConsole from '@/shared/lib/developer-console';
+
+import { useAlertContext } from '@/shared/context';
 
 interface Props {
   id: string;
