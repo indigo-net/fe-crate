@@ -163,12 +163,12 @@ const FormSignatureEditSection = memo(() => {
     useFormSignatureEditSectionController();
 
   return (
-    <section className="w-full flex flex-col gap-[12px] p-[24px] bg-bg-default border-t-[8px] border-x border-b border-t-brand-primary border-x-divider-default border-b-divider-default rounded-[12px] shadow-sm">
+    <section className="w-full flex flex-col gap-4 p-8 bg-bg-base border-t-8 border-x border-b border-t-brand-primary border-border-default rounded-slim-2xl shadow-sm hover:shadow-md transition-shadow">
       <div className="w-full">
         <input
           type="text"
-          placeholder="제목을 입력해주세요."
-          className="w-full py-[8px] text-[32px] font-bold bg-transparent border-b border-gray-200 text-text-primary focus:border-brand-primary focus:outline-none placeholder:text-text-tertiary transition-colors"
+          placeholder="제목을 입력해주세요"
+          className="w-full py-2 text-4xl font-slim-bold bg-transparent border-b-2 border-border-default text-text-primary focus:border-brand-primary focus:outline-none placeholder:text-text-tertiary transition-colors"
           maxLength={100}
           value={formSignature?.getValue('title') ?? ''}
           onChange={e => handleTitleChange(e.target.value)}
@@ -178,8 +178,8 @@ const FormSignatureEditSection = memo(() => {
       <div className="w-full">
         <input
           type="text"
-          placeholder="필요할 경우, 추가적인 설명을 입력해주세요."
-          className="w-full py-[4px] text-[14px] bg-transparent border-b border-gray-200 text-text-secondary focus:border-brand-primary focus:outline-none placeholder:text-text-tertiary transition-colors"
+          placeholder="이 설문에 대한 설명을 입력해주세요 (선택 사항)"
+          className="w-full py-2 text-base font-slim-normal bg-transparent border-b border-border-default text-text-secondary focus:border-brand-primary focus:outline-none placeholder:text-text-tertiary transition-colors"
           maxLength={200}
           value={formSignature?.getValue('description') ?? ''}
           onChange={e => handleDescriptionChange(e.target.value)}
@@ -224,43 +224,82 @@ export default useQuestionAddSectionController;
 ```typescript
 import { memo } from 'react';
 
+import { Iconography } from '@/shared/ui';
+
 import useQuestionAddSectionController from './hook';
 
 const QuestionAddSection = () => {
   const { handleAddQuestion } = useQuestionAddSectionController();
 
-  const buttonBaseClass =
-    'border-[2px] border-divider-default rounded-[8px] py-[12px] px-[16px] flex justify-center items-center flex-nowrap w-full text-[14px] text-center text-nowrap transition-colors duration-100 ease-in-out';
-  const activeClass =
-    'hover:bg-brand-primary/10 hover:border-brand-primary hover:text-brand-primary cursor-pointer text-text-secondary';
+  const buttonClass =
+    'group flex flex-col items-center justify-center gap-4 p-6 bg-bg-base border-2 border-border-default rounded-slim-2xl hover:border-brand-primary hover:bg-bg-subtle transition-all duration-300 transform hover:scale-105 shadow-sm hover:shadow-md cursor-pointer';
+
+  const iconBoxClass =
+    'w-12 h-12 flex items-center justify-center bg-bg-subtle group-hover:bg-brand-primary/10 rounded-slim-xl transition-colors';
 
   return (
-    <section className="shadow-sm border border-divider-default rounded-[16px] p-[24px] flex flex-col gap-[16px] bg-bg-default w-full">
-      <h3 className="text-[20px] font-bold text-text-primary">질문 추가</h3>
-      <div className="flex-1 w-full flex items-center gap-[12px]">
+    <section className="w-full py-12 flex flex-col gap-8 items-center bg-transparent">
+      <div className="flex flex-col items-center gap-2 text-center">
+        <h3 className="text-2xl font-slim-bold text-text-primary flex items-center gap-2">
+          <Iconography.Stroke.Plus className="w-6 h-6 text-brand-primary" />
+          질문 추가하기
+        </h3>
+        <p className="text-text-secondary text-sm">
+          필요한 질문 유형을 선택하여 설문을 구성해보세요.
+        </p>
+      </div>
+
+      <div className="grid grid-cols-2 desktop:grid-cols-4 gap-4 w-full">
         <button
-          className={`${buttonBaseClass} ${activeClass}`}
+          type="button"
+          className={buttonClass}
           onClick={() => handleAddQuestion('SHORT_TEXT')}
         >
-          단답형
+          <div className={iconBoxClass}>
+            <Iconography.Stroke.Document className="w-6 h-6 text-text-secondary group-hover:text-brand-primary" />
+          </div>
+          <span className="font-slim-semibold text-text-secondary group-hover:text-text-primary">
+            단답형
+          </span>
         </button>
+
         <button
-          className={`${buttonBaseClass} ${activeClass}`}
+          type="button"
+          className={buttonClass}
           onClick={() => handleAddQuestion('LONG_TEXT')}
         >
-          장문형
+          <div className={iconBoxClass}>
+            <Iconography.Stroke.Document className="w-6 h-6 text-text-secondary group-hover:text-brand-primary" />
+          </div>
+          <span className="font-slim-semibold text-text-secondary group-hover:text-text-primary">
+            장문형
+          </span>
         </button>
+
         <button
-          className={`${buttonBaseClass} ${activeClass}`}
+          type="button"
+          className={buttonClass}
           onClick={() => handleAddQuestion('MULTIPLE_CHOICE')}
         >
-          복수선택
+          <div className={iconBoxClass}>
+            <Iconography.Stroke.Plus className="w-6 h-6 text-text-secondary group-hover:text-brand-primary" />
+          </div>
+          <span className="font-slim-semibold text-text-secondary group-hover:text-text-primary">
+            복수선택
+          </span>
         </button>
+
         <button
-          className={`${buttonBaseClass} ${activeClass}`}
+          type="button"
+          className={buttonClass}
           onClick={() => handleAddQuestion('SINGLE_CHOICE')}
         >
-          단일선택
+          <div className={iconBoxClass}>
+            <Iconography.Stroke.Plus className="w-6 h-6 text-text-secondary group-hover:text-brand-primary" />
+          </div>
+          <span className="font-slim-semibold text-text-secondary group-hover:text-text-primary">
+            단일선택
+          </span>
         </button>
       </div>
     </section>
