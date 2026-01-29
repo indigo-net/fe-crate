@@ -1,6 +1,7 @@
 import { BaseSyntheticEvent, useCallback } from 'react';
 
 import { useAlertContext } from '@/shared/context';
+import DeveloperConsole from '@/shared/lib/developer-console';
 
 interface Props {
   id: string;
@@ -22,10 +23,19 @@ const useAlertController = (props: Props) => {
   const handleConfirm = useCallback(
     (e: BaseSyntheticEvent) => {
       e.stopPropagation();
-      confirmCallback?.();
-      setTimeout(() => {
-        hideAlert(id);
-      });
+      try {
+        confirmCallback?.();
+      } catch (error) {
+        DeveloperConsole.error({
+          message: 'Alert confirm callback error',
+          data: error,
+          location: '@/shared/ui/Alert/hook.ts',
+        });
+      } finally {
+        setTimeout(() => {
+          hideAlert(id);
+        });
+      }
     },
     [confirmCallback, hideAlert, id],
   );

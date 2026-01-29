@@ -1,6 +1,7 @@
 import { BaseSyntheticEvent, useCallback } from 'react';
 
 import { useModalContext } from '@/shared/context';
+import DeveloperConsole from '@/shared/lib/developer-console';
 
 interface Props {
   id: string;
@@ -23,10 +24,19 @@ const useModalController = (props: Props) => {
   const handleConfirm = useCallback(
     (e: BaseSyntheticEvent) => {
       e.stopPropagation();
-      confirmCallback?.();
-      setTimeout(() => {
-        closeModal(id);
-      });
+      try {
+        confirmCallback?.();
+      } catch (error) {
+        DeveloperConsole.error({
+          message: 'Modal confirm callback error',
+          data: error,
+          location: '@/shared/ui/Modal/hook.ts',
+        });
+      } finally {
+        setTimeout(() => {
+          closeModal(id);
+        });
+      }
     },
     [id, closeModal, confirmCallback],
   );
@@ -34,10 +44,19 @@ const useModalController = (props: Props) => {
   const handleCancel = useCallback(
     (e: BaseSyntheticEvent) => {
       e.stopPropagation();
-      cancelCallback?.();
-      setTimeout(() => {
-        closeModal(id);
-      });
+      try {
+        cancelCallback?.();
+      } catch (error) {
+        DeveloperConsole.error({
+          message: 'Modal cancel callback error',
+          data: error,
+          location: '@/shared/ui/Modal/hook.ts',
+        });
+      } finally {
+        setTimeout(() => {
+          closeModal(id);
+        });
+      }
     },
     [id, closeModal, cancelCallback],
   );
