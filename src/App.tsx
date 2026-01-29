@@ -1,9 +1,9 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import DashboardPage from './pages/dashboard';
-import KakaoRedirectPage from './pages/kakao-redirect';
-import LandingPage from './pages/landing';
-import NewFormPage from './pages/new-form';
+import DashboardPage from './pages/ui/dashboard';
+import KakaoRedirectPage from './pages/ui/kakao-redirect';
+import LandingPage from './pages/ui/landing';
+import NewFormPage from './pages/ui/new-form';
 import { AlertProvider, ToastProvider, ModalProvider } from './shared/context';
 
 const App = () => {
