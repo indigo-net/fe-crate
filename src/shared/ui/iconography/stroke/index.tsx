@@ -3,6 +3,7 @@ import Balance from './balance';
 import Cancel from './Cancel';
 import Dizzy from './dizzy';
 import Document from './Document';
+import Flag from './Flag';
 import Flash from './flash';
 import Graduation from './graduation';
 import Minus from './minus';
@@ -24,6 +25,7 @@ const Stroke = {
   Dizzy,
   Document,
   Flash,
+  Flag,
   Graduation,
   Minus,
   Monitor,

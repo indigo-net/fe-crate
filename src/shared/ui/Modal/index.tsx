@@ -32,12 +32,17 @@ const Modal = (props: Props) => {
 
   return (
     <div
-      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-[2px] transition-all duration-300"
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-surface-overlay backdrop-blur-[2px] transition-all duration-300"
       onClick={handleClose}
       aria-modal="true"
       role="dialog"
+      aria-label={title || '모달'}
     >
-      <div className="bg-white rounded-[20px] shadow-2xl flex flex-col overflow-hidden animate-dialog-in w-[80%] h-[80%] max-w-[1200px] max-h-[90vh]">
+      <div
+        className="bg-white rounded-[20px] shadow-2xl flex flex-col overflow-hidden animate-dialog-in w-[80%] h-[80%] max-w-[1200px] max-h-[90vh]"
+        onClick={e => e.stopPropagation()}
+        tabIndex={-1}
+      >
         <div className="px-[24px] py-[8px] border-b border-gray-100 flex items-center justify-between">
           {title && <h2 className="text-[20px] font-bold text-gray-900">{title}</h2>}
           <button

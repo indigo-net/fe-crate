@@ -8,10 +8,10 @@ import {
 import { DarkModeButton } from '@/features/toggle-theme/ui';
 import { Iconography } from '@/shared/ui';
 
-import useNewFormPageController from './hook';
+import { useNewFormPageController } from './hook';
 
 const NewFormPage = () => {
-  const { listRef } = useNewFormPageController();
+  const { listRef, handleOpenPublishModal } = useNewFormPageController();
 
   return (
     <div className="w-full h-[100dvh] flex flex-col bg-bg-base text-text-primary">
@@ -32,7 +32,10 @@ const NewFormPage = () => {
               <Iconography.Stroke.Trash className="w-4 h-4" />
               <span>초기화</span>
             </button>
-            <button className="px-6 py-2.5 bg-brand-primary text-text-inverse font-slim-bold text-sm rounded-slim-lg shadow-sm hover:shadow-md hover:scale-105 active:scale-95 transition-all flex items-center gap-2">
+            <button
+              onClick={handleOpenPublishModal}
+              className="px-6 py-2.5 bg-brand-primary text-text-inverse font-slim-bold text-sm rounded-slim-lg shadow-sm hover:shadow-md hover:scale-105 active:scale-95 transition-all flex items-center gap-2"
+            >
               <Iconography.Stroke.Rocket className="w-5 h-5" />
               <span>저장 및 게시하기</span>
             </button>
