@@ -4,7 +4,7 @@ import DashboardPage from './pages/ui/dashboard';
 import KakaoRedirectPage from './pages/ui/kakao-redirect';
 import LandingPage from './pages/ui/landing';
 import NewFormPage from './pages/ui/new-form';
-import { AlertProvider, ToastProvider, ModalProvider } from './shared/context';
+import { AlertProvider, ToastProvider, ModalProvider } from './shared/lib';
 
 const App = () => {
   return (

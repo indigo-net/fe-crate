@@ -1,6 +1,9 @@
 import { createContext, useContext, useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 
 import { Toast } from '@/shared/ui';
+
+import TypeGuard from '../../type-guard';
 
 import type { ReactNode } from 'react';
 
@@ -45,14 +48,14 @@ const ToastProvider = ({ children }: Props) => {
   return (
     <ToastContext.Provider value={{ showToast }}>
       {children}
-      <Toast message={message} isVisible={isVisible} />
+      {createPortal(<Toast message={message} isVisible={isVisible} />, document.body)}
     </ToastContext.Provider>
   );
 };
 
 const useToastContext = () => {
   const context = useContext(ToastContext);
-  if (!context) {
+  if (TypeGuard.checkNull(context)) {
     throw new Error('useToastContext must be used within a ToastProvider');
   }
   return context;

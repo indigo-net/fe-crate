@@ -2,8 +2,7 @@ import { useEffect, useRef, useCallback, createElement } from 'react';
 
 import { useFormQuestionListStore } from '@/entities/form/store';
 import { PublishSettingsModal } from '@/modals/ui';
-import { useModalContext } from '@/shared/context';
-import { UUID } from '@/shared/lib';
+import { UUID, useModalContext } from '@/shared/lib';
 
 export const useNewFormPageController = () => {
   const { formQuestions } = useFormQuestionListStore();
