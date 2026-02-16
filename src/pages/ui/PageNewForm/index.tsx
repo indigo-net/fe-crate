@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Link } from 'react-router-dom';
 
 import {
@@ -8,10 +9,10 @@ import {
 import { DarkModeButton } from '@/features/toggle-theme/ui';
 import { Iconography } from '@/shared/ui';
 
-import { useNewFormPageController } from './hook';
+import { usePageNewFormController } from './hook';
 
-const NewFormPage = () => {
-  const { listRef, handleOpenPublishModal } = useNewFormPageController();
+const PageNewForm = memo(() => {
+  const { listRef, handleOpenPublishModal } = usePageNewFormController();
 
   return (
     <div className="w-full h-[100dvh] flex flex-col bg-bg-base text-text-primary">
@@ -57,6 +58,8 @@ const NewFormPage = () => {
       </main>
     </div>
   );
-};
+});
 
-export default NewFormPage;
+PageNewForm.displayName = 'PageNewForm';
+
+export default PageNewForm;

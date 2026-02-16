@@ -2,7 +2,7 @@ import { QuestionStateService, QuestionListStateService } from '@/entities/form/
 import { useFormQuestionListStore } from '@/entities/form/store';
 import { TypeGuard } from '@/shared/lib';
 
-import type { FormQuestionType } from '@/entities/form/model';
+import type { FormQuestionType } from '@/entities/form';
 
 const useQeustionListController = () => {
   const { formQuestions, setFormQuestions } = useFormQuestionListStore();

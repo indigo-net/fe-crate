@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const useLandingPageController = () => {
+const usePageLandingController = () => {
   const [isLoggined] = useState(() => {
     const loginFlag = localStorage?.getItem('isLoggined');
     return loginFlag === 'true';
@@ -11,4 +11,4 @@ const useLandingPageController = () => {
   };
 };
 
-export default useLandingPageController;
+export default usePageLandingController;

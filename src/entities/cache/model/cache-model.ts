@@ -1,7 +1,7 @@
 import { TypeGuard } from '@/shared/lib';
 import { CustomModel } from '@/shared/model';
 
-import type { CacheData } from './type';
+import type { CacheData } from '../types';
 
 interface State<T extends CacheData = null> {
   data: T;

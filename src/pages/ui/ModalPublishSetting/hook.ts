@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 
-import type { FormStatusType, SelectionMethodType } from '@/entities/form/model/type';
+import type { FormStatusType, SelectionMethodType } from '@/entities/form';
 
 interface PublishSettings {
   status: FormStatusType;
@@ -13,7 +13,7 @@ interface Props {
   onConfirm?: (settings: PublishSettings) => void;
 }
 
-const usePublishSettingsModalController = (props: Props) => {
+const useModalPublishSettingController = (props: Props) => {
   const { onConfirm } = props;
   const [status, setStatus] = useState<FormStatusType>('PUBLISHED');
   const [selectionMethod, setSelectionMethod] = useState<SelectionMethodType>('QUANTITATIVE');
@@ -54,4 +54,4 @@ const usePublishSettingsModalController = (props: Props) => {
   };
 };
 
-export default usePublishSettingsModalController;
+export default useModalPublishSettingController;

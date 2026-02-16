@@ -1,4 +1,6 @@
-import { FormQuestionModel, FormQuestionOptionModel, type FormQuestionType } from '../model';
+import { FormQuestionModel, FormQuestionOptionModel } from '../model';
+
+import type { FormQuestionType } from '../types';
 
 class QuestionStateService {
   static getInitialQuestion(type: FormQuestionType) {

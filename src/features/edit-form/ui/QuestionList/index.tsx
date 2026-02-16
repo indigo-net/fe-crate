@@ -7,7 +7,7 @@ import {
   MultipleChoiceQuestionCard,
 } from '@/entities/form/ui';
 
-import useQeustionListController from './use-question-list';
+import useQuestionListController from './hook';
 
 const QuestionList = () => {
   const {
@@ -18,7 +18,7 @@ const QuestionList = () => {
     handleUpdateOption,
     handleAddOption,
     handleRemoveOption,
-  } = useQeustionListController();
+  } = useQuestionListController();
 
   return (
     <div className="flex flex-col gap-[24px] w-full">

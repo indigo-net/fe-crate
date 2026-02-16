@@ -1,7 +1,7 @@
-import type { FormStatusType, SelectionMethodType } from '@/entities/form/model/type';
-
 import { UUID } from '@/shared/lib';
 import { CustomModel } from '@/shared/model';
+
+import type { FormStatusType, SelectionMethodType } from '@/entities/form';
 
 interface State {
   id: string;

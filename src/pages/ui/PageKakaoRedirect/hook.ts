@@ -4,7 +4,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { TypeGuard } from '@/shared/lib';
 import { AxiosManager } from '@/shared/lib';
 
-const useKakaoRedirectPageController = () => {
+const usePageKakaoRedirectController = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
@@ -32,4 +32,4 @@ const useKakaoRedirectPageController = () => {
   }, []);
 };
 
-export default useKakaoRedirectPageController;
+export default usePageKakaoRedirectController;

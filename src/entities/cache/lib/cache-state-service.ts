@@ -1,8 +1,10 @@
 import { TypeGuard } from '@/shared/lib';
 
-import { type CacheData, CacheModel } from '../model';
+import { CacheModel } from '../model';
 
-class CacheService {
+import type { CacheData } from '../types';
+
+class CacheStateService {
   static CACHE_MAP = new Map<string, CacheModel<CacheData>>();
 
   static get<T extends CacheData>(key: string): T | null {
@@ -29,4 +31,4 @@ class CacheService {
   }
 }
 
-export default CacheService;
+export default CacheStateService;

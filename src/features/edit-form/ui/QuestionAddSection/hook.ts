@@ -3,7 +3,7 @@ import { useCallback } from 'react';
 import { QuestionListStateService, QuestionStateService } from '@/entities/form/lib';
 import { useFormQuestionListStore } from '@/entities/form/store';
 
-import type { FormQuestionType } from '@/entities/form/model';
+import type { FormQuestionType } from '@/entities/form';
 
 const useQuestionAddSectionController = () => {
   const { setFormQuestions } = useFormQuestionListStore();

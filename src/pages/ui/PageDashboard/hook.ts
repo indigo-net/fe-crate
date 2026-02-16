@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 
-const useDashboardPageController = () => {
+const usePageDashboardController = () => {
   const [isEvaluatorsExpanded, setIsEvaluatorsExpanded] = useState(false);
 
   // Mock data for evaluators
@@ -171,4 +171,4 @@ const useDashboardPageController = () => {
   };
 };
 
-export default useDashboardPageController;
+export default usePageDashboardController;

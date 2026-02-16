@@ -1,8 +1,10 @@
-import type { FormStatusType, SelectionMethodType } from '@/entities/form/model/type';
+import { memo } from 'react';
 
 import { Iconography, Radio } from '@/shared/ui';
 
-import usePublishSettingsModalController from './hook';
+import useModalPublishSettingController from './hook';
+
+import type { FormStatusType, SelectionMethodType } from '@/entities/form';
 
 interface PublishSettings {
   status: FormStatusType;
@@ -15,7 +17,7 @@ interface Props {
   onConfirm?: (settings: PublishSettings) => void;
 }
 
-const PublishSettingsModal = ({ onConfirm }: Props) => {
+const ModalPublishSetting = memo(({ onConfirm }: Props) => {
   const {
     status,
     setStatus,
@@ -27,7 +29,7 @@ const PublishSettingsModal = ({ onConfirm }: Props) => {
     setEndDate,
     isValid,
     handleConfirm,
-  } = usePublishSettingsModalController({ onConfirm });
+  } = useModalPublishSettingController({ onConfirm });
 
   const methods: {
     value: SelectionMethodType;
@@ -229,9 +231,9 @@ const PublishSettingsModal = ({ onConfirm }: Props) => {
         </p>
       </div>
 
-      {/* 
-        NOTE: 모달 시스템의 confirm 버튼이 외부에 있으므로 
-        이 컴포넌트 내부에서 상태를 전달할 트리거가 필요하거나, 
+      {/*
+        NOTE: 모달 시스템의 confirm 버튼이 외부에 있으므로
+        이 컴포넌트 내부에서 상태를 전달할 트리거가 필요하거나,
         ModalProps의 confirmCallback을 잘 활용해야 함.
         isValid 상태를 상위로 전달하는 기믹이 필요할 수 있음.
       */}
@@ -242,14 +244,16 @@ const PublishSettingsModal = ({ onConfirm }: Props) => {
         className="hidden"
       />
 
-      {/* 
-        실제 버튼은 모달 Footer에 있겠지만, if validity matters 
+      {/*
+        실제 버튼은 모달 Footer에 있겠지만, if validity matters
         we might need a way to communicate 'isValid' to the parent.
         Usually this is done via a data attribute or a state in a shared store.
       */}
       <div id="publish-settings-validity" data-valid={isValid} className="hidden" />
     </div>
   );
-};
+});
 
-export default PublishSettingsModal;
+ModalPublishSetting.displayName = 'ModalPublishSetting';
+
+export default ModalPublishSetting;

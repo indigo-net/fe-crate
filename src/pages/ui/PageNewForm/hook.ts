@@ -1,10 +1,12 @@
 import { useEffect, useRef, useCallback, createElement } from 'react';
 
+import { useModalContext } from '@/app/lib';
 import { useFormQuestionListStore } from '@/entities/form/store';
-import { PublishSettingsModal } from '@/modals/ui';
-import { UUID, useModalContext } from '@/shared/lib';
+import { UUID } from '@/shared/lib';
 
-export const useNewFormPageController = () => {
+import ModalPublishSetting from '../ModalPublishSetting';
+
+export const usePageNewFormController = () => {
   const { formQuestions } = useFormQuestionListStore();
   const { openModal, closeModal } = useModalContext();
 
@@ -26,7 +28,7 @@ export const useNewFormPageController = () => {
       title: '폼 저장 및 게시 설정',
       confirmLabel: '게시하기',
       cancelLabel: '취소',
-      content: createElement(PublishSettingsModal, {
+      content: createElement(ModalPublishSetting, {
         onConfirm: settings => {
           console.log('Publish Settings:', settings);
           // TODO: API 연동 또는 상태 저장 로직 추가
@@ -34,7 +36,7 @@ export const useNewFormPageController = () => {
         },
       }),
       confirmCallback: () => {
-        // PublishSettingsModal 내부의 handleConfirm이 호출되도록 트리거
+        // ModalPublishSetting 내부의 handleConfirm이 호출되도록 트리거
         const trigger = document.getElementById('modal-confirm-trigger');
         if (trigger) {
           trigger.click();

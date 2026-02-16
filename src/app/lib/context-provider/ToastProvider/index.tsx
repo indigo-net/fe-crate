@@ -1,9 +1,8 @@
 import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
+import { TypeGuard } from '@/shared/lib';
 import { Toast } from '@/shared/ui';
-
-import TypeGuard from '../../type-guard';
 
 import type { ReactNode } from 'react';
 

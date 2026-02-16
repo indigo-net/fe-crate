@@ -3,7 +3,7 @@ import { CustomModel } from '@/shared/model';
 
 import FormQuestionOptionModel from './option';
 
-import type { FormQuestionType } from '../';
+import type { FormQuestionType } from '../../types';
 
 interface State {
   id: string;

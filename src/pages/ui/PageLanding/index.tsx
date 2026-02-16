@@ -1,13 +1,14 @@
+import { memo } from 'react';
 import { Link } from 'react-router-dom';
 
 // import { LoginButton } from '@/features/authenticate/ui';
 import { DarkModeButton } from '@/features/toggle-theme/ui';
 import { Iconography } from '@/shared/ui';
 
-import useLandingPageController from './hook';
+import usePageLandingController from './hook';
 
-const LandingPage = () => {
-  const { isLoggined } = useLandingPageController();
+const PageLanding = memo(() => {
+  const { isLoggined } = usePageLandingController();
 
   return (
     <div className="w-full min-h-[100dvh] overflow-y-auto flex flex-col bg-bg-base text-text-primary">
@@ -320,6 +321,8 @@ const LandingPage = () => {
       </footer>
     </div>
   );
-};
+});
 
-export default LandingPage;
+PageLanding.displayName = 'PageLanding';
+
+export default PageLanding;

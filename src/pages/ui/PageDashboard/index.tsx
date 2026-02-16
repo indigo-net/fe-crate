@@ -1,11 +1,12 @@
+import { memo } from 'react';
 import { Link } from 'react-router-dom';
 
 import { DarkModeButton } from '@/features/toggle-theme/ui';
 import { Iconography } from '@/shared/ui';
 
-import useDashboardPageController from './hook';
+import usePageDashboardController from './hook';
 
-const DashboardPage = () => {
+const PageDashboard = memo(() => {
   const {
     evaluators,
     hasMoreEvaluators,
@@ -13,7 +14,7 @@ const DashboardPage = () => {
     handleToggleEvaluators,
     activeForms,
     activityLogs,
-  } = useDashboardPageController();
+  } = usePageDashboardController();
 
   return (
     <div className="w-full min-h-screen flex flex-col bg-bg-base text-text-primary">
@@ -315,6 +316,8 @@ const DashboardPage = () => {
       </footer>
     </div>
   );
-};
+});
 
-export default DashboardPage;
+PageDashboard.displayName = 'PageDashboard';
+
+export default PageDashboard;
