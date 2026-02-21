@@ -1,0 +1,1 @@
+../../agent-skills/app/SKILL.md

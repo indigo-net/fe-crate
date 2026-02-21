@@ -1,0 +1,1 @@
+../../agent-skills/entities/SKILL.md
