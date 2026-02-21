@@ -224,3 +224,27 @@ For detailed layer-specific best practices, see the skill files:
 | **Widgets** | `agent-skills/widgets/SKILL.md` | Widget composition, When to create widgets |
 | **Pages** | `agent-skills/pages/SKILL.md` | Page/Modal patterns, Component structure |
 | **App** | `agent-skills/app/SKILL.md` | Entry point, Context providers, Routing |
+
+## Agent-Skills Directory
+
+Shared skill documentation for multiple AI systems (Claude, Cursor, Copilot):
+
+| Directory | Purpose |
+|-----------|---------|
+| `agent-skills/common/` | Project guide (this file) |
+| `agent-skills/*/SKILL.md` | Layer-specific guides |
+| `agent-skills/*/STRUCTURE.md` | Auto-generated file structure |
+
+**Symlinks:** `CLAUDE.md` → `agent-skills/common/SKILL.md`, `.claude/skills/*.md` → `agent-skills/*/SKILL.md`
+
+### Updating STRUCTURE.md
+
+Regenerate layer structure documentation with Repomix:
+
+```bash
+npx repomix --style plain --no-files --output agent-skills/<layer>/STRUCTURE.md src/<layer>
+```
+
+### SKILL.md Format
+
+All skill files use YAML frontmatter: `name`, `description` (with trigger keywords), `license: Proprietary`
