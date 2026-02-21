@@ -21,31 +21,7 @@ The `shared` layer contains reusable utilities, base components, and foundationa
 | Access env variables | `EnvManager.getAppEnv(key)` |
 | Type checking | `TypeGuard.checkNull(value)` |
 | Generate UUID | `UUID.v4()` |
-
-## Directory Structure
-
-```
-src/shared/
-├── types.d.ts          # Common type definitions (moved from @types)
-├── lib/                # Utility classes and helper functions
-│   ├── axios-manager/
-│   ├── env-manager/
-│   ├── type-guard/
-│   ├── uuid/
-│   ├── date-standard/
-│   ├── developer-console/
-│   └── index.ts
-├── model/              # Base classes only
-│   ├── custom-model/
-│   └── index.ts
-└── ui/                 # Base UI components
-    ├── Modal/
-    ├── Alert/
-    ├── Toast/
-    ├── Radio/
-    ├── iconography/
-    └── index.ts
-```
+| 파일 구조 확인 | `./STRUCTURE.md` 참조 |
 
 ## Shared vs Domain Modules
 
@@ -130,15 +106,7 @@ export type { AppEnvKey };
 
 ## Context Providers (in app layer)
 
-Global context providers are located in `app/lib/context-provider/`:
-
-```
-src/app/lib/context-provider/
-├── ModalProvider/
-├── AlertProvider/
-├── ToastProvider/
-└── index.ts
-```
+Global context providers are located in `app/lib/context-provider/`.
 
 **Note**: All pages are wrapped with the same providers. Provider order: `ToastProvider` → `AlertProvider` → `ModalProvider`.
 

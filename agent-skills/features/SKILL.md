@@ -18,24 +18,7 @@ The `features` layer contains user-facing features that represent user actions. 
 | Add API calls | `features/(feature)/api/` |
 | Add feature logic | `features/(feature)/lib/` |
 | Name feature | verb-noun pattern (e.g., `edit-form`, `toggle-theme`) |
-
-## Directory Structure
-
-```
-src/features/(feature)/
-├── ui/                     # Interactive UI components
-│   ├── ComponentName/      # Role-based naming (*Section, *Button, etc.)
-│   │   ├── index.tsx
-│   │   └── hook.ts         # Component logic hook (unified naming)
-│   └── index.ts
-├── api/                    # API call declarations
-│   ├── (feature)-api.ts    # Raw API functions
-│   └── index.ts
-├── lib/                    # Feature logic
-│   ├── (feature)-api-service.ts  # API execution + response handling
-│   └── index.ts
-└── types.d.ts              # Feature-specific types (if needed)
-```
+| 파일 구조 확인 | `./STRUCTURE.md` 참조 |
 
 ## Feature Definition
 

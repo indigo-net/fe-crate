@@ -18,24 +18,7 @@ The `pages` layer contains page and modal compositions. Only UI segment is used.
 | Create modal | `Modal*/index.tsx` (e.g., `ModalPublishSetting/index.tsx`) |
 | Add page logic | `hook.ts` in page directory |
 | Export pages | `src/pages/ui/index.ts` |
-
-## Directory Structure
-
-```
-src/pages/
-├── ui/
-│   ├── index.tsx             # Export all pages
-│   ├── PageDashboard/
-│   │   ├── index.tsx
-│   │   └── hook.ts
-│   ├── PageLanding/
-│   │   ├── index.tsx
-│   │   └── hook.ts
-│   ├── PageNewForm/
-│   ├── PageKakaoRedirect/
-│   └── ModalPublishSetting/
-└── index.ts
-```
+| 파일 구조 확인 | `./STRUCTURE.md` 참조 |
 
 ## Naming Convention
 

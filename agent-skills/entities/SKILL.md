@@ -19,29 +19,7 @@ The `entities` layer defines domain models, types, and related utilities for spe
 | Create state service | `*StateService` (e.g., `QuestionStateService`) |
 | Create API service | `*ApiService` (e.g., `FormApiService`) |
 | Create API functions | `*Api` (e.g., `formApi`) |
-
-## Directory Structure
-
-```
-src/entities/(domain)/
-├── types.d.ts              # Domain-level type aliases and enums
-├── api/
-│   ├── (feature)-api.ts    # API call functions (use AxiosManager)
-│   └── index.ts            # Public API exports
-├── lib/
-│   ├── (model)-state-service.ts    # Static methods for state mutations
-│   ├── (model)-api-service.ts      # API execution + response-to-model conversion
-│   └── index.ts            # Public API exports
-├── model/
-│   ├── (model)Model/       # Domain model class
-│   │   └── index.ts
-│   └── index.ts            # Public API exports
-├── store/
-│   ├── use(model)Store.ts  # Zustand store for the model
-│   └── index.ts            # Public API exports
-└── ui/                     # Domain-specific UI components
-    └── index.ts            # Public API exports
-```
+| 파일 구조 확인 | `./STRUCTURE.md` 참조 |
 
 ## Naming Conventions
 

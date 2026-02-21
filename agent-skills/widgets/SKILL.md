@@ -17,24 +17,13 @@ The `widgets` layer contains large, self-contained UI units that compose pages o
 | Create widget | Page exceeds ~150 lines |
 | Extract to widget | Multiple features combined in one UI block |
 | Keep in features | Simple component with single responsibility |
+| 파일 구조 확인 | `./STRUCTURE.md` 참조 |
 
 ## Purpose
 
 - Extract large UI blocks from pages for better readability
 - Compose multiple features/entities into cohesive units
 - Reusable across different pages (optional)
-
-## Directory Structure
-
-```
-src/widgets/(widget)/
-├── ui/
-│   ├── WidgetName/
-│   │   ├── index.tsx         # Widget component (memo required)
-│   │   └── hook.ts           # Widget logic (if needed)
-│   └── index.ts
-└── types.d.ts                # Widget-specific types (if needed)
-```
 
 ## Widget Definition
 
@@ -86,23 +75,6 @@ export default DashboardHeader;
 | Simple component | Keep in features or entities |
 
 ## Example: Page with Widgets
-
-```
-src/pages/dashboard/
-├── ui/
-│   └── index.tsx           # Clean composition of widgets
-└── hook.ts
-
-src/widgets/
-├── dashboard-header/
-│   └── ui/DashboardHeader/
-├── dashboard-stats/
-│   └── ui/DashboardStats/
-├── evaluator-list/
-│   └── ui/EvaluatorList/
-└── activity-feed/
-    └── ui/ActivityFeed/
-```
 
 ```typescript
 // src/pages/dashboard/ui/index.tsx

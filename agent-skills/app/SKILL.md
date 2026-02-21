@@ -20,22 +20,7 @@ The `app` layer is the application entry point. It provides routing and context 
 | Access modal context | `useModalContext` |
 | Access alert context | `useAlertContext` |
 | Access toast context | `useToastContext` |
-
-## Directory Structure
-
-```
-src/app/
-├── ui/
-│   └── index.tsx             # App entry with routes and provider wrapping
-├── lib/
-│   ├── context-provider/     # Individual context providers
-│   │   ├── ModalProvider/
-│   │   ├── AlertProvider/
-│   │   ├── ToastProvider/
-│   │   └── index.ts
-│   └── index.ts
-└── index.ts                  # Public API
-```
+| 파일 구조 확인 | `./STRUCTURE.md` 참조 |
 
 ## Entry Point
 
@@ -82,22 +67,7 @@ export default App;
 
 ## Context Providers
 
-Each provider is defined in `app/lib/context-provider/`:
-
-```
-src/app/lib/context-provider/
-├── ModalProvider/
-│   ├── index.tsx
-│   ├── hook.ts
-│   └── type.d.ts
-├── AlertProvider/
-│   ├── index.tsx
-│   └── hook.ts
-├── ToastProvider/
-│   ├── index.tsx
-│   └── hook.ts
-└── index.ts
-```
+Each provider is defined in `app/lib/context-provider/`.
 
 ### Provider Exports
 
