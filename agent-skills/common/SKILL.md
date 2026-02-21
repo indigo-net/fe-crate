@@ -1,26 +1,10 @@
----
-name: crate-project-guide
-description: "Use this skill as the primary reference when working on the CRATE project. Triggers include: any code modification, refactoring, new feature implementation, bug fixing, or architectural questions. Also use when asked about project structure, conventions, FSD layers, design system, or state management patterns. Do NOT use for unrelated projects or general programming questions not specific to this codebase."
-license: Proprietary
----
+# CLAUDE.md
 
-# CRATE Project Guide
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-This document serves as the primary guideline for all AI agents (e.g., Claude, Cursor, GitHub Copilot) operating within this repository.
-
-## Overview
+## Project Overview
 
 CRATE is a selection optimization solution - a React application that streamlines recruitment processes from application collection to evaluation. It provides an integrated platform for creating forms, managing evaluators, and conducting fair selection processes.
-
-## Quick Reference
-
-| Task | Approach |
-|------|----------|
-| Install dependencies | `pnpm install` |
-| Start dev server | `pnpm dev` |
-| Build for production | `pnpm build` |
-| Run linter | `pnpm lint` |
-| Format code | `pnpm format` |
 
 ## Development Commands
 
@@ -46,23 +30,19 @@ pnpm preview
 
 ## Tech Stack
 
-| Category | Technology |
-|----------|-----------|
-| Framework | React 19 with TypeScript |
-| Build Tool | Vite 7 |
-| Styling | TailwindCSS v4 with custom design tokens |
-| State Management | Zustand |
-| Routing | React Router 7 |
-| HTTP Client | Axios |
-| Package Manager | pnpm |
+- **Framework**: React 19 with TypeScript
+- **Build Tool**: Vite 7
+- **Styling**: TailwindCSS v4 with custom design tokens
+- **State Management**: Zustand
+- **Routing**: React Router 7
+- **HTTP Client**: Axios
+- **Package Manager**: pnpm
 
 ## Architecture: Feature-Sliced Design (FSD)
 
-This project follows the Feature-Sliced Design methodology. The `src/` directory is structured into layers with strict dependency rules.
+This project follows the Feature-Sliced Design methodology. The `src/` directory is structured into layers with strict dependency rules:
 
-### Layer Structure
-
-Higher layers depend on lower layers:
+### Layer Structure (higher layers depend on lower layers)
 
 ```
 src/
@@ -79,14 +59,14 @@ src/
 
 Each layer/slice can use these segments as needed. **Only create segments that are actually used**:
 
-| Segment | Purpose | Example Contents |
-|---------|---------|------------------|
-| `ui/` | UI components | React components, Iconography |
-| `store/` | State management | Zustand stores |
-| `types.d.ts` | Type definitions | Type aliases, enums |
-| `model/` | Data models | Model classes extending CustomModel |
-| `api/` | API calls | API functions using AxiosManager |
-| `lib/` | Utilities & services | Helper functions, service classes |
+| Segment      | Purpose              | Example Contents                    |
+| ------------ | -------------------- | ----------------------------------- |
+| `ui/`        | UI components        | React components, Iconography       |
+| `store/`     | State management     | Zustand stores                      |
+| `types.d.ts` | Type definitions     | Type aliases, enums                 |
+| `model/`     | Data models          | Model classes extending CustomModel |
+| `api/`       | API calls            | API functions using AxiosManager    |
+| `lib/`       | Utilities & services | Helper functions, service classes   |
 
 ### Key Architectural Patterns
 
@@ -96,14 +76,14 @@ Each layer/slice can use these segments as needed. **Only create segments that a
 
 ### Layer Structure Details
 
-| Layer | Has Slices | Structure Pattern |
-|-------|-----------|-------------------|
-| `app/` | No | Direct to segments |
-| `pages/` | No | Direct to `ui/` |
-| `widgets/` | Yes | `widgets/(widget)/ui/` |
-| `features/` | Yes | `features/(feature)/ui/`, `api/`, `lib/` |
-| `entities/` | Yes | `entities/(domain)/ui/`, `model/`, `store/`, `api/`, `lib/` |
-| `shared/` | No | Direct to segments |
+| Layer       | Has Slices | Structure Pattern                                           |
+| ----------- | ---------- | ----------------------------------------------------------- |
+| `app/`      | No         | Direct to segments                                          |
+| `pages/`    | No         | Direct to `ui/`                                             |
+| `widgets/`  | Yes        | `widgets/(widget)/ui/`                                      |
+| `features/` | Yes        | `features/(feature)/ui/`, `api/`, `lib/`                    |
+| `entities/` | Yes        | `entities/(domain)/ui/`, `model/`, `store/`, `api/`, `lib/` |
+| `shared/`   | No         | Direct to segments                                          |
 
 ## Import Order (ESLint Rule)
 
@@ -116,7 +96,7 @@ Imports must be ordered as follows (enforced by eslint-plugin-import):
 5. Sibling imports (ordered: `./lib/**` → `./model/**` → `./store/**` → `./ui/**`)
 6. Index imports
 
-**Note**: The path alias `@/` resolves to `src/`.
+The path alias `@/` resolves to `src/`.
 
 ## Design System
 
@@ -124,21 +104,17 @@ Imports must be ordered as follows (enforced by eslint-plugin-import):
 
 The project uses a comprehensive color token system defined in `src/styles/colors.css`:
 
-| Category | Tokens |
-|----------|--------|
-| Brand Colors | Indigo (primary), Orange (secondary) |
-| Semantic Tokens | `brand-primary`, `brand-secondary`, `bg-*`, `text-*`, `border-*`, `interactive-*` |
-| Functional Colors | `success`, `warning`, `error`, `info` |
-| Neon Palette | `neon-pink-*`, `neon-green-*`, `neon-violet-*` for accent effects |
+- **Brand Colors**: Indigo (primary), Orange (secondary)
+- **Semantic Tokens**: `brand-primary`, `brand-secondary`, `bg-*`, `text-*`, `border-*`, `interactive-*`
+- **Functional Colors**: `success`, `warning`, `error`, `info`
+- **Neon Palette**: `neon-pink-*`, `neon-green-*`, `neon-violet-*` for accent effects
 
 ### Custom Tailwind Utilities
 
-| Utility | Values |
-|---------|--------|
-| Border radius | `rounded-slim-{sm, md, lg, xl, 2xl}` |
-| Border width | `border-slim`, `border-thin` |
-| Font weight | `font-slim-{thin, normal, semibold, bold}` |
-| Breakpoints | `mobile:365px`, `desktop:720px` |
+- Border radius: `rounded-slim-{sm, md, lg, xl, 2xl}`
+- Border width: `border-slim`, `border-thin`
+- Font weight: `font-slim-{thin, normal, semibold, bold}`
+- Breakpoints: `mobile:365px`, `desktop:720px`
 
 ### Dark Mode
 
@@ -172,79 +148,83 @@ abstract class CustomModel<T> {
 
 Global UI contexts are provided in `app/lib/context-provider/`:
 
-| Provider | Hook | Purpose |
-|----------|------|---------|
-| `ModalProvider` | `useModalContext` | Modal dialogs |
-| `AlertProvider` | `useAlertContext` | Alert dialogs |
-| `ToastProvider` | `useToastContext` | Toast notifications |
+- `ModalProvider` / `useModalContext` - Modal dialogs
+- `AlertProvider` / `useAlertContext` - Alert dialogs
+- `ToastProvider` / `useToastContext` - Toast notifications
 
-**CRITICAL**: Wrap the app with providers in this order: `ToastProvider` → `AlertProvider` → `ModalProvider`.
+Wrap the app with these providers in order: `ToastProvider` → `AlertProvider` → `ModalProvider`.
 
 ## Routing
 
 Routes are defined in `src/app/ui/index.tsx`:
 
-| Path | Page |
-|------|------|
-| `/` | Landing page |
-| `/new-form` | Form creation page |
-| `/kakao-authorize` | Kakao OAuth redirect handler |
-| `/dashboard` | Admin dashboard |
+- `/` - Landing page
+- `/new-form` - Form creation page
+- `/kakao-authorize` - Kakao OAuth redirect handler
+- `/dashboard` - Admin dashboard
 
 ## Environment Variables
 
 Access via `EnvManager.getAppEnv(key)` or `import.meta.env[key]`:
 
-| Variable | Purpose |
-|----------|---------|
-| `VITE_API_BASE_URL` | API base URL |
-| `VITE_KAKAO_CLIENT_ID` | Kakao OAuth client ID |
-| `VITE_KAKAO_REDIRECT_URI` | Kakao OAuth redirect URI |
+- `VITE_API_BASE_URL` - API base URL
+- `VITE_KAKAO_CLIENT_ID` - Kakao OAuth client ID
+- `VITE_KAKAO_REDIRECT_URI` - Kakao OAuth redirect URI
 
 ## Code Style Guide
 
-### Quick Reference
+See `.claude/skills/code-style.md` for detailed code style guidelines including:
 
-| Element | Convention |
-|---------|-----------|
-| Component files/directories | PascalCase (e.g., `QuestionAddSection/index.tsx`) |
-| Pages | `Page*` prefix (e.g., `PageDashboard/index.tsx`) |
-| Modals | `Modal*` prefix (e.g., `ModalPublishSetting/index.tsx`) |
-| Component hooks | `hook.ts` |
+- Component declaration patterns
+- Props type definitions
+- File naming conventions
+- Hook patterns
+- Logging standards
+- Early return patterns
+
+**Quick Reference:**
+
+- All component files/directories use **PascalCase**: `ComponentName/index.tsx`
+- Pages use `Page*` prefix: `PageDashboard/index.tsx`
+- Modals use `Modal*` prefix: `ModalPublishSetting/index.tsx`
+- Use `hook.ts` for component-level hooks
 
 ## Layer Documentation
 
 For detailed layer-specific best practices, see the skill files:
 
-| Layer | Skill File | Topics |
-|-------|-----------|--------|
-| **Entities** | `agent-skills/entities/SKILL.md` | Model pattern, Store pattern, API layer, State services |
-| **Shared** | `agent-skills/shared/SKILL.md` | Utility classes, Base components, Shared modules |
-| **Features** | `agent-skills/features/SKILL.md` | Feature definition, UI components, API patterns |
-| **Widgets** | `agent-skills/widgets/SKILL.md` | Widget composition, When to create widgets |
-| **Pages** | `agent-skills/pages/SKILL.md` | Page/Modal patterns, Component structure |
-| **App** | `agent-skills/app/SKILL.md` | Entry point, Context providers, Routing |
+| Layer        | Skill File                         | Topics                                                  |
+| ------------ | ---------------------------------- | ------------------------------------------------------- |
+| **Entities** | `.claude/skills/entities-layer.md` | Model pattern, Store pattern, API layer, State services |
+| **Shared**   | `.claude/skills/shared-layer.md`   | Utility classes, Base components, Shared modules        |
+| **Features** | `.claude/skills/features-layer.md` | Feature definition, UI components, API patterns         |
+| **Widgets**  | `.claude/skills/widgets-layer.md`  | Widget composition, When to create widgets              |
+| **Pages**    | `.claude/skills/pages-layer.md`    | Page/Modal patterns, Component structure                |
+| **App**      | `.claude/skills/app-layer.md`      | Entry point, Context providers, Routing                 |
 
-## Agent-Skills Directory
+## Key Rules Summary
 
-Shared skill documentation for multiple AI systems (Claude, Cursor, Copilot):
+### File Naming Convention
 
-| Directory | Purpose |
-|-----------|---------|
-| `agent-skills/common/` | Project guide (this file) |
-| `agent-skills/*/SKILL.md` | Layer-specific guides |
-| `agent-skills/*/STRUCTURE.md` | Auto-generated file structure |
+- **All component files/directories**: PascalCase (e.g., `QuestionAddSection/index.tsx`)
+- **Pages**: `Page*/index.tsx` (e.g., `PageDashboard/index.tsx`)
+- **Modals**: `Modal*/index.tsx` (e.g., `ModalPublishSetting/index.tsx`)
 
-**Symlinks:** `CLAUDE.md` → `agent-skills/common/SKILL.md`, `.claude/skills/*.md` → `agent-skills/*/SKILL.md`
+### Layer Structure (No Slices for app, pages, widgets)
 
-### Updating STRUCTURE.md
-
-Regenerate layer structure documentation with Repomix:
-
-```bash
-npx repomix --style plain --no-files --output agent-skills/<layer>/STRUCTURE.md src/<layer>
 ```
-
-### SKILL.md Format
-
-All skill files use YAML frontmatter: `name`, `description` (with trigger keywords), `license: Proprietary`
+src/
+├── app/                    # No slice - direct to segment
+│   ├── ui/index.tsx
+│   └── lib/context-provider/
+├── pages/                  # No slice - direct to segment
+│   └── ui/
+│       ├── index.tsx       # Export all pages
+│       ├── PageDashboard/
+│       └── ModalPublishSetting/
+├── widgets/                # Has slices
+│   └── (widget)/ui/
+├── features/               # Has slices (edit-form, authenticate, etc.)
+├── entities/               # Has slices (form, cache, etc.)
+└── shared/                 # No slice - direct to segment
+```
