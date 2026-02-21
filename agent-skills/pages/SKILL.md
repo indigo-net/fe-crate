@@ -1,12 +1,25 @@
+---
+name: pages-layer
+description: "Use this skill when working on the Pages layer of the FSD architecture. Triggers include: 'pages layer', 'page component', 'modal component', 'route-level', 'PageDashboard', 'PageLanding', 'ModalPublishSetting', or when modifying src/pages/ directory. Also use when creating new pages or modals. Do NOT use for business logic or reusable UI components."
+license: Proprietary
+---
+
 # Pages Layer Guide
 
-## When to Read
-- 이 계층에 작업이나 탐색이 필요할 때 에이전트 판단에 따라 읽음
-- 새 모듈 추가, 기존 모듈 수정, 구조 파악 시
+## Overview
 
-## Base Practice
+The `pages` layer contains page and modal compositions. Only UI segment is used. No slices - components are organized directly under `ui/`.
 
-### Directory Structure
+## Quick Reference
+
+| Task | Naming |
+|------|--------|
+| Create page | `Page*/index.tsx` (e.g., `PageDashboard/index.tsx`) |
+| Create modal | `Modal*/index.tsx` (e.g., `ModalPublishSetting/index.tsx`) |
+| Add page logic | `hook.ts` in page directory |
+| Export pages | `src/pages/ui/index.ts` |
+
+## Directory Structure
 
 ```
 src/pages/
@@ -24,28 +37,14 @@ src/pages/
 └── index.ts
 ```
 
-### Naming Convention
+## Naming Convention
 
 | Type | Prefix | Example |
 |------|--------|---------|
 | Page | `Page` | `PageMainLanding.tsx`, `PageDashboard.tsx` |
 | Modal | `Modal` | `ModalFormPublishSetting.tsx`, `ModalUserProfile.tsx` |
 
-### Example Structure
-
-```
-src/pages/
-├── ui/
-│   ├── index.tsx               # Export all pages
-│   ├── PageDashboard/
-│   ├── PageLanding/
-│   ├── PageNewForm/
-│   ├── PageKakaoRedirect/
-│   └── ModalPublishSetting/
-└── index.ts
-```
-
-### Page Component Pattern
+## Page Component Pattern
 
 ```typescript
 // src/pages/ui/PageDashboard/index.tsx
@@ -75,7 +74,7 @@ PageDashboard.displayName = 'PageDashboard';
 export default PageDashboard;
 ```
 
-### Modal Component Pattern
+## Modal Component Pattern
 
 ```typescript
 // src/pages/ui/ModalPublishSetting/index.tsx
@@ -103,13 +102,17 @@ ModalPublishSetting.displayName = 'ModalPublishSetting';
 export default ModalPublishSetting;
 ```
 
-### Key Points
+## Key Points
 
-1. **Only `ui/` segment** - No lib, api, store in pages layer
-2. **Use widgets** - Pages compose widgets, not individual features
-3. **Hook file** - `hook.ts` for page/modal logic
-4. **React.memo required** - All page/modal components use memo
+| Rule | Description |
+|------|-------------|
+| Only `ui/` segment | No lib, api, store in pages layer |
+| Use widgets | Pages compose widgets, not individual features |
+| Hook file | `hook.ts` for page/modal logic |
+| React.memo required | All page/modal components use memo |
+
+**CRITICAL**: All page and modal components must use `React.memo` and have `displayName` set.
 
 ## Reference
-- 탐색이나 관리 방법 참고: `./STRUCTURE.md`
-- 현재 계층의 파일 구조와 모듈 목록 확인
+
+For current file structure and module list, see `./STRUCTURE.md`.

@@ -1,12 +1,25 @@
+---
+name: features-layer
+description: "Use this skill when working on the Features layer of the FSD architecture. Triggers include: 'features layer', 'feature component', 'user action', 'edit-form', 'authenticate', 'toggle-theme', 'QuestionAddSection', 'FormSignatureEditSection', or when modifying src/features/ directory. Also use when implementing interactive UI with event handling. Do NOT use for static/presentational UI or business models."
+license: Proprietary
+---
+
 # Features Layer Guide
 
-## When to Read
-- 이 계층에 작업이나 탐색이 필요할 때 에이전트 판단에 따라 읽음
-- 새 모듈 추가, 기존 모듈 수정, 구조 파악 시
+## Overview
 
-## Base Practice
+The `features` layer contains user-facing features that represent user actions. Each feature handles user interactions and may communicate with APIs.
 
-### Directory Structure
+## Quick Reference
+
+| Task | Location |
+|------|----------|
+| Create interactive UI | `features/(feature)/ui/` |
+| Add API calls | `features/(feature)/api/` |
+| Add feature logic | `features/(feature)/lib/` |
+| Name feature | verb-noun pattern (e.g., `edit-form`, `toggle-theme`) |
+
+## Directory Structure
 
 ```
 src/features/(feature)/
@@ -24,15 +37,18 @@ src/features/(feature)/
 └── types.d.ts              # Feature-specific types (if needed)
 ```
 
-### Feature Definition
+## Feature Definition
 
 A **feature** represents a user action or interaction:
-- `edit-form` - Form editing functionality
-- `authenticate` - User authentication
-- `toggle-theme` - Theme switching
-- `submit-application` - Application submission
 
-### Naming Convention
+| Feature | Purpose |
+|---------|---------|
+| `edit-form` | Form editing functionality |
+| `authenticate` | User authentication |
+| `toggle-theme` | Theme switching |
+| `submit-application` | Application submission |
+
+## Naming Convention
 
 Use **verb-noun** pattern for feature names:
 
@@ -41,7 +57,7 @@ Use **verb-noun** pattern for feature names:
 ❌ form-editor, theme-switcher, application-submitter
 ```
 
-### Segments
+## Segments
 
 | Segment | Purpose | When to Use |
 |---------|---------|-------------|
@@ -50,9 +66,9 @@ Use **verb-noun** pattern for feature names:
 | `lib/` | Feature logic, API services | When complex logic is needed |
 | `types.d.ts` | Feature-specific types | When custom types are needed |
 
-### UI Components
+## UI Components
 
-**When to use features/ui vs entities/ui:**
+### When to use features/ui vs entities/ui
 
 | Component Type | Location | Example |
 |----------------|----------|---------|
@@ -60,14 +76,21 @@ Use **verb-noun** pattern for feature names:
 | Static/presentational UI | `entities/*/ui/` | `QuestionCard`, `FormSignatureDisplay` |
 | Base reusable UI | `shared/ui/` | `Modal`, `Button`, `Input` |
 
-**Component Naming:** Use role-based naming:
-- `*Section` - Major UI sections (e.g., `FormSignatureEditSection`)
-- `*Button` - Action buttons (e.g., `SubmitButton`, `DarkModeButton`)
-- `*List` - List components (e.g., `QuestionList`)
+### Component Naming
 
-### API Layer Pattern
+Use role-based naming:
 
-**API Functions** (`api/(feature)-api.ts`): Declare raw API calls
+| Suffix | Purpose | Example |
+|--------|---------|---------|
+| `*Section` | Major UI sections | `FormSignatureEditSection` |
+| `*Button` | Action buttons | `SubmitButton`, `DarkModeButton` |
+| `*List` | List components | `QuestionList` |
+
+## API Layer Pattern
+
+### API Functions
+
+`api/(feature)-api.ts`: Declare raw API calls
 
 ```typescript
 // src/features/submit-form/api/submit-form-api.ts
@@ -83,7 +106,9 @@ const submitFormApi = {
 export { submitFormApi };
 ```
 
-**API Service** (`lib/(feature)-api-service.ts`): Execute API and handle responses
+### API Service
+
+`lib/(feature)-api-service.ts`: Execute API and handle responses
 
 ```typescript
 // src/features/submit-form/lib/submit-form-api-service.ts
@@ -102,9 +127,9 @@ class SubmitFormApiService {
 export default SubmitFormApiService;
 ```
 
-### Hook Pattern
+## Hook Pattern
 
-Use `hook.ts` for component logic (unified with entities naming):
+Use `hook.ts` for component logic:
 
 ```typescript
 // src/features/edit-form/ui/QuestionAddSection/hook.ts
@@ -127,7 +152,7 @@ const useQuestionAddSectionController = () => {
 export default useQuestionAddSectionController;
 ```
 
-### Relationship with Entities
+## Relationship with Entities
 
 Features **use** entities but don't define new models:
 
@@ -141,27 +166,8 @@ import { QuestionStateService } from '@/entities/form/lib';
 class FeatureSpecificModel { ... }
 ```
 
-### Example: Complete Feature Structure
-
-```
-src/features/submit-form/
-├── ui/
-│   ├── SubmitButton/
-│   │   ├── index.tsx           # Submit button component
-│   │   └── hook.ts             # Submit logic
-│   ├── DraftSaveButton/
-│   │   ├── index.tsx
-│   │   └── hook.ts
-│   └── index.ts
-├── api/
-│   ├── submit-form-api.ts      # POST /forms/submit, POST /forms/draft
-│   └── index.ts
-├── lib/
-│   ├── submit-form-api-service.ts
-│   └── index.ts
-└── types.d.ts                  # SubmitFormRequest, SaveDraftRequest
-```
+**CRITICAL**: Never define domain models in the features layer. Use models from entities instead.
 
 ## Reference
-- 탐색이나 관리 방법 참고: `./STRUCTURE.md`
-- 현재 계층의 파일 구조와 모듈 목록 확인
+
+For current file structure and module list, see `./STRUCTURE.md`.

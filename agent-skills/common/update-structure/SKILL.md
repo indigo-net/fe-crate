@@ -1,27 +1,37 @@
+---
+name: update-layer-structure
+description: "Use this skill when you need to update or regenerate STRUCTURE.md files for FSD layers. Triggers include: 'update structure', 'regenerate structure', 'update STRUCTURE.md', or when the codebase structure has changed significantly. Also use when asked about how to document current layer structure. Do NOT use for reading or understanding existing structure - use the STRUCTURE.md files directly instead."
+license: Proprietary
+---
+
 # Update Layer Structure
 
-## Purpose
+## Overview
 
-This skill updates STRUCTURE.md files in `agent-skills/*/` directories to reflect the current codebase structure using Repomix.
+This skill updates STRUCTURE.md files in `agent-skills/*/` directories to reflect the current codebase structure using Repomix. STRUCTURE.md files provide a comprehensive view of each FSD layer's contents for AI systems.
 
-## When to Use
+## Quick Reference
 
-- After adding/removing files in a layer
-- When the layer structure has changed
-- To document the current state of a layer
+| Task | Command |
+|------|---------|
+| Update entities layer | `npx repomix --include "src/entities/" --output "agent-skills/entities/STRUCTURE.md" --style markdown --no-file-summary` |
+| Update features layer | `npx repomix --include "src/features/" --output "agent-skills/features/STRUCTURE.md" --style markdown --no-file-summary` |
+| Update shared layer | `npx repomix --include "src/shared/" --output "agent-skills/shared/STRUCTURE.md" --style markdown --no-file-summary` |
+| Update pages layer | `npx repomix --include "src/pages/" --output "agent-skills/pages/STRUCTURE.md" --style markdown --no-file-summary` |
 
 ## Process
 
-1. Identify the target layer (e.g., `entities`, `features`, `shared`, `pages`, `widgets`, `app`, `@types`, `styles`)
-2. Run the Repomix command with the appropriate source directory
+### Step 1: Identify Target Layer
 
-## Command
+Identify the target layer (e.g., `entities`, `features`, `shared`, `pages`, `widgets`, `app`, `@types`, `styles`).
+
+### Step 2: Run Repomix Command
 
 ```bash
 npx repomix --include "src/{layer}/" --output "agent-skills/{layer}/STRUCTURE.md" --style markdown --no-file-summary
 ```
 
-### Examples
+## All Layer Commands
 
 ```bash
 # Update entities layer
@@ -51,12 +61,17 @@ npx repomix --include "src/styles/" --output "agent-skills/styles/STRUCTURE.md" 
 
 ## Output Location
 
-All STRUCTURE.md files are now located in `agent-skills/*/STRUCTURE.md` instead of `src/*/STRUCTURE.md`.
+All STRUCTURE.md files are located in `agent-skills/*/STRUCTURE.md`.
 
-This change enables multiple AI systems (Claude, Cursor, Antigravity) to share the same structure documentation via symlinks.
+**Note**: The original `src/*/STRUCTURE.md` files are now symlinks pointing to `agent-skills/*/STRUCTURE.md`, enabling multiple AI systems to share the same structure documentation.
 
-## Notes
+## Command Flags
 
-- The `--no-file-summary` flag keeps output concise
-- The `--style markdown` ensures proper formatting
-- Output files are markdown with directory structure and file contents
+| Flag | Purpose |
+|------|---------|
+| `--include` | Specify source directory to include |
+| `--output` | Output file path |
+| `--style markdown` | Use markdown formatting |
+| `--no-file-summary` | Keep output concise |
+
+**CRITICAL**: Always use `--no-file-summary` flag to keep files manageable and `--style markdown` for proper formatting.

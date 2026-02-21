@@ -1,12 +1,27 @@
+---
+name: app-layer
+description: "Use this skill when working on the App layer of the FSD architecture. Triggers include: 'app layer', 'routing', 'context provider', 'entry point', 'provider setup', or when modifying src/app/ directory. Also use when adding new routes, providers, or understanding application initialization. Do NOT use for page-level components or business logic."
+license: Proprietary
+---
+
 # App Layer Guide
 
-## When to Read
-- 이 계층에 작업이나 탐색이 필요할 때 에이전트 판단에 따라 읽음
-- 새 모듈 추가, 기존 모듈 수정, 구조 파악 시
+## Overview
 
-## Base Practice
+The `app` layer is the application entry point. It provides routing and context providers. This layer has no slices - all code is organized directly under segments.
 
-### Directory Structure
+## Quick Reference
+
+| Task | Location |
+|------|----------|
+| Add new route | `src/app/ui/index.tsx` |
+| Create context provider | `src/app/lib/context-provider/` |
+| Modify provider order | `src/app/ui/index.tsx` |
+| Access modal context | `useModalContext` |
+| Access alert context | `useAlertContext` |
+| Access toast context | `useToastContext` |
+
+## Directory Structure
 
 ```
 src/app/
@@ -22,7 +37,7 @@ src/app/
 └── index.ts                  # Public API
 ```
 
-### Entry Point
+## Entry Point
 
 `main.tsx` imports from `src/app/ui`:
 
@@ -34,7 +49,7 @@ import '@/styles/index.css';
 createRoot(document.getElementById('root')!).render(<App />);
 ```
 
-### App Component Structure
+## App Component Structure
 
 ```typescript
 // src/app/ui/index.tsx
@@ -65,7 +80,7 @@ const App = () => {
 export default App;
 ```
 
-### Context Providers
+## Context Providers
 
 Each provider is defined in `app/lib/context-provider/`:
 
@@ -84,6 +99,8 @@ src/app/lib/context-provider/
 └── index.ts
 ```
 
+### Provider Exports
+
 ```typescript
 // src/app/lib/context-provider/index.ts
 export { ModalProvider, useModalContext } from './ModalProvider';
@@ -91,13 +108,17 @@ export { AlertProvider, useAlertContext } from './AlertProvider';
 export { ToastProvider, useToastContext } from './ToastProvider';
 ```
 
-### Key Points
+## Key Points
 
-1. **Unified providers** - All pages wrapped with same providers
-2. **Routes in index.tsx** - All routing defined in app/ui/index.tsx
-3. **Provider order matters** - ToastProvider → AlertProvider → ModalProvider
-4. **No src/App.tsx** - App component is in src/app/ui/index.tsx
+| Rule | Description |
+|------|-------------|
+| Unified providers | All pages wrapped with same providers |
+| Routes in index.tsx | All routing defined in app/ui/index.tsx |
+| Provider order | `ToastProvider` → `AlertProvider` → `ModalProvider` |
+| No src/App.tsx | App component is in src/app/ui/index.tsx |
+
+**CRITICAL**: Provider order matters! Always wrap in this order: `ToastProvider` → `AlertProvider` → `ModalProvider`.
 
 ## Reference
-- 탐색이나 관리 방법 참고: `./STRUCTURE.md`
-- 현재 계층의 파일 구조와 모듈 목록 확인
+
+For current file structure and module list, see `./STRUCTURE.md`.

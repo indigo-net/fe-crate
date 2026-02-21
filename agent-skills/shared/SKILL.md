@@ -1,12 +1,28 @@
+---
+name: shared-layer
+description: "Use this skill when working on the Shared layer of the FSD architecture. Triggers include: 'shared layer', 'utility', 'AxiosManager', 'EnvManager', 'TypeGuard', 'UUID', 'CustomModel', 'Modal', 'Alert', 'Toast', 'Iconography', or when modifying src/shared/ directory. Also use when creating reusable utilities or base UI components. Do NOT use for domain-specific logic or business models."
+license: Proprietary
+---
+
 # Shared Layer Guide
 
-## When to Read
-- 이 계층에 작업이나 탐색이 필요할 때 에이전트 판단에 따라 읽음
-- 새 모듈 추가, 기존 모듈 수정, 구조 파악 시
+## Overview
 
-## Base Practice
+The `shared` layer contains reusable utilities, base components, and foundational code used across the entire application. This layer has no slices - all code is organized directly under segments.
 
-### Directory Structure
+## Quick Reference
+
+| Task | Location |
+|------|----------|
+| Create utility class | `shared/lib/` |
+| Create base UI component | `shared/ui/` |
+| Create base model class | `shared/model/` |
+| Access HTTP client | `AxiosManager.getAxiosInstance()` |
+| Access env variables | `EnvManager.getAppEnv(key)` |
+| Type checking | `TypeGuard.checkNull(value)` |
+| Generate UUID | `UUID.v4()` |
+
+## Directory Structure
 
 ```
 src/shared/
@@ -31,7 +47,7 @@ src/shared/
     └── index.ts
 ```
 
-### Shared vs Domain Modules
+## Shared vs Domain Modules
 
 When creating a new module, decide the location based on scope:
 
@@ -42,9 +58,9 @@ When creating a new module, decide the location based on scope:
 | Domain-specific model | `entities/(domain)/model/` | `FormQuestionModel` |
 | Base class for all models | `shared/model/` | `CustomModel` |
 
-### shared/lib Modules
+## shared/lib Modules
 
-**Utility Classes** (singleton pattern):
+### Utility Classes (singleton pattern)
 
 ```typescript
 // AxiosManager - HTTP client instance
@@ -59,7 +75,7 @@ if (TypeGuard.checkNull(value)) { /* ... */ }
 if (TypeGuard.checkString(value)) { /* ... */ }
 ```
 
-**Helper Functions**:
+### Helper Functions
 
 ```typescript
 // UUID - Unique identifier generation
@@ -72,7 +88,7 @@ const now = DateStandard.now();  // ISO 8601 UTC
 DeveloperConsole.log({ message: 'Action completed', data: { id: 123 } });
 ```
 
-### shared/model
+## shared/model
 
 Contains only base classes that domain models extend:
 
@@ -84,20 +100,24 @@ abstract class CustomModel<T> {
 }
 ```
 
-### shared/ui
+**CRITICAL**: Only add base classes to `shared/model/`. Domain-specific models belong in `entities/*/model/`.
+
+## shared/ui
 
 Base UI components used throughout the application:
 
-- **Layout components**: Modal, Alert, Toast
-- **Form components**: Radio
-- **Iconography**: Logo icons, Stroke icons
+| Category | Components |
+|----------|-----------|
+| Layout components | Modal, Alert, Toast |
+| Form components | Radio |
+| Iconography | Logo icons, Stroke icons |
 
 ```typescript
 // Usage example
 import { Iconography, Modal, Alert, Toast, Radio } from '@/shared/ui';
 ```
 
-### shared/types.d.ts
+## shared/types.d.ts
 
 Common type definitions shared across the application:
 
@@ -108,7 +128,7 @@ type AppEnvKey = 'VITE_API_BASE_URL' | 'VITE_KAKAO_CLIENT_ID' | 'VITE_KAKAO_REDI
 export type { AppEnvKey };
 ```
 
-### Context Providers (in app layer)
+## Context Providers (in app layer)
 
 Global context providers are located in `app/lib/context-provider/`:
 
@@ -120,8 +140,8 @@ src/app/lib/context-provider/
 └── index.ts
 ```
 
-All pages are wrapped with the same providers. Provider order: `ToastProvider` → `AlertProvider` → `ModalProvider`.
+**Note**: All pages are wrapped with the same providers. Provider order: `ToastProvider` → `AlertProvider` → `ModalProvider`.
 
 ## Reference
-- 탐색이나 관리 방법 참고: `./STRUCTURE.md`
-- 현재 계층의 파일 구조와 모듈 목록 확인
+
+For current file structure and module list, see `./STRUCTURE.md`.

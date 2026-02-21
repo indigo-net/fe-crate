@@ -1,18 +1,30 @@
+---
+name: widgets-layer
+description: "Use this skill when working on the Widgets layer of the FSD architecture. Triggers include: 'widgets layer', 'widget component', 'large UI block', 'DashboardHeader', 'FormBuilder', 'EvaluationPanel', or when extracting large UI sections from pages. Also use when page component exceeds 150 lines. Do NOT use for simple components or business logic."
+license: Proprietary
+---
+
 # Widgets Layer Guide
 
-## When to Read
-- 이 계층에 작업이나 탐색이 필요할 때 에이전트 판단에 따라 읽음
-- 새 모듈 추가, 기존 모듈 수정, 구조 파악 시
+## Overview
 
-## Base Practice
+The `widgets` layer contains large, self-contained UI units that compose pages or modals. Purpose is to improve pages/ui readability by extracting complex UI blocks.
 
-### Purpose
+## Quick Reference
+
+| Task | When to Use |
+|------|-------------|
+| Create widget | Page exceeds ~150 lines |
+| Extract to widget | Multiple features combined in one UI block |
+| Keep in features | Simple component with single responsibility |
+
+## Purpose
 
 - Extract large UI blocks from pages for better readability
 - Compose multiple features/entities into cohesive units
 - Reusable across different pages (optional)
 
-### Directory Structure
+## Directory Structure
 
 ```
 src/widgets/(widget)/
@@ -24,19 +36,22 @@ src/widgets/(widget)/
 └── types.d.ts                # Widget-specific types (if needed)
 ```
 
-### Widget Definition
+## Widget Definition
 
 A **widget** is a large UI unit that:
 - Combines multiple features/entities components
 - Represents a significant portion of a page or modal
 - Is self-contained with its own logic
 
-Examples:
-- `DashboardHeader` - Page header with navigation and user info
-- `FormBuilder` - Complete form editing interface
-- `EvaluationPanel` - Application evaluation interface
+### Examples
 
-### Requirements
+| Widget | Purpose |
+|--------|---------|
+| `DashboardHeader` | Page header with navigation and user info |
+| `FormBuilder` | Complete form editing interface |
+| `EvaluationPanel` | Application evaluation interface |
+
+## Requirements
 
 **React.memo is mandatory** for all widget components:
 
@@ -61,7 +76,7 @@ DashboardHeader.displayName = 'DashboardHeader';
 export default DashboardHeader;
 ```
 
-### When to Create a Widget
+## When to Create a Widget
 
 | Situation | Action |
 |-----------|--------|
@@ -70,7 +85,7 @@ export default DashboardHeader;
 | Reusable across pages | Consider creating a widget |
 | Simple component | Keep in features or entities |
 
-### Example: Page with Widgets
+## Example: Page with Widgets
 
 ```
 src/pages/dashboard/
@@ -107,6 +122,8 @@ const DashboardPage = () => {
 };
 ```
 
+**CRITICAL**: All widget components must use `React.memo` and have `displayName` set.
+
 ## Reference
-- 탐색이나 관리 방법 참고: `./STRUCTURE.md`
-- 현재 계층의 파일 구조와 모듈 목록 확인
+
+For current file structure and module list, see `./STRUCTURE.md`.

@@ -1,12 +1,26 @@
+---
+name: entities-layer
+description: "Use this skill when working on the Entities layer of the FSD architecture. Triggers include: 'entities layer', 'domain model', 'FormQuestionModel', 'FormSignatureModel', 'Zustand store', 'useFormQuestionListStore', 'StateService', 'ApiService', or when modifying src/entities/ directory. Also use when creating business domain models or state management. Do NOT use for UI components or user interactions."
+license: Proprietary
+---
+
 # Entities Layer Guide
 
-## When to Read
-- 이 계층에 작업이나 탐색이 필요할 때 에이전트 판단에 따라 읽음
-- 새 모듈 추가, 기존 모듈 수정, 구조 파악 시
+## Overview
 
-## Base Practice
+The `entities` layer defines domain models, types, and related utilities for specific business concerns. This is where business logic and state management live.
 
-### Directory Structure
+## Quick Reference
+
+| Task | Naming Pattern |
+|------|----------------|
+| Create model | `*Model` (e.g., `FormQuestionModel`) |
+| Create store | `use*Store` (e.g., `useFormQuestionListStore`) |
+| Create state service | `*StateService` (e.g., `QuestionStateService`) |
+| Create API service | `*ApiService` (e.g., `FormApiService`) |
+| Create API functions | `*Api` (e.g., `formApi`) |
+
+## Directory Structure
 
 ```
 src/entities/(domain)/
@@ -29,7 +43,7 @@ src/entities/(domain)/
     └── index.ts            # Public API exports
 ```
 
-### Naming Conventions
+## Naming Conventions
 
 | Type | Pattern | Example |
 |------|---------|---------|
@@ -41,11 +55,13 @@ src/entities/(domain)/
 | Service (Sort) | `*SortService` | `QuestionSortService` |
 | API Function | `*Api` | `questionApi`, `formApi` |
 
-Service naming follows its purpose - not all services need `State` suffix.
+**Note**: Service naming follows its purpose - not all services need `State` suffix.
 
-### Type Definitions
+## Type Definitions
 
-**Domain Types (enums, type aliases)**: Place in `entities/(domain)/types.d.ts`
+### Domain Types
+
+Place enums and type aliases in `entities/(domain)/types.d.ts`:
 
 ```typescript
 // src/entities/form/types.d.ts
@@ -54,7 +70,9 @@ type FormQuestionType = 'SINGLE_CHOICE' | 'MULTIPLE_CHOICE' | 'SHORT_TEXT' | 'LO
 export type { FormQuestionType };
 ```
 
-**Model I/O Types (Props, State)**: Define inside the Model file
+### Model I/O Types
+
+Define Props and State inside the Model file:
 
 ```typescript
 // src/entities/form/model/form-question/index.ts
@@ -75,7 +93,7 @@ class FormQuestionModel extends CustomModel<State> {
 }
 ```
 
-### Model Pattern
+## Model Pattern
 
 Extend `CustomModel<T>` and use `getValue`/`setValue` pattern:
 
@@ -106,7 +124,7 @@ class FormQuestionModel extends CustomModel<State> {
 }
 ```
 
-### State Service Pattern
+## State Service Pattern
 
 Use static methods for state mutations:
 
@@ -127,7 +145,7 @@ class QuestionStateService {
 }
 ```
 
-### Store Pattern
+## Store Pattern
 
 Use Zustand with type-safe state interface:
 
@@ -150,9 +168,11 @@ const useFormQuestionListStore = create<State>(set => ({
 }));
 ```
 
-### API Layer Pattern
+## API Layer Pattern
 
-**API Functions** (`api/(feature)-api.ts`): Define raw API calls using `AxiosManager`
+### API Functions
+
+`api/(feature)-api.ts`: Define raw API calls using `AxiosManager`
 
 ```typescript
 // src/entities/form/api/form-api.ts
@@ -165,7 +185,9 @@ const formApi = {
 };
 ```
 
-**API Service** (`lib/(model)-api-service.ts`): Execute API calls and convert responses to models
+### API Service
+
+`lib/(model)-api-service.ts`: Execute API calls and convert responses to models
 
 ```typescript
 // src/entities/form/lib/form-api-service.ts
@@ -180,17 +202,17 @@ class FormApiService {
 }
 ```
 
-### Segment Index Files
+## Segment Index Files
 
-Each segment (api, lib, model, store, ui) should have an `index.ts` that exports only publicly accessible modules.
+Each segment should have an `index.ts` that exports publicly accessible modules.
 
-**IMPORTANT: Always use named exports with the following pattern:**
+**CRITICAL**: Always use named exports with the following pattern:
 
 ```typescript
 export { default as (ModuleName) } from './module-directory';
 ```
 
-**Examples:**
+### Examples
 
 ```typescript
 // src/entities/form/model/index.ts
@@ -202,17 +224,10 @@ export { default as FormSignatureModel } from './form-signature';
 export { default as QuestionStateService } from './question-state-service';
 export { default as QuestionListStateService } from './question-list-state-service';
 export { default as FormApiService } from './form-api-service';
-
-// src/app/index.ts (slice-level public API)
-export { default as App } from './ui';
-export { AlertProvider, useAlertContext } from './lib';
-
-// src/pages/ui/index.ts (segment-level re-exports)
-export { default as PageDashboard } from './PageDashboard';
-export { default as PageLanding } from './PageLanding';
-export { default as ModalPublishSetting } from './ModalPublishSetting';
 ```
 
+**WARNING**: Never use default exports in index files. Always use named exports for consistency.
+
 ## Reference
-- 탐색이나 관리 방법 참고: `./STRUCTURE.md`
-- 현재 계층의 파일 구조와 모듈 목록 확인
+
+For current file structure and module list, see `./STRUCTURE.md`.
