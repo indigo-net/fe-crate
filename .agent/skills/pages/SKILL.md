@@ -1,0 +1,1 @@
+../../../.project-skills/pages/SKILL.md
