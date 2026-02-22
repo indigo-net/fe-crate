@@ -1,6 +1,7 @@
-# CLAUDE.md
+# AI_AGENT.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+> **Universal Instruction for AI Coding Assistants**
+> This repository contains specific guidelines and standards. All AI agents (e.g., Cursor, Claude Code, Windsurf, Trae, etc.) must prioritize this document as the **Single Source of Truth** before modifying or generating any code.
 
 ## Project Overview
 
