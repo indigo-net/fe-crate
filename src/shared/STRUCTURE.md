@@ -1,1 +1,0 @@
-../../agent-skills/shared/STRUCTURE.md

@@ -1,1 +1,0 @@
-../../agent-skills/styles/STRUCTURE.md
