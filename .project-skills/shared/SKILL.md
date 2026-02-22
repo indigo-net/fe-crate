@@ -12,27 +12,27 @@ The `shared` layer contains reusable utilities, base components, and foundationa
 
 ## Quick Reference
 
-| Task | Location |
-|------|----------|
-| Create utility class | `shared/lib/` |
-| Create base UI component | `shared/ui/` |
-| Create base model class | `shared/model/` |
-| Access HTTP client | `AxiosManager.getAxiosInstance()` |
-| Access env variables | `EnvManager.getAppEnv(key)` |
-| Type checking | `TypeGuard.checkNull(value)` |
-| Generate UUID | `UUID.v4()` |
-| 파일 구조 확인 | `./STRUCTURE.md` 참조 |
+| Task                     | Location                                    |
+| ------------------------ | ------------------------------------------- |
+| Create utility class     | `shared/lib/`                               |
+| Create base UI component | `shared/ui/`                                |
+| Create base model class  | `shared/model/`                             |
+| Access HTTP client       | `AxiosManager.getAxiosInstance()`           |
+| Access env variables     | `EnvManager.getAppEnv(key)`                 |
+| Type checking            | `TypeGuard.checkNull(value)`                |
+| Generate UUID            | `UUID.v4()`                                 |
+| 파일 구조 확인           | `/.project-skills/shared/STRUCTURE.md` 참조 |
 
 ## Shared vs Domain Modules
 
 When creating a new module, decide the location based on scope:
 
-| Scope | Location | Example |
-|-------|----------|---------|
-| Used in one domain | `entities/(domain)/lib/` | `QuestionStateService` |
-| Used across multiple domains | `shared/lib/` | `TypeGuard`, `UUID` |
-| Domain-specific model | `entities/(domain)/model/` | `FormQuestionModel` |
-| Base class for all models | `shared/model/` | `CustomModel` |
+| Scope                        | Location                   | Example                |
+| ---------------------------- | -------------------------- | ---------------------- |
+| Used in one domain           | `entities/(domain)/lib/`   | `QuestionStateService` |
+| Used across multiple domains | `shared/lib/`              | `TypeGuard`, `UUID`    |
+| Domain-specific model        | `entities/(domain)/model/` | `FormQuestionModel`    |
+| Base class for all models    | `shared/model/`            | `CustomModel`          |
 
 ## shared/lib Modules
 
@@ -47,8 +47,12 @@ const axios = AxiosManager.getAxiosInstance();
 const apiUrl = EnvManager.getAppEnv('VITE_API_BASE_URL');
 
 // TypeGuard - Runtime type checking
-if (TypeGuard.checkNull(value)) { /* ... */ }
-if (TypeGuard.checkString(value)) { /* ... */ }
+if (TypeGuard.checkNull(value)) {
+  /* ... */
+}
+if (TypeGuard.checkString(value)) {
+  /* ... */
+}
 ```
 
 ### Helper Functions
@@ -58,7 +62,7 @@ if (TypeGuard.checkString(value)) { /* ... */ }
 const id = UUID.v4();
 
 // DateStandard - Date formatting standards
-const now = DateStandard.now();  // ISO 8601 UTC
+const now = DateStandard.now(); // ISO 8601 UTC
 
 // DeveloperConsole - Development logging (replaces console.*)
 DeveloperConsole.log({ message: 'Action completed', data: { id: 123 } });
@@ -82,11 +86,11 @@ abstract class CustomModel<T> {
 
 Base UI components used throughout the application:
 
-| Category | Components |
-|----------|-----------|
-| Layout components | Modal, Alert, Toast |
-| Form components | Radio |
-| Iconography | Logo icons, Stroke icons |
+| Category          | Components               |
+| ----------------- | ------------------------ |
+| Layout components | Modal, Alert, Toast      |
+| Form components   | Radio                    |
+| Iconography       | Logo icons, Stroke icons |
 
 ```typescript
 // Usage example
@@ -112,4 +116,4 @@ Global context providers are located in `app/lib/context-provider/`.
 
 ## Reference
 
-For current file structure and module list, see `./STRUCTURE.md`.
+For current file structure and module list, see `/.project-skills/shared/STRUCTURE.md`.

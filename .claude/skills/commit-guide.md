@@ -1,1 +1,1 @@
-../../agent-skills/common/commit/SKILL.md
+../../.project-skills/common/commit/SKILL.md

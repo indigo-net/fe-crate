@@ -12,26 +12,26 @@ The `entities` layer defines domain models, types, and related utilities for spe
 
 ## Quick Reference
 
-| Task | Naming Pattern |
-|------|----------------|
-| Create model | `*Model` (e.g., `FormQuestionModel`) |
-| Create store | `use*Store` (e.g., `useFormQuestionListStore`) |
+| Task                 | Naming Pattern                                 |
+| -------------------- | ---------------------------------------------- |
+| Create model         | `*Model` (e.g., `FormQuestionModel`)           |
+| Create store         | `use*Store` (e.g., `useFormQuestionListStore`) |
 | Create state service | `*StateService` (e.g., `QuestionStateService`) |
-| Create API service | `*ApiService` (e.g., `FormApiService`) |
-| Create API functions | `*Api` (e.g., `formApi`) |
-| 파일 구조 확인 | `./STRUCTURE.md` 참조 |
+| Create API service   | `*ApiService` (e.g., `FormApiService`)         |
+| Create API functions | `*Api` (e.g., `formApi`)                       |
+| 파일 구조 확인       | `/.project-skills/entities/STRUCTURE.md` 참조  |
 
 ## Naming Conventions
 
-| Type | Pattern | Example |
-|------|---------|---------|
-| Model | `*Model` | `FormQuestionModel`, `FormSignatureModel` |
-| Store | `use*Store` | `useFormQuestionListStore`, `useFormSignatureStore` |
-| Service (State) | `*StateService` | `QuestionStateService`, `QuestionListStateService` |
-| Service (API) | `*ApiService` | `QuestionApiService`, `FormApiService` |
-| Service (Cache) | `*CacheService` | `CacheService` |
-| Service (Sort) | `*SortService` | `QuestionSortService` |
-| API Function | `*Api` | `questionApi`, `formApi` |
+| Type            | Pattern         | Example                                             |
+| --------------- | --------------- | --------------------------------------------------- |
+| Model           | `*Model`        | `FormQuestionModel`, `FormSignatureModel`           |
+| Store           | `use*Store`     | `useFormQuestionListStore`, `useFormSignatureStore` |
+| Service (State) | `*StateService` | `QuestionStateService`, `QuestionListStateService`  |
+| Service (API)   | `*ApiService`   | `QuestionApiService`, `FormApiService`              |
+| Service (Cache) | `*CacheService` | `CacheService`                                      |
+| Service (Sort)  | `*SortService`  | `QuestionSortService`                               |
+| API Function    | `*Api`          | `questionApi`, `formApi`                            |
 
 **Note**: Service naming follows its purpose - not all services need `State` suffix.
 
@@ -81,7 +81,9 @@ class FormQuestionModel extends CustomModel<State> {
 
   constructor(props: Props) {
     super();
-    this.state = { /* initialize from props */ };
+    this.state = {
+      /* initialize from props */
+    };
   }
 
   getValue<K extends keyof State>(key: K): State[K] {
@@ -208,4 +210,4 @@ export { default as FormApiService } from './form-api-service';
 
 ## Reference
 
-For current file structure and module list, see `./STRUCTURE.md`.
+For current file structure and module list, see `/.project-skills/entities/STRUCTURE.md`.

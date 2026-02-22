@@ -12,24 +12,24 @@ The `features` layer contains user-facing features that represent user actions. 
 
 ## Quick Reference
 
-| Task | Location |
-|------|----------|
-| Create interactive UI | `features/(feature)/ui/` |
-| Add API calls | `features/(feature)/api/` |
-| Add feature logic | `features/(feature)/lib/` |
-| Name feature | verb-noun pattern (e.g., `edit-form`, `toggle-theme`) |
-| 파일 구조 확인 | `./STRUCTURE.md` 참조 |
+| Task                  | Location                                              |
+| --------------------- | ----------------------------------------------------- |
+| Create interactive UI | `features/(feature)/ui/`                              |
+| Add API calls         | `features/(feature)/api/`                             |
+| Add feature logic     | `features/(feature)/lib/`                             |
+| Name feature          | verb-noun pattern (e.g., `edit-form`, `toggle-theme`) |
+| 파일 구조 확인        | `/.project-skills/features/STRUCTURE.md` 참조         |
 
 ## Feature Definition
 
 A **feature** represents a user action or interaction:
 
-| Feature | Purpose |
-|---------|---------|
-| `edit-form` | Form editing functionality |
-| `authenticate` | User authentication |
-| `toggle-theme` | Theme switching |
-| `submit-application` | Application submission |
+| Feature              | Purpose                    |
+| -------------------- | -------------------------- |
+| `edit-form`          | Form editing functionality |
+| `authenticate`       | User authentication        |
+| `toggle-theme`       | Theme switching            |
+| `submit-application` | Application submission     |
 
 ## Naming Convention
 
@@ -42,32 +42,32 @@ Use **verb-noun** pattern for feature names:
 
 ## Segments
 
-| Segment | Purpose | When to Use |
-|---------|---------|-------------|
-| `ui/` | Interactive components | Always (required) |
-| `api/` | API call declarations | When API calls are needed |
-| `lib/` | Feature logic, API services | When complex logic is needed |
-| `types.d.ts` | Feature-specific types | When custom types are needed |
+| Segment      | Purpose                     | When to Use                  |
+| ------------ | --------------------------- | ---------------------------- |
+| `ui/`        | Interactive components      | Always (required)            |
+| `api/`       | API call declarations       | When API calls are needed    |
+| `lib/`       | Feature logic, API services | When complex logic is needed |
+| `types.d.ts` | Feature-specific types      | When custom types are needed |
 
 ## UI Components
 
 ### When to use features/ui vs entities/ui
 
-| Component Type | Location | Example |
-|----------------|----------|---------|
+| Component Type                     | Location         | Example                                          |
+| ---------------------------------- | ---------------- | ------------------------------------------------ |
 | Interactive UI with event handling | `features/*/ui/` | `QuestionAddSection`, `FormSignatureEditSection` |
-| Static/presentational UI | `entities/*/ui/` | `QuestionCard`, `FormSignatureDisplay` |
-| Base reusable UI | `shared/ui/` | `Modal`, `Button`, `Input` |
+| Static/presentational UI           | `entities/*/ui/` | `QuestionCard`, `FormSignatureDisplay`           |
+| Base reusable UI                   | `shared/ui/`     | `Modal`, `Button`, `Input`                       |
 
 ### Component Naming
 
 Use role-based naming:
 
-| Suffix | Purpose | Example |
-|--------|---------|---------|
-| `*Section` | Major UI sections | `FormSignatureEditSection` |
-| `*Button` | Action buttons | `SubmitButton`, `DarkModeButton` |
-| `*List` | List components | `QuestionList` |
+| Suffix     | Purpose           | Example                          |
+| ---------- | ----------------- | -------------------------------- |
+| `*Section` | Major UI sections | `FormSignatureEditSection`       |
+| `*Button`  | Action buttons    | `SubmitButton`, `DarkModeButton` |
+| `*List`    | List components   | `QuestionList`                   |
 
 ## API Layer Pattern
 
@@ -82,8 +82,7 @@ import { AxiosManager } from '@/shared/lib';
 const submitFormApi = {
   submitForm: (data: SubmitFormRequest) =>
     AxiosManager.getAxiosInstance().post('/forms/submit', data),
-  saveDraft: (data: SaveDraftRequest) =>
-    AxiosManager.getAxiosInstance().post('/forms/draft', data),
+  saveDraft: (data: SaveDraftRequest) => AxiosManager.getAxiosInstance().post('/forms/draft', data),
 };
 
 export { submitFormApi };
@@ -124,10 +123,13 @@ import type { FormQuestionType } from '@/entities/form';
 const useQuestionAddSectionController = () => {
   const { setFormQuestions } = useFormQuestionListStore();
 
-  const handleAddQuestion = useCallback((questionType: FormQuestionType) => {
-    const formQuestion = QuestionStateService.getInitialQuestion(questionType);
-    setFormQuestions(prev => QuestionListStateService.pushQuestion(prev, formQuestion));
-  }, [setFormQuestions]);
+  const handleAddQuestion = useCallback(
+    (questionType: FormQuestionType) => {
+      const formQuestion = QuestionStateService.getInitialQuestion(questionType);
+      setFormQuestions(prev => QuestionListStateService.pushQuestion(prev, formQuestion));
+    },
+    [setFormQuestions],
+  );
 
   return { handleAddQuestion };
 };
@@ -153,4 +155,4 @@ class FeatureSpecificModel { ... }
 
 ## Reference
 
-For current file structure and module list, see `./STRUCTURE.md`.
+For current file structure and module list, see `/.project-skills/features/STRUCTURE.md`.

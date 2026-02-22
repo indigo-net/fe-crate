@@ -1,1 +1,1 @@
-../../agent-skills/common/SKILL.md
+../../.project-skills/common/SKILL.md

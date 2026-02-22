@@ -12,15 +12,15 @@ The `app` layer is the application entry point. It provides routing and context 
 
 ## Quick Reference
 
-| Task | Location |
-|------|----------|
-| Add new route | `src/app/ui/index.tsx` |
-| Create context provider | `src/app/lib/context-provider/` |
-| Modify provider order | `src/app/ui/index.tsx` |
-| Access modal context | `useModalContext` |
-| Access alert context | `useAlertContext` |
-| Access toast context | `useToastContext` |
-| 파일 구조 확인 | `./STRUCTURE.md` 참조 |
+| Task                    | Location                                 |
+| ----------------------- | ---------------------------------------- |
+| Add new route           | `src/app/ui/index.tsx`                   |
+| Create context provider | `src/app/lib/context-provider/`          |
+| Modify provider order   | `src/app/ui/index.tsx`                   |
+| Access modal context    | `useModalContext`                        |
+| Access alert context    | `useAlertContext`                        |
+| Access toast context    | `useToastContext`                        |
+| 파일 구조 확인          | `/.project-skills/app/STRUCTURE.md` 참조 |
 
 ## Entry Point
 
@@ -80,15 +80,15 @@ export { ToastProvider, useToastContext } from './ToastProvider';
 
 ## Key Points
 
-| Rule | Description |
-|------|-------------|
-| Unified providers | All pages wrapped with same providers |
-| Routes in index.tsx | All routing defined in app/ui/index.tsx |
-| Provider order | `ToastProvider` → `AlertProvider` → `ModalProvider` |
-| No src/App.tsx | App component is in src/app/ui/index.tsx |
+| Rule                | Description                                         |
+| ------------------- | --------------------------------------------------- |
+| Unified providers   | All pages wrapped with same providers               |
+| Routes in index.tsx | All routing defined in app/ui/index.tsx             |
+| Provider order      | `ToastProvider` → `AlertProvider` → `ModalProvider` |
+| No src/App.tsx      | App component is in src/app/ui/index.tsx            |
 
 **CRITICAL**: Provider order matters! Always wrap in this order: `ToastProvider` → `AlertProvider` → `ModalProvider`.
 
 ## Reference
 
-For current file structure and module list, see `./STRUCTURE.md`.
+For current file structure and module list, see `/.project-skills/app/STRUCTURE.md`.
