@@ -16,6 +16,7 @@ Claude Code 스킬 문서 작성 가이드입니다.
 | Description 작성 | 트리거 조건 + 제외 사항 명시 |
 | 코드 예제 | 실행 가능한 완전한 코드 블록 |
 | 경고 강조 | `**CRITICAL**`, `**WARNING**`, `**Note**` |
+| 스킬 배포 | Claude Code + Antigravity 심볼릭 링크 생성 |
 
 ## YAML 프론트매터 (필수)
 
@@ -99,6 +100,27 @@ pandoc document.docx -o output.md
 - [ ] 실행 가능한 코드 예제
 - [ ] CRITICAL/WARNING 강조
 - [ ] 제외 사항 명시
+- [ ] Claude Code 심볼릭 링크 (`.claude/skills/<name>.md`)
+- [ ] Antigravity 심볼릭 링크 (`.agent/skills/<name>/SKILL.md`)
+
+## 스킬 배포 (심볼릭 링크)
+
+새 스킬을 `.project-skills/`에 추가한 후, 두 에이전트에서 사용할 수 있도록 심볼릭 링크를 생성해야 합니다.
+
+### Claude Code
+
+```bash
+ln -s ../../.project-skills/<skill-path>/SKILL.md .claude/skills/<skill-name>.md
+```
+
+### Antigravity
+
+```bash
+mkdir -p .agent/skills/<skill-name>
+ln -s ../../../.project-skills/<skill-path>/SKILL.md .agent/skills/<skill-name>/SKILL.md
+```
+
+**CRITICAL**: `.project-skills/`가 단일 소스 오브 트루스(Single Source of Truth)입니다. 모든 에이전트는 이 디렉토리의 파일을 심볼릭 링크로 참조합니다.
 
 ## 템플릿
 
@@ -130,4 +152,15 @@ license: Proprietary
 ```
 
 **CRITICAL**: [Important warning]
+```
+
+### 배포 명령어
+
+```bash
+# Claude Code
+ln -s ../../.project-skills/common/your-skill-name/SKILL.md .claude/skills/your-skill-name.md
+
+# Antigravity
+mkdir -p .agent/skills/your-skill-name
+ln -s ../../../.project-skills/common/your-skill-name/SKILL.md .agent/skills/your-skill-name/SKILL.md
 ```
