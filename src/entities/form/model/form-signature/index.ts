@@ -12,6 +12,8 @@ interface State {
   selectionMethod: SelectionMethodType; // 선발방식
   publishedAt: string | null; // 모집 게시일 (ISO 8601 UTC string)
   closedAt: string | null; // 모집 종료일 (ISO 8601 UTC string)
+  targetCount: number | null;
+  standbyCount: number | null;
 }
 
 interface Props {
@@ -23,6 +25,8 @@ interface Props {
   selectionMethod?: SelectionMethodType;
   publishedAt?: string | null;
   closedAt?: string | null;
+  targetCount?: number | null;
+  standbyCount?: number | null;
 }
 
 class FormSignatureModel extends CustomModel<State> {
@@ -39,6 +43,8 @@ class FormSignatureModel extends CustomModel<State> {
       selectionMethod: props.selectionMethod || 'QUANTITATIVE',
       publishedAt: props.publishedAt || null,
       closedAt: props.closedAt || null,
+      targetCount: props.targetCount ?? null,
+      standbyCount: props.standbyCount ?? null,
     };
   }
 

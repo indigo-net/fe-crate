@@ -86,6 +86,12 @@ Each layer/slice can use these segments as needed. **Only create segments that a
 | `entities/` | Yes        | `entities/(domain)/ui/`, `model/`, `store/`, `api/`, `lib/` |
 | `shared/`   | No         | Direct to segments                                          |
 
+**Features Export Pattern:**
+
+Features use **segment-level exports** (not slice-level):
+- ✅ `features/publish-form/ui/index.ts` - exports UI components
+- ❌ `features/publish-form/index.ts` - unnecessary slice-level export
+
 ## Import Order (ESLint Rule)
 
 Imports must be ordered as follows (enforced by eslint-plugin-import):
@@ -132,6 +138,19 @@ interface State {
   data: SomeModel[];
   setData: (next: SomeModel[] | ((prev: SomeModel[]) => SomeModel[])) => void;
 }
+```
+
+**Null Handling in Store Callbacks:**
+
+When store setter receives a callback with nullable prev, use `TypeGuard.checkNull`:
+
+```typescript
+setFormSignature(prev => {
+  if (TypeGuard.checkNull(prev)) {
+    return SomeStateService.getInitialState();
+  }
+  return SomeStateService.updateState(prev, newValue);
+});
 ```
 
 ### Custom Models

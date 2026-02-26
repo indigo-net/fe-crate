@@ -1,6 +1,9 @@
 import Angry from './angry';
 import Balance from './balance';
+import Calendar from './calendar';
 import Cancel from './Cancel';
+import Clock from './clock';
+import Dice from './dice';
 import Dizzy from './dizzy';
 import Document from './Document';
 import Flag from './Flag';
@@ -17,11 +20,15 @@ import Sun from './sun';
 import Target from './target';
 import Trash from './trash';
 import Users from './users';
+import Warning from './warning';
 
 const Stroke = {
   Angry,
   Balance,
+  Calendar,
   Cancel,
+  Clock,
+  Dice,
   Dizzy,
   Document,
   Flash,
@@ -38,6 +45,7 @@ const Stroke = {
   Target,
   Trash,
   Users,
+  Warning,
 };
 
 export default Stroke;
