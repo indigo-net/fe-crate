@@ -17,7 +17,8 @@ const useTargetCountInputController = () => {
 
   const handleTargetCountChange = useCallback(
     (value: string) => {
-      const count = value === '' ? null : parseInt(value, 10);
+      const parsed = parseInt(value, 10);
+      const count = value === '' ? null : Number.isNaN(parsed) ? null : parsed;
       setFormSignature(prev => {
         if (TypeGuard.checkNull(prev)) {
           const newFormSignature = FormSignatureStateService.getInitialFormSignature();
@@ -31,7 +32,8 @@ const useTargetCountInputController = () => {
 
   const handleStandbyCountChange = useCallback(
     (value: string) => {
-      const count = value === '' ? null : parseInt(value, 10);
+      const parsed = parseInt(value, 10);
+      const count = value === '' ? null : Number.isNaN(parsed) ? null : parsed;
       setFormSignature(prev => {
         if (TypeGuard.checkNull(prev)) {
           const newFormSignature = FormSignatureStateService.getInitialFormSignature();
