@@ -1,6 +1,7 @@
+import { FormSignatureModel } from '../model';
+
 import type { FormStatusType, SelectionMethodType } from '@/entities/form';
 
-import { FormSignatureModel } from '../model';
 
 class FormSignatureStateService {
   static getInitialFormSignature() {
