@@ -22,7 +22,7 @@ const methods: {
     value: 'LOTTERY',
     label: '추첨제',
     description: '무작위 추첨을 통해 선발합니다.',
-    icon: Iconography.Stroke.Rocket,
+    icon: Iconography.Stroke.Dice,
   },
   {
     value: 'FIRST_COME_FIRST_SERVED',
@@ -43,7 +43,7 @@ const SelectionMethodSelect = memo(() => {
       }`}
     >
       <h3 className="text-lg font-slim-bold text-text-primary flex items-center gap-2">
-        <Iconography.Stroke.Target className="w-5 h-5 text-brand-primary" />
+        <Iconography.Stroke.Balance className="w-5 h-5 text-brand-primary" />
         선발 방식 설정
       </h3>
       <Radio.Group value={selectionMethod} onChange={handleSelectionMethodChange}>

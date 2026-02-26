@@ -23,7 +23,7 @@ const TargetCountInput = memo(() => {
       }`}
     >
       <h3 className="text-lg font-slim-bold text-text-primary flex items-center gap-2">
-        <Iconography.Stroke.Target className="w-5 h-5 text-brand-primary" />
+        <Iconography.Stroke.Users className="w-5 h-5 text-brand-primary" />
         선발 인원 설정
       </h3>
       <div className="bg-bg-subtle p-6 rounded-slim-xl border border-border-default">

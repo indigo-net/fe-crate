@@ -22,7 +22,7 @@ const DateRangePicker = memo(() => {
       }`}
     >
       <h3 className="text-lg font-slim-bold text-text-primary flex items-center gap-2">
-        <Iconography.Stroke.Document className="w-5 h-5 text-brand-primary" />
+        <Iconography.Stroke.Calendar className="w-5 h-5 text-brand-primary" />
         모집 기간 설정
       </h3>
       <div className="bg-bg-subtle p-6 rounded-slim-xl border border-border-default">
@@ -39,7 +39,7 @@ const DateRangePicker = memo(() => {
                 className="w-full px-4 py-3 bg-bg-base border border-border-default rounded-slim-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent transition-all outline-none text-text-primary font-slim-medium"
               />
               <div className="absolute right-4 top-1/2 -translate-y-1/2 text-text-tertiary group-focus-within:text-brand-primary transition-colors pointer-events-none">
-                <Iconography.Stroke.Monitor className="w-5 h-5" />
+                <Iconography.Stroke.Calendar className="w-5 h-5" />
               </div>
             </div>
             <p className="text-[11px] text-text-tertiary ml-1">* 해당 시점부터 폼이 공개됩니다.</p>
@@ -60,7 +60,7 @@ const DateRangePicker = memo(() => {
                 }`}
               />
               <div className="absolute right-4 top-1/2 -translate-y-1/2 text-text-tertiary group-focus-within:text-brand-primary transition-colors pointer-events-none">
-                <Iconography.Stroke.Rocket className="w-5 h-5" />
+                <Iconography.Stroke.Clock className="w-5 h-5" />
               </div>
             </div>
             <p className="text-[11px] text-text-tertiary ml-1">

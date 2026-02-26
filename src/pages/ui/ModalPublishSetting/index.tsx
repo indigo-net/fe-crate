@@ -1,12 +1,12 @@
 import { memo, useMemo } from 'react';
 
+import { useFormSignatureStore } from '@/entities/form/store';
 import {
   DateRangePicker,
   PublishStatusSelect,
   SelectionMethodSelect,
   TargetCountInput,
 } from '@/features/publish-form/ui';
-import { useFormSignatureStore } from '@/entities/form/store';
 import { Iconography } from '@/shared/ui';
 
 interface PublishSettings {
@@ -67,7 +67,7 @@ const ModalPublishSetting = memo(({ onConfirm }: Props) => {
       <TargetCountInput />
 
       <div className="mt-4 p-4 rounded-slim-lg bg-warning-bg/30 border border-warning-border/50 flex gap-3 items-start">
-        <Iconography.Stroke.Monitor className="w-5 h-5 text-warning shrink-0 mt-0.5" />
+        <Iconography.Stroke.Warning className="w-5 h-5 text-warning shrink-0 mt-0.5" />
         <p className="text-xs text-text-secondary leading-relaxed">
           <span className="font-slim-bold text-warning">확인해주세요:</span> 게시 이후에는 선발
           방식을 변경하기 어려울 수 있으며, 모든 지원 데이터는 설정된 기간 동안 암호화되어 안전하게
