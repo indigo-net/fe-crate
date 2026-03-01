@@ -23,11 +23,20 @@ const Duck = (props: SVGProps<SVGSVGElement>) => {
       aria-hidden={ariaHidden}
     >
       {!ariaHidden && <title>{ariaLabel}</title>}
-      <path d="M8 8a4 4 0 118 0c0 2-1.5 3-3 4v2" />
-      <circle cx="10" cy="7" r="0.5" fill="currentColor" stroke="none" />
-      <path d="M5 12c-1 0-2 1-2 2s1 2 3 2h12c2 0 3-1 3-2s-1-2-2-2" />
-      <path d="M6 16c0 2 2 4 6 4s6-2 6-4" />
-      <path d="M5 10l-2 1" />
+      {/* 머리 */}
+      <circle cx="7" cy="8" r="3" />
+      {/* 눈 */}
+      <circle cx="6" cy="7.5" r="0.5" fill="currentColor" stroke="none" />
+      {/* 부리 */}
+      <path d="M4 9.5l-2 0.5 2 1" />
+      {/* 몸통 */}
+      <ellipse cx="14" cy="13" rx="6" ry="4" />
+      {/* 목 연결 */}
+      <path d="M9 10c1 1 2 2 4 3" />
+      {/* 꼬리 */}
+      <path d="M19 11l2-2" />
+      {/* 물결 */}
+      <path d="M3 19c2-1 4 1 6 0s4 1 6 0 4 1 6 0" />
     </svg>
   );
 };

@@ -23,12 +23,12 @@ const Bus = (props: SVGProps<SVGSVGElement>) => {
       aria-hidden={ariaHidden}
     >
       {!ariaHidden && <title>{ariaLabel}</title>}
-      <path d="M4 6a2 2 0 012-2h12a2 2 0 012 2v10a2 2 0 01-2 2H6a2 2 0 01-2-2V6z" />
-      <path d="M4 10h16" />
-      <path d="M8 18v2" />
-      <path d="M16 18v2" />
-      <circle cx="7.5" cy="14.5" r="1" />
-      <circle cx="16.5" cy="14.5" r="1" />
+      <path d="M4 5a2 2 0 012-2h12a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V5z" />
+      <path d="M4 9h16" />
+      <circle cx="8" cy="21" r="1.5" />
+      <circle cx="16" cy="21" r="1.5" />
+      <circle cx="7.5" cy="14" r="1" />
+      <circle cx="16.5" cy="14" r="1" />
     </svg>
   );
 };
