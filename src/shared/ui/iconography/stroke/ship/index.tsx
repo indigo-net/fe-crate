@@ -23,11 +23,18 @@ const Ship = (props: SVGProps<SVGSVGElement>) => {
       aria-hidden={ariaHidden}
     >
       {!ariaHidden && <title>{ariaLabel}</title>}
-      <path d="M2 20l2-2h16l2 2" />
-      <path d="M4 18l-1-6h18l-1 6" />
-      <path d="M12 12V4" />
-      <path d="M8 8l4-4 4 4" />
-      <path d="M7 12h10" />
+      {/* 선체 */}
+      <path d="M3 17l2 3h14l2-3H3z" />
+      {/* 돛대 */}
+      <path d="M12 17V4" />
+      {/* 왼쪽 돛 */}
+      <path d="M12 5L6 14h6" />
+      {/* 오른쪽 돛 */}
+      <path d="M12 7l5 7h-5" />
+      {/* 깃발 */}
+      <path d="M12 4l3 1.5L12 7" />
+      {/* 물결 */}
+      <path d="M2 21c2-1 4 1 6 0s4 1 6 0 4 1 6 0" />
     </svg>
   );
 };

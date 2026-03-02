@@ -209,6 +209,46 @@ See `.claude/skills/code-style.md` for detailed code style guidelines including:
 - Modals use `Modal*` prefix: `ModalPublishSetting/index.tsx`
 - Use `hook.ts` for component-level hooks
 
+## Storybook
+
+UI 컴포넌트 추가 시 **반드시** Storybook 스토리 파일을 함께 작성합니다.
+
+### 파일 위치
+- 컴포넌트와 동일 디렉토리에 `ComponentName.stories.tsx` 생성
+
+### 필수 구조
+```typescript
+import ComponentName from './index';
+import type { Meta, StoryObj } from '@storybook/react-vite';
+
+const meta = {
+  title: 'layer/ComponentName',  // shared/Button, features/LoginForm 등
+  component: ComponentName,
+  parameters: {
+    layout: 'centered',  // 'centered' | 'fullscreen' | 'padded'
+  },
+  tags: ['autodocs'],
+  argTypes: {
+    // props 문서화
+  },
+} satisfies Meta<typeof ComponentName>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {
+  args: {
+    // 기본 props
+  },
+};
+```
+
+### 스토리 작성 규칙
+- `Default` 스토리 필수
+- 주요 variants (상태, 크기 등) 별도 스토리로 작성
+- `argTypes`로 props 설명 추가
+- 필요 시 `decorators`로 래퍼 제공
+
 ## Layer Documentation
 
 For detailed layer-specific best practices, see the skill files:
