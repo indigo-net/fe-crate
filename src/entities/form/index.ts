@@ -5,7 +5,16 @@ export type { FormQuestionType, FormStatusType, SelectionMethodType } from './ty
 export { FormQuestionModel, FormQuestionOptionModel, FormSignatureModel } from './model';
 
 // Services
-export { FormSignatureStateService, QuestionStateService, QuestionListStateService } from './lib';
+export {
+  FormApiService,
+  FormSignatureStateService,
+  FormValidationService,
+  QuestionStateService,
+  QuestionListStateService,
+} from './lib';
+
+// API
+export { postForm } from './api';
 
 // Stores
 export { useFormQuestionListStore, useFormSignatureStore } from './store';
