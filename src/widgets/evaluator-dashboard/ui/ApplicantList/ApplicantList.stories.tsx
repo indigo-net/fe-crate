@@ -27,13 +27,8 @@ const meta = {
   },
   tags: ['autodocs'],
   argTypes: {
-    applicants: {
-      description: '지원자 목록 데이터',
-    },
-    onStartEvaluation: {
-      action: 'onStartEvaluation',
-      description: '평가 시작 버튼 클릭 핸들러',
-    },
+    applicants: { control: 'object', description: '지원자 목록 데이터' },
+    onStartEvaluation: { action: 'evaluationStarted', description: '평가 시작 버튼 클릭 핸들러' },
   },
 } satisfies Meta<typeof ApplicantList>;
 

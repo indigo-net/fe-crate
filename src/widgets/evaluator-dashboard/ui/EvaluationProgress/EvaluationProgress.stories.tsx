@@ -14,22 +14,10 @@ const meta = {
   },
   tags: ['autodocs'],
   argTypes: {
-    progressPercent: {
-      description: '진행률 (0-100)',
-      control: { type: 'number', min: 0, max: 100 },
-    },
-    currentFilter: {
-      description: '현재 선택된 필터',
-      control: { type: 'select' },
-      options: ['ALL', 'PENDING', 'COMPLETED'],
-    },
-    counts: {
-      description: '각 필터별 개수',
-    },
-    onFilterChange: {
-      action: 'onFilterChange',
-      description: '필터 변경 핸들러',
-    },
+    progressPercent: { control: 'number', description: '진행률 (0-100)' },
+    currentFilter: { control: 'select', options: ['ALL', 'PENDING', 'COMPLETED'], description: '현재 선택된 필터' },
+    counts: { control: 'object', description: '각 필터별 개수' },
+    onFilterChange: { action: 'filterChanged', description: '필터 변경 핸들러' },
   },
 } satisfies Meta<typeof EvaluationProgress>;
 

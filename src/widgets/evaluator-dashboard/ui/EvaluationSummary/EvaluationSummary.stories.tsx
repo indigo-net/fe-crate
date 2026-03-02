@@ -10,18 +10,9 @@ const meta = {
   },
   tags: ['autodocs'],
   argTypes: {
-    totalAssigned: {
-      description: '총 배분된 지원서 수',
-      control: { type: 'number', min: 0 },
-    },
-    completedCount: {
-      description: '완료된 평가 수',
-      control: { type: 'number', min: 0 },
-    },
-    progressPercent: {
-      description: '진행률 (0-100)',
-      control: { type: 'number', min: 0, max: 100 },
-    },
+    totalAssigned: { control: 'number', description: '총 배분된 지원서 수' },
+    completedCount: { control: 'number', description: '완료된 평가 수' },
+    progressPercent: { control: 'number', description: '진행률 (0-100)' },
   },
 } satisfies Meta<typeof EvaluationSummary>;
 
