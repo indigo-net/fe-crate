@@ -1,8 +1,7 @@
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { ComponentType, SVGProps } from 'react';
 
 import Iconography from './index';
-
-import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const StrokeIconEntries = Object.entries(Iconography.Stroke) as [
   string,
@@ -67,6 +66,10 @@ const meta = {
 
 export default meta;
 type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {
+  render: () => <IconGallery icons={StrokeIconEntries} />,
+};
 
 export const StrokeIcons: Story = {
   render: () => <IconGallery icons={StrokeIconEntries} />,

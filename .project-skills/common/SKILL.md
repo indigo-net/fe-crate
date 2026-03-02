@@ -219,7 +219,7 @@ UI 컴포넌트 추가 시 **반드시** Storybook 스토리 파일을 함께 �
 ### 필수 구조
 ```typescript
 import ComponentName from './index';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta = {
   title: 'layer/ComponentName',  // shared/Button, features/LoginForm 등
