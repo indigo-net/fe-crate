@@ -1,7 +1,14 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import { AlertProvider, ToastProvider, ModalProvider } from '@/app/lib';
-import { PageDashboard, PageKakaoRedirect, PageLanding, PageNewForm } from '@/pages/ui';
+import {
+  PageDashboard,
+  PageKakaoRedirect,
+  PageLanding,
+  PageNewForm,
+  PageFormDetail,
+  PageFormApply,
+} from '@/pages/ui';
 
 const App = () => {
   return (
@@ -14,6 +21,8 @@ const App = () => {
               <Route path="/kakao-authorize" element={<PageKakaoRedirect />} />
               <Route path="/dashboard" element={<PageDashboard />} />
               <Route path="/new-form" element={<PageNewForm />} />
+              <Route path="/form/:formId" element={<PageFormDetail />} />
+              <Route path="/form/:formId/apply" element={<PageFormApply />} />
             </Routes>
           </BrowserRouter>
         </ModalProvider>
