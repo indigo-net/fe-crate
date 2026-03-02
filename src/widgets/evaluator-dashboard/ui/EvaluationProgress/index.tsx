@@ -7,7 +7,7 @@ type FilterType = EvaluationStatusType | 'ALL';
 interface Props {
   progressPercent: number;
   currentFilter: FilterType;
-  onFilterChange: (filter: FilterType) => void;
+  onFilterChange?: (filter: FilterType) => void;
   counts: {
     all: number;
     pending: number;
@@ -45,7 +45,7 @@ const EvaluationProgress = memo(
           {filters.map(filter => (
             <button
               key={filter.key}
-              onClick={() => onFilterChange(filter.key)}
+              onClick={() => onFilterChange?.(filter.key)}
               className={`px-4 py-2 rounded-slim-lg text-sm font-slim-semibold transition-all ${
                 currentFilter === filter.key
                   ? 'bg-brand-primary text-text-inverse'

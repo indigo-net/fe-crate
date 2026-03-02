@@ -15,7 +15,7 @@ interface ApplicantData {
 
 interface Props {
   applicants: ApplicantData[];
-  onStartEvaluation: (id: string) => void;
+  onStartEvaluation?: (id: string) => void;
 }
 
 const STATUS_CONFIG: Record<
@@ -92,7 +92,7 @@ const ApplicantList = memo(({ applicants, onStartEvaluation }: Props) => {
                   <td className="px-6 py-4 text-right">
                     {applicant.status === 'PENDING' && (
                       <button
-                        onClick={() => onStartEvaluation(applicant.id)}
+                        onClick={() => onStartEvaluation?.(applicant.id)}
                         className="px-4 py-2 bg-brand-primary text-text-inverse text-sm font-slim-semibold rounded-slim-lg hover:scale-105 active:scale-95 transition-all"
                       >
                         평가 시작
@@ -100,7 +100,7 @@ const ApplicantList = memo(({ applicants, onStartEvaluation }: Props) => {
                     )}
                     {applicant.status === 'IN_PROGRESS' && (
                       <button
-                        onClick={() => onStartEvaluation(applicant.id)}
+                        onClick={() => onStartEvaluation?.(applicant.id)}
                         className="px-4 py-2 bg-warning/10 text-warning text-sm font-slim-semibold rounded-slim-lg border border-warning/20 hover:bg-warning/20 transition-all"
                       >
                         이어서 평가
