@@ -9,6 +9,8 @@ interface Props {
 }
 
 const EvaluationSummary = memo(({ totalAssigned, completedCount, progressPercent }: Props) => {
+  const safeProgress = Math.max(0, Math.min(100, progressPercent));
+
   return (
     <section className="grid grid-cols-1 md:grid-cols-3 gap-4">
       {/* 배분된 지원서 */}
@@ -47,11 +49,11 @@ const EvaluationSummary = memo(({ totalAssigned, completedCount, progressPercent
           <h3 className="text-sm font-slim-semibold text-text-secondary">진행률</h3>
         </header>
         <div className="space-y-2">
-          <p className="text-3xl font-slim-bold text-text-primary">{progressPercent}%</p>
+          <p className="text-3xl font-slim-bold text-text-primary">{safeProgress}%</p>
           <div className="w-full h-2 bg-bg-subtle rounded-full overflow-hidden">
             <div
               className="h-full bg-brand-primary rounded-full transition-all duration-500"
-              style={{ width: `${progressPercent}%` }}
+              style={{ width: `${safeProgress}%` }}
             />
           </div>
         </div>

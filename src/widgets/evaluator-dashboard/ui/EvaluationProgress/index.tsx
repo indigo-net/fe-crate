@@ -46,7 +46,9 @@ const EvaluationProgress = memo(
           {filters.map(filter => (
             <button
               key={filter.key}
+              type="button"
               onClick={() => onFilterChange?.(filter.key)}
+              aria-pressed={currentFilter === filter.key}
               className={`px-4 py-2 rounded-slim-lg text-sm font-slim-semibold transition-all ${
                 currentFilter === filter.key
                   ? 'bg-brand-primary text-text-inverse'

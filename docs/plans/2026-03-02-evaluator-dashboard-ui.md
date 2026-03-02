@@ -1,7 +1,5 @@
 # 평가자 대시보드 UI 구현 계획
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
-
 **Goal:** 평가자가 자신에게 배분된 지원서를 확인하고 평가할 수 있는 대시보드 UI 구현
 
 **Architecture:** pages + widgets 레벨만 사용. Mock 데이터는 hook.ts에서 관리. 향후 features/entities 분리는 TODO 주석으로 표시.
