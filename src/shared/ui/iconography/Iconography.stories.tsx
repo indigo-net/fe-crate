@@ -1,15 +1,17 @@
+import type { ComponentType, SVGProps } from 'react';
+
 import Iconography from './index';
 
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const StrokeIconEntries = Object.entries(Iconography.Stroke) as [
   string,
-  React.ComponentType<React.SVGProps<SVGSVGElement>>,
+  ComponentType<SVGProps<SVGSVGElement>>,
 ][];
 
 const LogoIconEntries = Object.entries(Iconography.Logo) as [
   string,
-  React.ComponentType<React.SVGProps<SVGSVGElement>>,
+  ComponentType<SVGProps<SVGSVGElement>>,
 ][];
 
 const IconGallery = ({
@@ -17,7 +19,7 @@ const IconGallery = ({
   color = 'currentColor',
   size = 24,
 }: {
-  icons: [string, React.ComponentType<React.SVGProps<SVGSVGElement>>][];
+  icons: [string, ComponentType<SVGProps<SVGSVGElement>>][];
   color?: string;
   size?: number;
 }) => (

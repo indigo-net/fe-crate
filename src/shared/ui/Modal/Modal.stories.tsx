@@ -66,16 +66,18 @@ export const WithForm: Story = {
     content: (
       <div className="flex flex-col gap-4">
         <div>
-          <label className="mb-1 block text-sm font-medium text-gray-700">이름</label>
+          <label htmlFor="storybook-modal-name" className="mb-1 block text-sm font-medium text-gray-700">이름</label>
           <input
+            id="storybook-modal-name"
             type="text"
             className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-indigo-500 focus:outline-none"
             placeholder="이름을 입력하세요"
           />
         </div>
         <div>
-          <label className="mb-1 block text-sm font-medium text-gray-700">이메일</label>
+          <label htmlFor="storybook-modal-email" className="mb-1 block text-sm font-medium text-gray-700">이메일</label>
           <input
+            id="storybook-modal-email"
             type="email"
             className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-indigo-500 focus:outline-none"
             placeholder="이메일을 입력하세요"
