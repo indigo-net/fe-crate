@@ -9,7 +9,7 @@ MSW(Mock Service Worker) 핸들러를 작성할 때 따라야 할 패턴과 규�
 
 ## 파일 구조
 
-```
+```text
 src/shared/lib/msw/
 ├── handlers/
 │   ├── index.ts                # 핸들러 집계

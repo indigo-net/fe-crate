@@ -32,6 +32,11 @@ export const applicationsHandlers = [
     const page = parseInt(url.searchParams.get('page') ?? '1', 10);
     const limit = parseInt(url.searchParams.get('limit') ?? '10', 10);
 
+    // Validate pagination params
+    if (!Number.isFinite(page) || page < 1 || !Number.isFinite(limit) || limit < 1) {
+      return MockResponseManager.error('VALIDATION_ERROR', { message: 'Invalid pagination params' });
+    }
+
     const formApplications = applicationsStore.filter(a => a.formId === formId);
     const total = formApplications.length;
     const startIndex = (page - 1) * limit;

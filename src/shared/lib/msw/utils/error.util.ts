@@ -34,13 +34,18 @@ class MockErrorSimulator {
   /**
    * 확률 기반 랜덤 에러 응답 생성
    * @param errorCode - 발생시킬 에러 코드 (ErrorCodes에 정의된 키)
-   * @param probability - 에러 발생 확률 (기본값: 1/50)
+   * @param probability - 에러 발생 확률 (기본값: 1/50, 0-1 범위)
    * @returns 에러 발생 시 Response 객체, 미발생 시 null
+   * @throws RangeError - probability가 0-1 범위를 벗어날 경우
    */
   static maybeError(
     errorCode: ErrorCode,
     probability: number = this.DEFAULT_PROBABILITY,
   ): Response | null {
+    if (!Number.isFinite(probability) || probability < 0 || probability > 1) {
+      throw new RangeError('probability must be a finite number between 0 and 1');
+    }
+
     if (this.shouldTrigger(probability)) {
       return MockResponseManager.error(errorCode);
     }

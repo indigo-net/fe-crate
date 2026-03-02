@@ -100,12 +100,12 @@ export const questionsFixture: QuestionFixture[] = [
 /**
  * In-memory store for mutation
  */
-export const questionsStore = [...questionsFixture];
+export const questionsStore = structuredClone(questionsFixture);
 
 /**
  * Reset store to initial state
  */
 export function resetQuestionsStore(): void {
   questionsStore.length = 0;
-  questionsStore.push(...questionsFixture);
+  questionsStore.push(...structuredClone(questionsFixture));
 }

@@ -71,12 +71,12 @@ export const evaluationsFixture: EvaluationFixture[] = [
 /**
  * In-memory store for mutation
  */
-export const evaluationsStore = [...evaluationsFixture];
+export const evaluationsStore = structuredClone(evaluationsFixture);
 
 /**
  * Reset store to initial state
  */
 export function resetEvaluationsStore(): void {
   evaluationsStore.length = 0;
-  evaluationsStore.push(...evaluationsFixture);
+  evaluationsStore.push(...structuredClone(evaluationsFixture));
 }

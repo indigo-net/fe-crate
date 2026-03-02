@@ -37,6 +37,11 @@ export const evaluationsHandlers = [
     const page = parseInt(url.searchParams.get('page') ?? '1', 10);
     const limit = parseInt(url.searchParams.get('limit') ?? '10', 10);
 
+    // Validate pagination params
+    if (!Number.isFinite(page) || page < 1 || !Number.isFinite(limit) || limit < 1) {
+      return MockResponseManager.error('VALIDATION_ERROR', { message: 'Invalid pagination params' });
+    }
+
     const formEvaluations = evaluationsStore.filter(e => e.formId === formId);
     const total = formEvaluations.length;
     const startIndex = (page - 1) * limit;
@@ -63,6 +68,12 @@ export const evaluationsHandlers = [
 
     // Check if already evaluated by checking existing evaluation
     const body = (await request.json()) as Partial<EvaluationFixture>;
+
+    // Validate evaluatorId is required
+    if (!body.evaluatorId) {
+      return MockResponseManager.error('MISSING_EVALUATOR_ID');
+    }
+
     const existingEvaluation = evaluationsStore.find(
       e => e.applicationId === appId && e.evaluatorId === body.evaluatorId,
     );
@@ -76,7 +87,7 @@ export const evaluationsHandlers = [
     const newEvaluation: EvaluationFixture = {
       id: `eval-${Date.now()}`,
       applicationId: appId as string,
-      evaluatorId: body.evaluatorId ?? 'unknown',
+      evaluatorId: body.evaluatorId,
       formId: application.formId,
       status: 'PENDING',
       scores: [],
@@ -107,7 +118,7 @@ export const evaluationsHandlers = [
     const evaluationIndex = evaluationsStore.findIndex(e => e.id === evaluationId);
 
     if (evaluationIndex === -1) {
-      return MockResponseManager.error('APPLICATION_NOT_FOUND'); // Use closest error code
+      return MockResponseManager.error('EVALUATION_NOT_FOUND');
     }
 
     const evaluation = evaluationsStore[evaluationIndex];
@@ -115,8 +126,8 @@ export const evaluationsHandlers = [
       requestingEvaluatorId?: string;
     };
 
-    // Check if requester is assigned to this evaluation
-    if (body.requestingEvaluatorId && body.requestingEvaluatorId !== evaluation.evaluatorId) {
+    // Check if requester is assigned to this evaluation (required)
+    if (!body.requestingEvaluatorId || body.requestingEvaluatorId !== evaluation.evaluatorId) {
       return MockResponseManager.error('NOT_ASSIGNED');
     }
 

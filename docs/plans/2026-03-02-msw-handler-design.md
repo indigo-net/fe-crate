@@ -18,7 +18,7 @@ MSW 핸들러 구조 설계 및 백엔드 관점의 API 엔드포인트 정의. 
 
 ## 파일 구조
 
-```
+```text
 src/shared/lib/msw/
 ├── index.ts                    # MSW 진입점
 ├── browser.ts                  # 브라우저 워커 설정
@@ -48,6 +48,7 @@ src/shared/lib/msw/
 ## API 엔드포인트
 
 ### Forms API
+
 | Method | Endpoint | 설명 | 에러 케이스 |
 |--------|----------|------|-------------|
 | GET | `/api/v1/forms` | 공고 목록 조회 | 503 SERVICE_UNAVAILABLE |
@@ -59,6 +60,7 @@ src/shared/lib/msw/
 | POST | `/api/v1/forms/:formId/close` | 공고 조기 종료 | 409 FORM_NOT_ACTIVE |
 
 ### Questions API
+
 | Method | Endpoint | 설명 | 에러 케이스 |
 |--------|----------|------|-------------|
 | GET | `/api/v1/forms/:formId/questions` | 질문 목록 조회 | 404 FORM_NOT_FOUND |
@@ -68,6 +70,7 @@ src/shared/lib/msw/
 | PATCH | `/api/v1/forms/:formId/questions/reorder` | 질문 순서 변경 | 400 VALIDATION_ERROR |
 
 ### Applications API
+
 | Method | Endpoint | 설명 | 에러 케이스 |
 |--------|----------|------|-------------|
 | GET | `/api/v1/forms/:formId/applications` | 지원서 목록 조회 | 403 FORM_NOT_CLOSED |
@@ -75,6 +78,7 @@ src/shared/lib/msw/
 | POST | `/api/v1/forms/:formId/applications` | 지원서 제출 | 410 FORM_CLOSED |
 
 ### Evaluations API
+
 | Method | Endpoint | 설명 | 에러 케이스 |
 |--------|----------|------|-------------|
 | GET | `/api/v1/forms/:formId/evaluations` | 평가 목록 조회 | 403 FORM_NOT_CLOSED |
@@ -82,6 +86,7 @@ src/shared/lib/msw/
 | PATCH | `/api/v1/evaluations/:evaluationId` | 평가 수정 | 403 NOT_ASSIGNED |
 
 ### Evaluators API
+
 | Method | Endpoint | 설명 | 에러 케이스 |
 |--------|----------|------|-------------|
 | GET | `/api/v1/forms/:formId/evaluators` | 평가자 목록 조회 | 404 FORM_NOT_FOUND |
@@ -188,7 +193,7 @@ const randomError = ErrorUtil.maybeError('VALIDATION_ERROR', 0.1);
 
 ## 관련 파일
 
-- MSW Skill: `.claude/skills/msw-handler.md`
+- MSW Skill: `.claude/skills/msw-handler/SKILL.md`
 - 에러 코드: `src/shared/lib/msw/errors/error-codes.ts`
 - 응답 유틸: `src/shared/lib/msw/utils/response.util.ts`
 

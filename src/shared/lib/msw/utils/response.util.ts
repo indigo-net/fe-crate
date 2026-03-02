@@ -75,11 +75,20 @@ class MockResponseManager {
    * @returns 페이지네이션 정보 객체
    */
   private static createPagination(page: number, limit: number, total: number) {
+    // 유효성 검증 및 정규화
+    const safeLimit = Number.isFinite(limit) && limit > 0 ? Math.floor(limit) : 1;
+    const safeTotal = Number.isFinite(total) && total >= 0 ? Math.floor(total) : 0;
+    const totalPages = safeTotal === 0 ? 0 : Math.ceil(safeTotal / safeLimit);
+    const safePage =
+      Number.isFinite(page) && page >= 1
+        ? Math.min(Math.floor(page), Math.max(1, totalPages))
+        : 1;
+
     return {
-      page,
-      limit,
-      total,
-      totalPages: Math.ceil(total / limit),
+      page: safePage,
+      limit: safeLimit,
+      total: safeTotal,
+      totalPages,
     };
   }
 

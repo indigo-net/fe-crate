@@ -87,12 +87,12 @@ export const applicationsFixture: ApplicationFixture[] = [
 /**
  * In-memory store for mutation
  */
-export const applicationsStore = [...applicationsFixture];
+export const applicationsStore = structuredClone(applicationsFixture);
 
 /**
  * Reset store to initial state
  */
 export function resetApplicationsStore(): void {
   applicationsStore.length = 0;
-  applicationsStore.push(...applicationsFixture);
+  applicationsStore.push(...structuredClone(applicationsFixture));
 }

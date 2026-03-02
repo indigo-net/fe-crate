@@ -73,6 +73,11 @@ export const ErrorCodes = {
   },
 
   // Evaluation Errors
+  EVALUATION_NOT_FOUND: {
+    code: 'EVALUATION_NOT_FOUND',
+    status: 404,
+    message: '평가를 찾을 수 없습니다.',
+  },
   ALREADY_EVALUATED: {
     code: 'ALREADY_EVALUATED',
     status: 409,
@@ -82,6 +87,11 @@ export const ErrorCodes = {
     code: 'NOT_ASSIGNED',
     status: 403,
     message: '배정되지 않은 평가입니다.',
+  },
+  MISSING_EVALUATOR_ID: {
+    code: 'MISSING_EVALUATOR_ID',
+    status: 400,
+    message: '평가자 ID가 필요합니다.',
   },
 
   // Evaluator Errors

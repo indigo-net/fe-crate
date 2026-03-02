@@ -119,15 +119,17 @@ export const formsHandlers = [
   http.delete(`${API_PREFIX}/forms/:formId`, async ({ params }) => {
     await MockDelayManager.random('fast');
 
-    const randomError = MockErrorSimulator.maybeError('FORBIDDEN');
-    if (randomError) return randomError;
-
     const { formId } = params;
     const formIndex = formsStore.findIndex(f => f.id === formId);
 
+    // Check existence first
     if (formIndex === -1) {
       return MockResponseManager.error('FORM_NOT_FOUND');
     }
+
+    // Random error only for existing forms
+    const randomError = MockErrorSimulator.maybeError('FORBIDDEN');
+    if (randomError) return randomError;
 
     formsStore.splice(formIndex, 1);
 

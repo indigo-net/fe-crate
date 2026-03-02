@@ -62,12 +62,12 @@ export const formsFixture: FormFixture[] = [
 /**
  * In-memory store for mutation
  */
-export const formsStore = [...formsFixture];
+export const formsStore = structuredClone(formsFixture);
 
 /**
  * Reset store to initial state
  */
 export function resetFormsStore(): void {
   formsStore.length = 0;
-  formsStore.push(...formsFixture);
+  formsStore.push(...structuredClone(formsFixture));
 }
