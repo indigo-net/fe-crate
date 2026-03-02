@@ -40,12 +40,14 @@ const STATUS_CONFIG: Record<
 const ApplicantList = memo(({ applicants, onStartEvaluation }: Props) => {
   const formatDate = (isoString: string) => {
     const date = new Date(isoString);
-    return date.toLocaleDateString('ko-KR', {
+    return date.toLocaleString('ko-KR', {
       year: 'numeric',
       month: '2-digit',
       day: '2-digit',
       hour: '2-digit',
       minute: '2-digit',
+      hour12: false,
+      timeZone: 'Asia/Seoul',
     });
   };
 
@@ -107,7 +109,12 @@ const ApplicantList = memo(({ applicants, onStartEvaluation }: Props) => {
                       </button>
                     )}
                     {applicant.status === 'COMPLETED' && (
-                      <button className="px-4 py-2 bg-bg-subtle text-text-tertiary text-sm font-slim-semibold rounded-slim-lg border border-border-default">
+                      <button
+                        type="button"
+                        disabled
+                        aria-disabled="true"
+                        className="px-4 py-2 bg-bg-subtle text-text-tertiary text-sm font-slim-semibold rounded-slim-lg border border-border-default cursor-not-allowed"
+                      >
                         결과 보기
                       </button>
                     )}

@@ -18,6 +18,7 @@ interface Props {
 // TODO: StatusFilterTab을 features/evaluate-applicant로 분리
 const EvaluationProgress = memo(
   ({ progressPercent, currentFilter, onFilterChange, counts }: Props) => {
+    const safeProgress = Math.max(0, Math.min(100, progressPercent));
     const filters: { key: FilterType; label: string; count: number }[] = [
       { key: 'ALL', label: '전체', count: counts.all },
       { key: 'PENDING', label: '대기 중', count: counts.pending },
@@ -30,12 +31,12 @@ const EvaluationProgress = memo(
         <div className="space-y-2">
           <div className="flex justify-between items-center text-sm">
             <span className="font-slim-semibold text-text-secondary">전체 평가 진행률</span>
-            <span className="font-slim-bold text-brand-primary">{progressPercent}%</span>
+            <span className="font-slim-bold text-brand-primary">{safeProgress}%</span>
           </div>
           <div className="w-full h-3 bg-bg-subtle rounded-full overflow-hidden">
             <div
               className="h-full bg-gradient-to-r from-brand-primary to-neon-green-500 rounded-full transition-all duration-500"
-              style={{ width: `${progressPercent}%` }}
+              style={{ width: `${safeProgress}%` }}
             />
           </div>
         </div>

@@ -33,6 +33,9 @@ const usePageEvaluatorDashboardController = () => {
   // 필터링된 지원서
   const filteredApplicants = useMemo(() => {
     if (currentFilter === 'ALL') return allApplicants;
+    if (currentFilter === 'PENDING') {
+      return allApplicants.filter(a => a.status === 'PENDING' || a.status === 'IN_PROGRESS');
+    }
     return allApplicants.filter(a => a.status === currentFilter);
   }, [allApplicants, currentFilter]);
 
@@ -65,7 +68,7 @@ const usePageEvaluatorDashboardController = () => {
 
   const handleStartEvaluation = (id: string) => {
     // TODO: 평가 페이지로 이동 또는 평가 모달 열기
-    console.log('Start evaluation for:', id);
+    window.alert(`평가 시작: ${id}`);
   };
 
   return {

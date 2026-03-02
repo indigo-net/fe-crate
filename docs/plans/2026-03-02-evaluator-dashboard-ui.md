@@ -8,7 +8,7 @@
 
 **Tech Stack:** React 19, TypeScript, TailwindCSS v4, React Router 7
 
-**설계 문서:** `.docs/plan/evaluator-dashboard-ui.md`
+**설계 문서:** `docs/plans/2026-03-02-evaluator-dashboard-ui.md`
 
 ---
 

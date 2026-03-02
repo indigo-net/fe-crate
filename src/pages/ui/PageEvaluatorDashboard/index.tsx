@@ -84,7 +84,7 @@ const PageEvaluatorDashboard = memo(() => {
       {/* Footer */}
       <footer className="w-full px-6 py-4 border-t border-border-default bg-bg-base">
         <div className="max-w-6xl mx-auto flex justify-between items-center text-[11px] text-text-tertiary font-slim-normal">
-          <p>© 2025 CRATE by indigo-net. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} CRATE by indigo-net. All rights reserved.</p>
           <div className="flex gap-4">
             <span className="flex items-center gap-1">
               <div className="w-1.5 h-1.5 rounded-full bg-neon-green-500" />
