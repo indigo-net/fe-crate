@@ -39,6 +39,10 @@ class FormSignatureStateService {
   static setStandbyCount(prev: FormSignatureModel, count: number | null) {
     return prev.setValue('standbyCount', count);
   }
+
+  static setQuestionIds(prev: FormSignatureModel, questionIds: string[]) {
+    return prev.setValue('questionIds', questionIds);
+  }
 }
 
 export default FormSignatureStateService;

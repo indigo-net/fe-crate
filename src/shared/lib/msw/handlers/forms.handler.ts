@@ -2,11 +2,56 @@ import { http } from 'msw';
 
 import { EnvManager } from '@/shared/lib';
 
-import { type FormFixture, formsStore } from '../fixtures';
+import { type FormFixture, formsStore } from '../fixtures/forms.fixture';
 import { MockDelayManager, MockErrorSimulator, MockResponseManager } from '../utils';
 
 const BASE_URL = EnvManager.getAppEnv('VITE_API_BASE_URL') || '';
 const API_PREFIX = `${BASE_URL}/api/v1`;
+
+// 백엔드 API 타입 정의
+type FormStatus = 'DRAFT' | 'SCHEDULED' | 'ACTIVE' | 'CLOSED';
+type SelectionMethod = 'QUANTITATIVE' | 'LOTTERY' | 'FIRST_COME_FIRST_SERVED';
+
+interface QuestionInput {
+  type: 'SHORT_TEXT' | 'LONG_TEXT' | 'SINGLE_CHOICE' | 'MULTIPLE_CHOICE';
+  title: string;
+  description: string | null;
+  required: boolean;
+  order: number;
+  options: string[] | null;
+}
+
+interface CreatedQuestion {
+  id: string;
+  formId: string;
+  type: 'SHORT_TEXT' | 'LONG_TEXT' | 'SINGLE_CHOICE' | 'MULTIPLE_CHOICE';
+  title: string;
+  description: string | null;
+  required: boolean;
+  order: number;
+  options: string[] | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+interface CreateFormRequest {
+  title: string;
+  description: string | null;
+  status: FormStatus;
+  selectionMethod: SelectionMethod;
+  startDate: string | null;
+  endDate: string | null;
+  targetCount: number | null;
+  standbyCount: number | null;
+  questions: QuestionInput[];
+}
+
+interface CreateFormResponse extends FormFixture {
+  questions: CreatedQuestion[];
+}
+
+// 질문 저장소 (핸들러 내부)
+const createdQuestionsStore: CreatedQuestion[] = [];
 
 export const formsHandlers = [
   /**
@@ -24,8 +69,11 @@ export const formsHandlers = [
       title: form.title,
       description: form.description,
       status: form.status,
+      selectionMethod: form.selectionMethod,
       startDate: form.startDate,
       endDate: form.endDate,
+      targetCount: form.targetCount,
+      questionIds: form.questionIds,
       createdAt: form.createdAt,
       updatedAt: form.updatedAt,
     }));
@@ -46,12 +94,11 @@ export const formsHandlers = [
     if (!form) {
       return MockResponseManager.error('FORM_NOT_FOUND');
     }
-
     return MockResponseManager.success(form);
   }),
 
   /**
-   * POST /api/v1/forms - 공고 생성
+   * POST /api/v1/forms - 공고 생성 (질문 포함)
    * 에러 케이스: 400 VALIDATION_ERROR (1/50)
    */
   http.post(`${API_PREFIX}/forms`, async ({ request }) => {
@@ -60,22 +107,54 @@ export const formsHandlers = [
     const randomError = MockErrorSimulator.maybeError('VALIDATION_ERROR');
     if (randomError) return randomError;
 
-    const body = (await request.json()) as Partial<FormFixture>;
+    const body = (await request.json()) as CreateFormRequest;
+    const now = new Date().toISOString();
+    const formId = `form-${Date.now()}`;
 
+    // 폼 생성
     const newForm: FormFixture = {
-      id: `form-${Date.now()}`,
+      id: formId,
       title: body.title ?? '제목 없음',
-      description: body.description ?? '',
-      status: 'DRAFT',
-      startDate: null,
-      endDate: null,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
+      description: body.description ?? null,
+      status: body.status ?? 'DRAFT',
+      selectionMethod: body.selectionMethod ?? 'QUANTITATIVE',
+      startDate: body.startDate ?? null,
+      endDate: body.endDate ?? null,
+      targetCount: body.targetCount ?? null,
+      standbyCount: body.standbyCount ?? null,
+      questionIds: [],
+      createdAt: now,
+      updatedAt: now,
     };
 
+    // 질문 생성
+    const createdQuestions: CreatedQuestion[] = body.questions.map((question, index) => {
+      const questionId = `q-${Date.now()}-${index}`;
+      const createdQuestion: CreatedQuestion = {
+        id: questionId,
+        formId,
+        type: question.type,
+        title: question.title,
+        description: question.description ?? null,
+        required: question.required ?? false,
+        order: question.order ?? index + 1,
+        options: question.options ?? null,
+        createdAt: now,
+        updatedAt: now,
+      };
+      createdQuestionsStore.push(createdQuestion);
+      return createdQuestion;
+    });
+
+    // 폼에 질문 ID 연결
+    newForm.questionIds = createdQuestions.map(q => q.id);
     formsStore.push(newForm);
 
-    return MockResponseManager.success(newForm, { status: 201 });
+    const response: CreateFormResponse = {
+      ...newForm,
+      questions: createdQuestions,
+    };
+    return MockResponseManager.success(response, { status: 201 });
   }),
 
   /**
@@ -91,24 +170,19 @@ export const formsHandlers = [
     if (formIndex === -1) {
       return MockResponseManager.error('FORM_NOT_FOUND');
     }
-
     const form = formsStore[formIndex];
     if (form.status !== 'DRAFT') {
       return MockResponseManager.error('FORM_NOT_DRAFT');
     }
-
     const body = (await request.json()) as Partial<FormFixture>;
-
     const updatedForm: FormFixture = {
       ...form,
       ...body,
-      id: form.id, // prevent id override
-      status: form.status, // prevent status override via PATCH
+      id: form.id,
+      status: form.status,
       updatedAt: new Date().toISOString(),
     };
-
     formsStore[formIndex] = updatedForm;
-
     return MockResponseManager.success(updatedForm);
   }),
 
@@ -122,17 +196,13 @@ export const formsHandlers = [
     const { formId } = params;
     const formIndex = formsStore.findIndex(f => f.id === formId);
 
-    // Check existence first
     if (formIndex === -1) {
       return MockResponseManager.error('FORM_NOT_FOUND');
     }
-
-    // Random error only for existing forms
     const randomError = MockErrorSimulator.maybeError('FORBIDDEN');
     if (randomError) return randomError;
 
     formsStore.splice(formIndex, 1);
-
     return MockResponseManager.success({ deleted: true });
   }),
 
@@ -149,22 +219,16 @@ export const formsHandlers = [
     if (!form) {
       return MockResponseManager.error('FORM_NOT_FOUND');
     }
-
     if (form.status !== 'DRAFT') {
       return MockResponseManager.error('FORM_NOT_DRAFT');
     }
-
-    // Simulate incomplete form check (random 1/50)
     const randomError = MockErrorSimulator.maybeError('FORM_INCOMPLETE');
     if (randomError) return randomError;
 
-    // Determine status based on start date
     const now = new Date();
     const startDate = form.startDate ? new Date(form.startDate) : now;
-
     form.status = startDate > now ? 'SCHEDULED' : 'ACTIVE';
     form.updatedAt = new Date().toISOString();
-
     return MockResponseManager.success(form);
   }),
 
@@ -181,15 +245,12 @@ export const formsHandlers = [
     if (!form) {
       return MockResponseManager.error('FORM_NOT_FOUND');
     }
-
     if (form.status !== 'ACTIVE') {
       return MockResponseManager.error('FORM_NOT_ACTIVE');
     }
-
     form.status = 'CLOSED';
     form.endDate = new Date().toISOString();
     form.updatedAt = new Date().toISOString();
-
     return MockResponseManager.success(form);
   }),
 ];

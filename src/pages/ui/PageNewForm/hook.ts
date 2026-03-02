@@ -1,14 +1,18 @@
 import { useEffect, useRef, useCallback, createElement } from 'react';
 
-import { useModalContext } from '@/app/lib';
+import { useModalContext, useToastContext } from '@/app/lib';
+import { FormValidationService } from '@/entities/form';
+import { useFormSignatureStore } from '@/entities/form/store';
 import { useFormQuestionListStore } from '@/entities/form/store';
 import { UUID } from '@/shared/lib';
 
 import ModalPublishSetting from '../ModalPublishSetting';
 
 export const usePageNewFormController = () => {
+  const { formSignature } = useFormSignatureStore();
   const { formQuestions } = useFormQuestionListStore();
-  const { openModal, closeModal } = useModalContext();
+  const { openModal } = useModalContext();
+  const { showToast } = useToastContext();
 
   const listRef = useRef<HTMLDivElement>(null);
 
@@ -23,17 +27,20 @@ export const usePageNewFormController = () => {
   }, [formQuestions.length]);
 
   const handleOpenPublishModal = useCallback(() => {
+    // 폼 검증
+    const validation = FormValidationService.validate(formSignature, formQuestions);
+    if (!validation.isValid) {
+      showToast(validation.message);
+      return;
+    }
+
     openModal({
       id: UUID.v4(),
       title: '폼 저장 및 게시 설정',
       confirmLabel: '게시하기',
       cancelLabel: '취소',
       content: createElement(ModalPublishSetting, {
-        onConfirm: settings => {
-          console.log('Publish Settings:', settings);
-          // TODO: API 연동 또는 상태 저장 로직 추가
-          closeModal();
-        },
+        formQuestions,
       }),
       confirmCallback: () => {
         // ModalPublishSetting 내부의 handleConfirm이 호출되도록 트리거
@@ -43,7 +50,7 @@ export const usePageNewFormController = () => {
         }
       },
     });
-  }, [openModal, closeModal]);
+  }, [formSignature, formQuestions, openModal, showToast]);
 
   return { formQuestions, listRef, handleOpenPublishModal };
 };
