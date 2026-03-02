@@ -53,6 +53,7 @@ interface Props {
 }
 
 const EvaluationSummary = memo(({ totalAssigned, completedCount, progressPercent }: Props) => {
+  const safeProgress = Math.max(0, Math.min(100, progressPercent));
   const pendingCount = totalAssigned - completedCount;
 
   return (
@@ -93,11 +94,11 @@ const EvaluationSummary = memo(({ totalAssigned, completedCount, progressPercent
           <h3 className="text-sm font-slim-semibold text-text-secondary">진행률</h3>
         </header>
         <div className="space-y-2">
-          <p className="text-3xl font-slim-bold text-text-primary">{progressPercent}%</p>
+          <p className="text-3xl font-slim-bold text-text-primary">{safeProgress}%</p>
           <div className="w-full h-2 bg-bg-subtle rounded-full overflow-hidden">
             <div
               className="h-full bg-brand-primary rounded-full transition-all duration-500"
-              style={{ width: `${progressPercent}%` }}
+              style={{ width: `${safeProgress}%` }}
             />
           </div>
         </div>
@@ -149,6 +150,7 @@ interface Props {
 // TODO: StatusFilterTab을 features/evaluate-applicant로 분리
 const EvaluationProgress = memo(
   ({ progressPercent, currentFilter, onFilterChange, counts }: Props) => {
+    const safeProgress = Math.max(0, Math.min(100, progressPercent));
     const filters: { key: FilterType; label: string; count: number }[] = [
       { key: 'ALL', label: '전체', count: counts.all },
       { key: 'PENDING', label: '대기 중', count: counts.pending },
@@ -161,12 +163,12 @@ const EvaluationProgress = memo(
         <div className="space-y-2">
           <div className="flex justify-between items-center text-sm">
             <span className="font-slim-semibold text-text-secondary">전체 평가 진행률</span>
-            <span className="font-slim-bold text-brand-primary">{progressPercent}%</span>
+            <span className="font-slim-bold text-brand-primary">{safeProgress}%</span>
           </div>
           <div className="w-full h-3 bg-bg-subtle rounded-full overflow-hidden">
             <div
               className="h-full bg-gradient-to-r from-brand-primary to-neon-green-500 rounded-full transition-all duration-500"
-              style={{ width: `${progressPercent}%` }}
+              style={{ width: `${safeProgress}%` }}
             />
           </div>
         </div>
@@ -445,7 +447,7 @@ const usePageEvaluatorDashboardController = () => {
 
   const handleStartEvaluation = (id: string) => {
     // TODO: 평가 페이지로 이동 또는 평가 모달 열기
-    console.log('Start evaluation for:', id);
+    window.alert(`평가 시작: ${id}`);
   };
 
   return {
@@ -565,7 +567,7 @@ const PageEvaluatorDashboard = memo(() => {
       {/* Footer */}
       <footer className="w-full px-6 py-4 border-t border-border-default bg-bg-base">
         <div className="max-w-6xl mx-auto flex justify-between items-center text-[11px] text-text-tertiary font-slim-normal">
-          <p>© 2025 CRATE by indigo-net. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} CRATE by indigo-net. All rights reserved.</p>
           <div className="flex gap-4">
             <span className="flex items-center gap-1">
               <div className="w-1.5 h-1.5 rounded-full bg-neon-green-500" />
