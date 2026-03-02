@@ -2,7 +2,7 @@ import { memo } from 'react';
 
 import { Iconography } from '@/shared/ui';
 
-import type { FormStatusType } from '@/entities/form';
+import type { FormStatusType } from '@/entities/form/types';
 
 interface Props {
   status: FormStatusType;

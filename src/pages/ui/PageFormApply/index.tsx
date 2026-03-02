@@ -1,6 +1,5 @@
 import { memo } from 'react';
 
-import { FormSignatureModel, FormQuestionModel, FormQuestionOptionModel } from '@/entities/form';
 import { DarkModeButton } from '@/features/toggle-theme/ui';
 import { Iconography } from '@/shared/ui';
 import { FormMetaInfo, QuestionPreview } from '@/widgets/form-detail/ui';
@@ -8,44 +7,23 @@ import { FormMetaInfo, QuestionPreview } from '@/widgets/form-detail/ui';
 import { usePageFormApplyController } from './hook';
 
 const PageFormApply = memo(() => {
-  const { formSignature, formQuestions, handleApplyClick } = usePageFormApplyController();
+  const { formSignature, formQuestions, isSubmitting, handleApplyClick } =
+    usePageFormApplyController();
 
-  // Mock data for development/testing
-  const displayFormSignature =
-    formSignature ??
-    new FormSignatureModel({
-      title: '2024 신입사원 채용 공고',
-      description:
-        '안녕하세요. 당사의 신입사원 채용에 지원해 주셔서 감사합니다. 아래 질문에 성실히 답변해 주세요.',
-      status: 'PUBLISHED',
-      publishedAt: '2024-03-01T00:00:00Z',
-      closedAt: '2024-03-31T23:59:59Z',
-    });
+  if (!formSignature) {
+    return (
+      <div className="w-full min-h-[100dvh] flex items-center justify-center bg-bg-base">
+        <div className="flex flex-col items-center gap-4 p-8">
+          <Iconography.Stroke.Document className="w-12 h-12 text-text-tertiary" />
+          <p className="text-text-secondary">공고 정보를 불러오는 중...</p>
+        </div>
+      </div>
+    );
+  }
 
-  const displayQuestions =
-    formQuestions.length > 0
-      ? formQuestions
-      : [
-          new FormQuestionModel({
-            type: 'SHORT_TEXT',
-            title: '지원자 이름을 입력해 주세요.',
-            required: true,
-          }),
-          new FormQuestionModel({
-            type: 'SINGLE_CHOICE',
-            title: '지원 분야를 선택해 주세요.',
-            required: true,
-            options: [
-              new FormQuestionOptionModel({ content: '개발' }),
-              new FormQuestionOptionModel({ content: '디자인' }),
-              new FormQuestionOptionModel({ content: '마케팅' }),
-            ],
-          }),
-        ];
-
-  const displayStatus = displayFormSignature.getValue('status');
-  const canApply = displayStatus === 'PUBLISHED';
-  const isClosed = displayStatus === 'CLOSED';
+  const status = formSignature.getValue('status');
+  const canApply = status === 'PUBLISHED';
+  const isClosed = status === 'CLOSED';
 
   return (
     <div className="w-full min-h-[100dvh] flex flex-col bg-bg-base text-text-primary">
@@ -58,17 +36,18 @@ const PageFormApply = memo(() => {
 
       <main className="flex-1 overflow-y-auto bg-bg-subtle/50">
         <div className="max-w-4xl mx-auto py-12 px-6 flex flex-col gap-8">
-          <FormMetaInfo formSignature={displayFormSignature} />
-          <QuestionPreview questions={displayQuestions} />
+          <FormMetaInfo formSignature={formSignature} />
+          <QuestionPreview questions={formQuestions} />
 
           <div className="w-full flex justify-center pt-4">
             {canApply && (
               <button
                 onClick={handleApplyClick}
-                className="px-8 py-3 bg-brand-primary text-text-inverse font-slim-bold text-base rounded-slim-lg shadow-sm hover:shadow-md hover:scale-105 active:scale-95 transition-all flex items-center gap-2"
+                disabled={isSubmitting}
+                className="px-8 py-3 bg-brand-primary text-text-inverse font-slim-bold text-base rounded-slim-lg shadow-sm hover:shadow-md hover:scale-105 active:scale-95 transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
               >
                 <Iconography.Stroke.Rocket className="w-5 h-5" />
-                <span>지원하기</span>
+                <span>{isSubmitting ? '제출 중...' : '지원하기'}</span>
               </button>
             )}
 

@@ -45,7 +45,7 @@ const FormMetaInfo = (props: Props) => {
   const targetCount = formSignature.getValue('targetCount');
   const standbyCount = formSignature.getValue('standbyCount');
 
-  const SelectionMethodIcon = SELECTION_METHOD_ICON[selectionMethod];
+  const SelectionMethodIcon = selectionMethod ? SELECTION_METHOD_ICON[selectionMethod] : null;
 
   return (
     <section className="w-full flex flex-col gap-6 p-8 bg-bg-base border border-border-default rounded-slim-2xl shadow-sm">
@@ -67,21 +67,23 @@ const FormMetaInfo = (props: Props) => {
           </span>
         </div>
 
-        <div className="flex items-center gap-2 text-sm text-text-tertiary">
-          <SelectionMethodIcon className="w-4 h-4" aria-hidden />
-          <span>선발 방식:</span>
-          <span className="text-text-secondary font-slim-semibold">
-            {SELECTION_METHOD_LABEL[selectionMethod]}
-          </span>
-        </div>
+        {selectionMethod && SelectionMethodIcon && (
+          <div className="flex items-center gap-2 text-sm text-text-tertiary">
+            <SelectionMethodIcon className="w-4 h-4" aria-hidden />
+            <span>선발 방식:</span>
+            <span className="text-text-secondary font-slim-semibold">
+              {SELECTION_METHOD_LABEL[selectionMethod]}
+            </span>
+          </div>
+        )}
 
-        {targetCount !== null && (
+        {targetCount != null && (
           <div className="flex items-center gap-2 text-sm text-text-tertiary">
             <Iconography.Stroke.Users className="w-4 h-4" aria-hidden />
             <span>모집 인원:</span>
             <span className="text-text-secondary font-slim-semibold">
               {targetCount}명
-              {standbyCount !== null && standbyCount > 0 && ` (대기 ${standbyCount}명)`}
+              {standbyCount != null && standbyCount > 0 && ` (대기 ${standbyCount}명)`}
             </span>
           </div>
         )}

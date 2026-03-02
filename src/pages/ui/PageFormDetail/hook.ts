@@ -11,14 +11,15 @@ export const usePageFormDetailController = () => {
   const { formQuestions } = useFormQuestionListStore();
 
   // TODO: 인증 Context로 관리 예정
-  const isEditable = true;
+  const isEditable = false;
 
-  const status = formSignature?.getValue('status') ?? 'DRAFT';
+  const status = formSignature?.getValue('status');
   const canEdit = isEditable && (status === 'DRAFT' || status === 'SCHEDULED');
 
   const handleEditClick = useCallback(() => {
-    navigate('/new-form');
-  }, [navigate]);
+    if (!formId) return;
+    navigate(`/form/${formId}/edit`);
+  }, [navigate, formId]);
 
   const handleBackToDashboard = useCallback(() => {
     navigate('/dashboard');
