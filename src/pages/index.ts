@@ -1,1 +1,7 @@
-export { PageDashboard, PageLanding, PageNewForm, PageKakaoRedirect, ModalPublishSetting } from './ui';
+export {
+  PageDashboard,
+  PageLanding,
+  PageNewForm,
+  PageKakaoRedirect,
+  ModalPublishSetting,
+} from './ui';

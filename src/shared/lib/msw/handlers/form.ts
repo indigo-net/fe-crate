@@ -39,7 +39,12 @@ const forms: FormResponse[] = [
     questions: [
       { id: 'q-1', title: '자기소개를 해주세요', type: 'LONG_TEXT' },
       { id: 'q-2', title: '지원 동기', type: 'LONG_TEXT' },
-      { id: 'q-3', title: '개발 경력', type: 'SINGLE_CHOICE', options: ['신입', '1-3년', '3-5년', '5년 이상'] },
+      {
+        id: 'q-3',
+        title: '개발 경력',
+        type: 'SINGLE_CHOICE',
+        options: ['신입', '1-3년', '3-5년', '5년 이상'],
+      },
     ],
   },
   {
@@ -50,7 +55,12 @@ const forms: FormResponse[] = [
     updatedAt: '2026-02-05T11:00:00Z',
     questions: [
       { id: 'q-4', title: '포트폴리오 링크', type: 'SHORT_TEXT' },
-      { id: 'q-5', title: '디자인 툴 경험', type: 'MULTIPLE_CHOICE', options: ['Figma', 'Sketch', 'Adobe XD', 'Photoshop', 'Illustrator'] },
+      {
+        id: 'q-5',
+        title: '디자인 툴 경험',
+        type: 'MULTIPLE_CHOICE',
+        options: ['Figma', 'Sketch', 'Adobe XD', 'Photoshop', 'Illustrator'],
+      },
     ],
   },
 ];
