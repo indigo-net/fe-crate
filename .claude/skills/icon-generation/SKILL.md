@@ -1,0 +1,1 @@
+../../../.project-skills/common/icon-generation/SKILL.md
