@@ -9,8 +9,6 @@ interface Props {
 }
 
 const EvaluationSummary = memo(({ totalAssigned, completedCount, progressPercent }: Props) => {
-  const pendingCount = totalAssigned - completedCount;
-
   return (
     <section className="grid grid-cols-1 md:grid-cols-3 gap-4">
       {/* 배분된 지원서 */}
