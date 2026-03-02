@@ -1,7 +1,6 @@
 ---
 name: app-layer
 description: "Use this skill when working on the App layer of the FSD architecture. Triggers include: 'app layer', 'routing', 'context provider', 'entry point', 'provider setup', or when modifying src/app/ directory. Also use when adding new routes, providers, or understanding application initialization. Do NOT use for page-level components or business logic."
-license: Proprietary
 ---
 
 # App Layer Guide

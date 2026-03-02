@@ -1,1 +1,0 @@
-../../.project-skills/common/SKILL.md

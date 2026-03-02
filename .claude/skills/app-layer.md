@@ -1,1 +1,0 @@
-../../.project-skills/app/SKILL.md

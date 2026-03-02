@@ -1,7 +1,6 @@
 ---
 name: features-layer
 description: "Use this skill when working on the Features layer of the FSD architecture. Triggers include: 'features layer', 'feature component', 'user action', 'edit-form', 'authenticate', 'toggle-theme', 'QuestionAddSection', 'FormSignatureEditSection', or when modifying src/features/ directory. Also use when implementing interactive UI with event handling. Do NOT use for static/presentational UI or business models."
-license: Proprietary
 ---
 
 # Features Layer Guide

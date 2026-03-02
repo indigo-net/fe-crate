@@ -1,7 +1,6 @@
 ---
 name: widgets-layer
 description: "Use this skill when working on the Widgets layer of the FSD architecture. Triggers include: 'widgets layer', 'widget component', 'large UI block', 'DashboardHeader', 'FormBuilder', 'EvaluationPanel', or when extracting large UI sections from pages. Also use when page component exceeds 150 lines. Do NOT use for simple components or business logic."
-license: Proprietary
 ---
 
 # Widgets Layer Guide
