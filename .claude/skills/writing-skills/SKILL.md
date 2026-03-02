@@ -1,1 +1,0 @@
-../../../.project-skills/common/writing-skills/SKILL.md

@@ -1,6 +1,7 @@
 ---
 name: update-layer-structure
 description: "Use this skill when you need to update or regenerate STRUCTURE.md files for FSD layers. Triggers include: 'update structure', 'regenerate structure', 'update STRUCTURE.md', or when the codebase structure has changed significantly. Also use when asked about how to document current layer structure. Do NOT use for reading or understanding existing structure - use the STRUCTURE.md files directly instead."
+license: Proprietary
 ---
 
 # Update Layer Structure

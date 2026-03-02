@@ -1,6 +1,7 @@
 ---
 name: writing-skills
 description: "Use when creating new skills, editing existing skills, or verifying skills work before deployment. Triggers: 'create skill', 'write SKILL.md', 'new skill', 'update skill', 'skill guide'. Do NOT use for general documentation or README files."
+license: Proprietary
 ---
 
 # SKILL.md Writing Guide
@@ -127,6 +128,7 @@ ln -s ../../../.project-skills/<skill-path>/SKILL.md .agent/skills/<skill-name>/
 ---
 name: your-skill-name
 description: "Use this skill when [condition]. Triggers include: [keywords]. Do NOT use for [exclusions]."
+license: Proprietary
 ---
 
 # [Skill Title]

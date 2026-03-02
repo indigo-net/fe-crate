@@ -1,6 +1,7 @@
 ---
 name: entities-layer
 description: "Use this skill when working on the Entities layer of the FSD architecture. Triggers include: 'entities layer', 'domain model', 'FormQuestionModel', 'FormSignatureModel', 'Zustand store', 'useFormQuestionListStore', 'StateService', 'ApiService', or when modifying src/entities/ directory. Also use when creating business domain models or state management. Do NOT use for UI components or user interactions."
+license: Proprietary
 ---
 
 # Entities Layer Guide

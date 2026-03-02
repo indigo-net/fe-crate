@@ -1,6 +1,7 @@
 ---
 name: storybook-guide
 description: "Use when writing Storybook stories for React components. Triggers: 'story', 'storybook', '.stories.tsx', 'component documentation'. Do NOT use for test files or general component implementation."
+license: Proprietary
 ---
 
 # Storybook Writing Guide

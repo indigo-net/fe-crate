@@ -1,1 +1,0 @@
-../../../.project-skills/shared/SKILL.md

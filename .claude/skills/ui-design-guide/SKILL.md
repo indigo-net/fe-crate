@@ -1,1 +1,0 @@
-../../../.project-skills/common/ui-design-guide/SKILL.md

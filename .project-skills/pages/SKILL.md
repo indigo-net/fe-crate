@@ -1,6 +1,7 @@
 ---
 name: pages-layer
 description: "Use this skill when working on the Pages layer of the FSD architecture. Triggers include: 'pages layer', 'page component', 'modal component', 'route-level', 'PageDashboard', 'PageLanding', 'ModalPublishSetting', or when modifying src/pages/ directory. Also use when creating new pages or modals. Do NOT use for business logic or reusable UI components."
+license: Proprietary
 ---
 
 # Pages Layer Guide

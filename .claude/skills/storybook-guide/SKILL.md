@@ -1,1 +1,0 @@
-../../../.project-skills/common/storybook-guide/SKILL.md

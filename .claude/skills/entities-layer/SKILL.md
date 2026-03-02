@@ -1,1 +1,0 @@
-../../../.project-skills/entities/SKILL.md

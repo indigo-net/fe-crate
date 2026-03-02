@@ -1,1 +1,0 @@
-../../../.project-skills/widgets/SKILL.md

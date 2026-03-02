@@ -2,6 +2,7 @@
 name: ui-design-guide
 description: "Use this skill when designing or implementing UI components. Triggers include: 'design UI', 'component design', 'styling', 'neon style', 'kitsch aesthetic', 'theme', 'dark mode', 'light mode', or when creating visual elements. Do NOT use for business logic or state management."
 trigger: always_on
+license: Proprietary
 ---
 
 # Strategic UI Design & Layout Guide

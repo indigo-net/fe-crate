@@ -1,0 +1,1 @@
+../../.project-skills/common/commit/SKILL.md

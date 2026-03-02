@@ -3,6 +3,7 @@ name: icon-generation
 description: "Use this skill when generating or modifying icons in src/shared/ui/iconography/. Triggers include: 'create icon', 'add icon', 'new icon', 'generate icon', 'SVG icon', or when working with icon components. Do NOT use for general component development."
 trigger: glob
 globs: src/shared/ui/iconography/**/*.{ts,tsx}
+license: Proprietary
 ---
 
 # Icon Generation Rules
