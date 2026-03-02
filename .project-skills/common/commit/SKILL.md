@@ -1,7 +1,6 @@
 ---
 name: commit-guide
 description: "Use this skill when creating git commits for this project. Triggers include: 'commit', 'git commit', '커밋', '커밋 메시지', or when user asks to commit changes. Also use when writing commit messages to ensure they follow project conventions. Do NOT use for reading commit history or git operations other than committing."
-license: Proprietary
 ---
 
 # Git 커밋 가이드

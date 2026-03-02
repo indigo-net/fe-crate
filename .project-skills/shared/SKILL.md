@@ -1,7 +1,6 @@
 ---
 name: shared-layer
 description: "Use this skill when working on the Shared layer of the FSD architecture. Triggers include: 'shared layer', 'utility', 'AxiosManager', 'EnvManager', 'TypeGuard', 'UUID', 'CustomModel', 'Modal', 'Alert', 'Toast', 'Iconography', or when modifying src/shared/ directory. Also use when creating reusable utilities or base UI components. Do NOT use for domain-specific logic or business models."
-license: Proprietary
 ---
 
 # Shared Layer Guide
