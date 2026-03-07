@@ -16,6 +16,55 @@ const API_PREFIX = `${BASE_URL}/api/v1`;
 
 export const evaluatorsHandlers = [
   /**
+   * GET /api/v1/evaluators - 전체 평가자 현황 (대시보드용)
+   * 모든 폼의 평가자를 집계하여 반환
+   */
+  http.get(`${API_PREFIX}/evaluators`, async () => {
+    await MockDelayManager.random('fast');
+
+    const evaluatorMap = new Map<string, {
+      id: string;
+      name: string;
+      email: string;
+      role: string;
+      assignedForms: Array<{ formId: string; title: string; progress: number }>;
+      lastActive: string;
+    }>();
+
+    for (const evaluator of evaluatorsStore) {
+      const form = formsStore.find(f => f.id === evaluator.formId);
+      const formTitle = form?.title ?? '알 수 없는 공고';
+
+      const formEvaluations = evaluationsStore.filter(
+        e => e.evaluatorId === evaluator.id && e.formId === evaluator.formId,
+      );
+      const totalApps = evaluator.assignedApplicationIds.length;
+      const completedEvals = formEvaluations.filter(e => e.status === 'COMPLETED').length;
+      const progress = totalApps > 0 ? Math.round((completedEvals / totalApps) * 100) : 0;
+
+      const existing = evaluatorMap.get(evaluator.email);
+      if (existing) {
+        existing.assignedForms.push({ formId: evaluator.formId, title: formTitle, progress });
+        if (evaluator.updatedAt > existing.lastActive) {
+          existing.lastActive = evaluator.updatedAt;
+        }
+      } else {
+        evaluatorMap.set(evaluator.email, {
+          id: evaluator.id,
+          name: evaluator.name,
+          email: evaluator.email,
+          role: evaluator.role,
+          assignedForms: [{ formId: evaluator.formId, title: formTitle, progress }],
+          lastActive: evaluator.updatedAt,
+        });
+      }
+    }
+
+    const data = Array.from(evaluatorMap.values());
+    return MockResponseManager.success(data);
+  }),
+
+  /**
    * GET /api/v1/forms/:formId/evaluators - 공고의 평가자 목록 조회
    * 에러 케이스: 404 FORM_NOT_FOUND
    */
@@ -50,7 +99,9 @@ export const evaluatorsHandlers = [
 
     // Random validation error
     const randomError = MockErrorSimulator.maybeError('VALIDATION_ERROR');
-    if (randomError) return randomError;
+    if (randomError) {
+      return randomError;
+    }
 
     const body = (await request.json()) as Partial<EvaluatorFixture>;
 

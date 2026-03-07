@@ -1,4 +1,11 @@
 export {
+  type ActivityFixture,
+  type ActivityType,
+  activitiesFixture,
+  activitiesStore,
+  resetActivitiesStore,
+} from './activities.fixture';
+export {
   type ApplicationFixture,
   type ApplicationStatus,
   applicationsFixture,

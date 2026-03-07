@@ -1,5 +1,7 @@
 import { memo } from 'react';
 
+import DateStandard from '@/shared/lib/date-standard';
+
 import { Iconography } from '@/shared/ui';
 
 // TODO: EvaluationStatusType을 entities/evaluation/types.d.ts로 분리
@@ -39,7 +41,7 @@ const STATUS_CONFIG: Record<
 // TODO: 개별 행(ApplicantCard)을 features/evaluate-applicant로 분리
 const ApplicantList = memo(({ applicants, onStartEvaluation }: Props) => {
   const formatDate = (isoString: string) => {
-    const date = new Date(isoString);
+    const date = DateStandard.fromISO(isoString);
     return date.toLocaleString('ko-KR', {
       year: 'numeric',
       month: '2-digit',

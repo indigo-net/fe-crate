@@ -165,7 +165,9 @@ export const questionsHandlers = [
 
     // Random validation error
     const randomError = MockErrorSimulator.maybeError('VALIDATION_ERROR');
-    if (randomError) return randomError;
+    if (randomError) {
+      return randomError;
+    }
 
     // Update order based on questionIds array order
     body.questionIds.forEach((qId, index) => {

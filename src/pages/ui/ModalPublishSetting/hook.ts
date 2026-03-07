@@ -32,20 +32,30 @@ export const useModalPublishSettingController = ({ formQuestions }: Props) => {
   }, []);
 
   const isValid = useMemo(() => {
-    if (!formSignature) return false;
+    if (!formSignature) {
+      return false;
+    }
     const status = formSignature.getValue('status');
-    if (status === 'DRAFT') return true;
+    if (status === 'DRAFT') {
+      return true;
+    }
 
     const publishedAt = formSignature.getValue('publishedAt');
     const closedAt = formSignature.getValue('closedAt');
     const selectionMethod = formSignature.getValue('selectionMethod');
     const targetCount = formSignature.getValue('targetCount');
 
-    if (!publishedAt) return false;
-    if (closedAt && publishedAt >= closedAt) return false;
+    if (!publishedAt) {
+      return false;
+    }
+    if (closedAt && publishedAt >= closedAt) {
+      return false;
+    }
 
     if (selectionMethod !== 'QUANTITATIVE') {
-      if (!targetCount || targetCount <= 0) return false;
+      if (!targetCount || targetCount <= 0) {
+        return false;
+      }
     }
     return true;
   }, [formSignature]);

@@ -14,7 +14,9 @@ const TargetCountInput = memo(() => {
     handleStandbyCountChange,
   } = useTargetCountInputController();
 
-  if (!showInput) return null;
+  if (!showInput) {
+    return null;
+  }
 
   return (
     <section

@@ -32,7 +32,9 @@ const usePageEvaluatorDashboardController = () => {
 
   // 필터링된 지원서
   const filteredApplicants = useMemo(() => {
-    if (currentFilter === 'ALL') return allApplicants;
+    if (currentFilter === 'ALL') {
+      return allApplicants;
+    }
     if (currentFilter === 'PENDING') {
       return allApplicants.filter(a => a.status === 'PENDING' || a.status === 'IN_PROGRESS');
     }

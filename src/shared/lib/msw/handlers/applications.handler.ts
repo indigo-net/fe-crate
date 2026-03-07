@@ -78,8 +78,8 @@ export const applicationsHandlers = [
       return MockResponseManager.error('FORM_NOT_FOUND');
     }
 
-    // Only ACTIVE forms accept applications
-    if (form.status !== 'ACTIVE') {
+    // Only PUBLISHED forms accept applications
+    if (form.status !== 'PUBLISHED') {
       return MockResponseManager.error('FORM_CLOSED');
     }
 

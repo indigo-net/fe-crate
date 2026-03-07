@@ -27,7 +27,9 @@ export const AlertProvider = ({ children }: { children: ReactNode }) => {
 
   const hideAlert = useCallback((id?: string) => {
     setAlerts(prev => {
-      if (TypeGuard.checkUndefined(id)) return prev.slice(0, -1);
+      if (TypeGuard.checkUndefined(id)) {
+        return prev.slice(0, -1);
+      }
       return prev.filter(alert => alert.id !== id);
     });
   }, []);

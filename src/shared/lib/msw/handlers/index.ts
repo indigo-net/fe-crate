@@ -1,3 +1,4 @@
+import { activitiesHandlers } from './activities.handler';
 import { applicationsHandlers } from './applications.handler';
 import { evaluationsHandlers } from './evaluations.handler';
 import { evaluatorsHandlers } from './evaluators.handler';
@@ -10,4 +11,5 @@ export const handlers = [
   ...applicationsHandlers,
   ...evaluationsHandlers,
   ...evaluatorsHandlers,
+  ...activitiesHandlers,
 ];

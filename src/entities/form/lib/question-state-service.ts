@@ -61,7 +61,9 @@ class QuestionStateService {
 
   static removeOption(prev: FormQuestionModel, optionId: string, isClone = false) {
     const prevOptions = prev.getValue('options');
-    if (!prevOptions) return prev;
+    if (!prevOptions) {
+      return prev;
+    }
 
     const newOptions = prevOptions.filter(opt => opt.getValue('id') !== optionId);
 
