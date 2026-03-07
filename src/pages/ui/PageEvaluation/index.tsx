@@ -10,6 +10,7 @@ import {
   type ApplicationAnswer,
 } from '@/entities/evaluation';
 import { FormApiService } from '@/entities/form';
+import DeveloperConsole from '@/shared/lib/developer-console';
 import { useDebounce } from '@/shared/lib';
 import {
   ApplicantSidebar,
@@ -69,7 +70,7 @@ const PageEvaluation = memo(() => {
         setApplicants(applicantsData);
         setIsLoading(false);
       } catch (error) {
-        console.error('Failed to fetch form data:', error);
+        DeveloperConsole.error({ message: 'Failed to fetch form data', data: error });
         setIsLoading(false);
       }
     };
@@ -111,7 +112,7 @@ const PageEvaluation = memo(() => {
 
         setSaveStatus('saved');
       } catch (error) {
-        console.error('Failed to save evaluation:', error);
+        DeveloperConsole.error({ message: 'Failed to save evaluation', data: error });
         setSaveStatus('error');
       } finally {
         isSavingRef.current = false;
@@ -146,7 +147,7 @@ const PageEvaluation = memo(() => {
           );
         }
       } catch (error) {
-        console.error('Failed to fetch evaluation data:', error);
+        DeveloperConsole.error({ message: 'Failed to fetch evaluation data', data: error });
       }
     },
     [clearEvaluation, setEvaluation],
@@ -221,7 +222,7 @@ const PageEvaluation = memo(() => {
       setEvaluation(updated);
       setSaveStatus('saved');
     } catch (error) {
-      console.error('Failed to complete evaluation:', error);
+      DeveloperConsole.error({ message: 'Failed to complete evaluation', data: error });
       setSaveStatus('error');
     }
   }, [evaluation, formId, setEvaluation]);

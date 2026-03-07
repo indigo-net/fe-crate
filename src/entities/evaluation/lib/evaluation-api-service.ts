@@ -99,8 +99,11 @@ class EvaluationApiService {
     return model;
   }
 
-  static async fetchApplications(formId: string): Promise<ApplicationListItem[]> {
-    const response = await getApplications(formId, { limit: 100 });
+  static async fetchApplications(
+    formId: string,
+    params?: { limit?: number; page?: number },
+  ): Promise<ApplicationListItem[]> {
+    const response = await getApplications(formId, params);
     return response.data;
   }
 
