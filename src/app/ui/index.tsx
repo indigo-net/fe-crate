@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AlertProvider, AuthProvider, ToastProvider, ModalProvider } from '@/app/lib';
 import {
   PageDashboard,
+  PageEvaluation,
   PageEvaluatorDashboard,
   PageFormApply,
   PageFormDetail,
@@ -23,6 +24,7 @@ const App = () => {
                 <Route path="/kakao-authorize" element={<PageKakaoRedirect />} />
                 <Route path="/dashboard" element={<PageDashboard />} />
                 <Route path="/evaluator/dashboard" element={<PageEvaluatorDashboard />} />
+                <Route path="/evaluation/:formId" element={<PageEvaluation />} />
                 <Route path="/new-form" element={<PageNewForm />} />
                 <Route path="/form/:formId" element={<PageFormDetail />} />
                 <Route path="/form/:formId/apply" element={<PageFormApply />} />
