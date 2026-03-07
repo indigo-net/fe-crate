@@ -74,6 +74,7 @@ Each layer/slice can use these segments as needed. **Only create segments that a
 1. **Layer Isolation**: Each layer can only import from layers below it
 2. **Slice Segmentation**: Each feature/entity is self-contained with its own segments
 3. **Public API**: Each slice exports through `index.ts` files
+4. **Centralized Types**: Use types from `@/entities/(domain)` instead of defining local type aliases
 
 ### Layer Structure Details
 
@@ -102,6 +103,7 @@ Imports must be ordered as follows (enforced by eslint-plugin-import):
 4. Parent imports
 5. Sibling imports (ordered: `./lib/**` → `./model/**` → `./store/**` → `./ui/**`)
 6. Index imports
+7. Type imports (after a blank line from value imports)
 
 The path alias `@/` resolves to `src/`.
 
@@ -208,6 +210,32 @@ See `.claude/skills/code-style.md` for detailed code style guidelines including:
 - Pages use `Page*` prefix: `PageDashboard/index.tsx`
 - Modals use `Modal*` prefix: `ModalPublishSetting/index.tsx`
 - Use `hook.ts` for component-level hooks
+- `hook.ts` contains pure logic only (data fetching, state, filtering) — text formatting, labels, colors belong in `.tsx` view components
+- Always use `{}` for `if`/`for`/`while` blocks, even single-line bodies
+- Use `DeveloperConsole.log()` instead of `console.log()`
+- Use `DateStandard.fromISO()` instead of `new Date(isoString)` for ISO date parsing
+- Use `CustomSearchParams.buildURL()` for API URL query string building
+
+### API Type Naming Convention
+
+API 레이어(`entities/*/api/`) 타입명 규칙 (MSW 내부 타입은 제외):
+- Response: `Get*Response`, `Post*Response` (e.g., `GetFormsResponse`)
+- Query Params: `Get*Params` (e.g., `GetFormsParams`)
+- Request Body: `*RequestData` (e.g., `PostFormRequestData`)
+
+## Pull Request Workflow
+
+### PR Template
+Follow `.github/PULL_REQUEST_TEMPLATE.md`:
+- 📝 개요
+- 🔗 이슈 내용 (Jira 링크)
+- 🛠 주요 변경 사항 (체크리스트)
+- 🚀 기대 효과
+
+### Review Feedback Commits
+커밋 메시지에 구체적인 수정 내용 명시:
+- ❌ `fix: 리뷰 피드백 반영`
+- ✅ `fix: CodeRabbit 리뷰 반영 - 중앙화된 타입 import로 변경`
 
 ## Storybook
 
