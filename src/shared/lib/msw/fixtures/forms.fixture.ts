@@ -3,7 +3,7 @@
  * Mock 데이터: 모집 공고
  */
 
-export type FormStatus = 'DRAFT' | 'SCHEDULED' | 'ACTIVE' | 'CLOSED';
+export type FormStatus = 'DRAFT' | 'SCHEDULED' | 'PUBLISHED' | 'CLOSED';
 
 export type SelectionMethod = 'QUANTITATIVE' | 'LOTTERY' | 'FIRST_COME_FIRST_SERVED';
 
@@ -18,6 +18,8 @@ export interface FormFixture {
   targetCount: number | null;
   standbyCount: number | null;
   questionIds: string[];
+  authorEmail: string;
+  evaluatorIds: string[];
   createdAt: string;
   updatedAt: string;
 }
@@ -29,13 +31,15 @@ export const formsFixture: FormFixture[] = [
     id: 'form-1',
     title: '2026 동계 개발 인턴십',
     description: '개발자 인턴십 지원 폼입니다. 열정 있는 개발자를 찾습니다.',
-    status: 'ACTIVE',
+    status: 'PUBLISHED',
     selectionMethod: 'QUANTITATIVE',
     startDate: '2026-01-15T00:00:00Z',
     endDate: '2026-03-15T23:59:59Z',
     targetCount: 10,
     standbyCount: 5,
     questionIds: ['q-1', 'q-2', 'q-3'],
+    authorEmail: 'admin@crate.io',
+    evaluatorIds: ['user-2', 'user-3'],
     createdAt: '2026-01-10T10:00:00Z',
     updatedAt: '2026-01-15T10:00:00Z',
   },
@@ -50,6 +54,8 @@ export const formsFixture: FormFixture[] = [
     targetCount: 3,
     standbyCount: null,
     questionIds: ['q-4', 'q-5'],
+    authorEmail: 'admin@crate.io',
+    evaluatorIds: ['user-2'],
     createdAt: '2025-12-20T09:00:00Z',
     updatedAt: '2026-02-01T23:59:59Z',
   },
@@ -64,6 +70,8 @@ export const formsFixture: FormFixture[] = [
     targetCount: null,
     standbyCount: null,
     questionIds: ['q-6'],
+    authorEmail: 'admin@crate.io',
+    evaluatorIds: [],
     createdAt: '2026-02-25T14:00:00Z',
     updatedAt: '2026-02-25T14:00:00Z',
   },
@@ -78,6 +86,8 @@ export const formsFixture: FormFixture[] = [
     targetCount: 20,
     standbyCount: 10,
     questionIds: [],
+    authorEmail: 'admin@crate.io',
+    evaluatorIds: ['user-3', 'user-4'],
     createdAt: '2026-02-20T11:00:00Z',
     updatedAt: '2026-02-28T16:00:00Z',
   },

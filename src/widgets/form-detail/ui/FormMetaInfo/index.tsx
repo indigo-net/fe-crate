@@ -1,5 +1,7 @@
 import { memo } from 'react';
 
+import DateStandard from '@/shared/lib/date-standard';
+
 import { FormSignatureModel, StatusBadge } from '@/entities/form';
 import { Iconography } from '@/shared/ui';
 
@@ -25,7 +27,7 @@ const formatDate = (dateString: string | null, isClosedAt?: boolean): string => 
   if (!dateString) {
     return isClosedAt ? '상시 모집' : '-';
   }
-  const date = new Date(dateString);
+  const date = DateStandard.fromISO(dateString);
   return date.toLocaleDateString('ko-KR', {
     year: 'numeric',
     month: 'long',

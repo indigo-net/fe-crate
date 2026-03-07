@@ -33,7 +33,7 @@ export const Scheduled: Story = {
   },
 };
 
-export const Published: Story = {
+export const Active: Story = {
   args: {
     status: 'PUBLISHED',
   },

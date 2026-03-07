@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
-import { TypeGuard } from '@/shared/lib';
+import { DeveloperConsole, TypeGuard } from '@/shared/lib';
 import { AxiosManager } from '@/shared/lib';
 
 const usePageKakaoRedirectController = () => {
@@ -11,7 +11,7 @@ const usePageKakaoRedirectController = () => {
   const initialize = useCallback(async () => {
     const code = searchParams.get('code');
 
-    console.log(code);
+    DeveloperConsole.log({ message: 'kakao auth code', data: code });
 
     if (!TypeGuard.checkNull(code)) {
       // TODO: 인가코드를 이용하여 access token을 발급

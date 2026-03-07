@@ -17,7 +17,9 @@ export const usePageFormDetailController = () => {
   const canEdit = isEditable && (status === 'DRAFT' || status === 'SCHEDULED');
 
   const handleEditClick = useCallback(() => {
-    if (!formId) return;
+    if (!formId) {
+      return;
+    }
     navigate(`/form/${formId}/edit`);
   }, [navigate, formId]);
 

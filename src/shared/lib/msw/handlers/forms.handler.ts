@@ -9,7 +9,7 @@ const BASE_URL = EnvManager.getAppEnv('VITE_API_BASE_URL') || '';
 const API_PREFIX = `${BASE_URL}/api/v1`;
 
 // 백엔드 API 타입 정의
-type FormStatus = 'DRAFT' | 'SCHEDULED' | 'ACTIVE' | 'CLOSED';
+type FormStatus = 'DRAFT' | 'SCHEDULED' | 'PUBLISHED' | 'CLOSED';
 type SelectionMethod = 'QUANTITATIVE' | 'LOTTERY' | 'FIRST_COME_FIRST_SERVED';
 
 interface QuestionInput {
@@ -56,15 +56,43 @@ const createdQuestionsStore: CreatedQuestion[] = [];
 export const formsHandlers = [
   /**
    * GET /api/v1/forms - 공고 목록 조회
+   * Query Parameters:
+   *   - userId: string (optional) - 사용자 이메일로 필터링
+   *   - filter: 'creator' | 'evaluator' (optional, default: 'creator')
+   *   - status: FormStatus (optional) - 상태 필터
    * 에러 케이스: 503 SERVICE_UNAVAILABLE (1/50)
    */
-  http.get(`${API_PREFIX}/forms`, async () => {
+  http.get(`${API_PREFIX}/forms`, async ({ request }) => {
     await MockDelayManager.random('normal');
 
     const randomError = MockErrorSimulator.maybeError('SERVICE_UNAVAILABLE');
-    if (randomError) return randomError;
+    if (randomError) {
+      return randomError;
+    }
 
-    const forms = formsStore.map(form => ({
+    // 쿼리 파라미터 파싱
+    const url = new URL(request.url);
+    const userId = url.searchParams.get('userId') || undefined;
+    const filter = (url.searchParams.get('filter') as 'creator' | 'evaluator') || 'creator';
+    const status = url.searchParams.get('status') as FormStatus | null;
+
+    // 필터링
+    let filteredForms = formsStore;
+
+    if (userId) {
+      if (filter === 'creator') {
+        filteredForms = filteredForms.filter(f => f.authorEmail === userId);
+      } else if (filter === 'evaluator') {
+        filteredForms = filteredForms.filter(f => f.evaluatorIds.includes(userId));
+      }
+    }
+
+    if (status) {
+      filteredForms = filteredForms.filter(f => f.status === status);
+    }
+
+    // 응답 데이터 변환
+    const forms = filteredForms.map(form => ({
       id: form.id,
       title: form.title,
       description: form.description,
@@ -73,7 +101,10 @@ export const formsHandlers = [
       startDate: form.startDate,
       endDate: form.endDate,
       targetCount: form.targetCount,
+      standbyCount: form.standbyCount,
       questionIds: form.questionIds,
+      authorEmail: form.authorEmail,
+      evaluatorIds: form.evaluatorIds,
       createdAt: form.createdAt,
       updatedAt: form.updatedAt,
     }));
@@ -105,7 +136,9 @@ export const formsHandlers = [
     await MockDelayManager.random('normal');
 
     const randomError = MockErrorSimulator.maybeError('VALIDATION_ERROR');
-    if (randomError) return randomError;
+    if (randomError) {
+      return randomError;
+    }
 
     const body = (await request.json()) as CreateFormRequest;
     const now = new Date().toISOString();
@@ -123,6 +156,8 @@ export const formsHandlers = [
       targetCount: body.targetCount ?? null,
       standbyCount: body.standbyCount ?? null,
       questionIds: [],
+      authorEmail: 'admin@crate.io', // TODO: 실제 사용자 이메일로 변경
+      evaluatorIds: [],
       createdAt: now,
       updatedAt: now,
     };
@@ -200,7 +235,9 @@ export const formsHandlers = [
       return MockResponseManager.error('FORM_NOT_FOUND');
     }
     const randomError = MockErrorSimulator.maybeError('FORBIDDEN');
-    if (randomError) return randomError;
+    if (randomError) {
+      return randomError;
+    }
 
     formsStore.splice(formIndex, 1);
     return MockResponseManager.success({ deleted: true });
@@ -223,11 +260,13 @@ export const formsHandlers = [
       return MockResponseManager.error('FORM_NOT_DRAFT');
     }
     const randomError = MockErrorSimulator.maybeError('FORM_INCOMPLETE');
-    if (randomError) return randomError;
+    if (randomError) {
+      return randomError;
+    }
 
     const now = new Date();
     const startDate = form.startDate ? new Date(form.startDate) : now;
-    form.status = startDate > now ? 'SCHEDULED' : 'ACTIVE';
+    form.status = startDate > now ? 'SCHEDULED' : 'PUBLISHED';
     form.updatedAt = new Date().toISOString();
     return MockResponseManager.success(form);
   }),
@@ -245,7 +284,7 @@ export const formsHandlers = [
     if (!form) {
       return MockResponseManager.error('FORM_NOT_FOUND');
     }
-    if (form.status !== 'ACTIVE') {
+    if (form.status !== 'PUBLISHED') {
       return MockResponseManager.error('FORM_NOT_ACTIVE');
     }
     form.status = 'CLOSED';

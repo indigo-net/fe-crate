@@ -14,6 +14,8 @@ interface State {
   closedAt: string | null; // 모집 종료일 (ISO 8601 UTC string)
   targetCount: number | null;
   standbyCount: number | null;
+  createdAt: string | null;
+  updatedAt: string | null;
 }
 
 interface Props {
@@ -27,6 +29,8 @@ interface Props {
   closedAt?: string | null;
   targetCount?: number | null;
   standbyCount?: number | null;
+  createdAt?: string | null;
+  updatedAt?: string | null;
 }
 
 class FormSignatureModel extends CustomModel<State> {
@@ -45,6 +49,8 @@ class FormSignatureModel extends CustomModel<State> {
       closedAt: props.closedAt || null,
       targetCount: props.targetCount ?? null,
       standbyCount: props.standbyCount ?? null,
+      createdAt: props.createdAt || null,
+      updatedAt: props.updatedAt || null,
     };
   }
 

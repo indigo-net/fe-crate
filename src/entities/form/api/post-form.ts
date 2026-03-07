@@ -2,7 +2,7 @@ import AxiosManager from '@/shared/lib/axios-manager';
 
 import type { FormStatusType, SelectionMethodType } from '../types';
 
-interface QuestionRequest {
+interface QuestionRequestData {
   type: 'SHORT_TEXT' | 'LONG_TEXT' | 'SINGLE_CHOICE' | 'MULTIPLE_CHOICE';
   title: string;
   description: string | null;
@@ -11,7 +11,7 @@ interface QuestionRequest {
   options: string[] | null;
 }
 
-interface PostFormRequest {
+interface PostFormRequestData {
   title: string;
   description: string | null;
   status: FormStatusType;
@@ -20,10 +20,10 @@ interface PostFormRequest {
   endDate: string | null;
   targetCount: number | null;
   standbyCount: number | null;
-  questions: QuestionRequest[];
+  questions: QuestionRequestData[];
 }
 
-interface CreatedQuestion {
+interface CreatedQuestionResponse {
   id: string;
   formId: string;
   type: 'SHORT_TEXT' | 'LONG_TEXT' | 'SINGLE_CHOICE' | 'MULTIPLE_CHOICE';
@@ -47,16 +47,16 @@ interface PostFormResponse {
   targetCount: number | null;
   standbyCount: number | null;
   questionIds: string[];
-  questions: CreatedQuestion[];
+  questions: CreatedQuestionResponse[];
   createdAt: string;
   updatedAt: string;
 }
 
-async function postForm(data: PostFormRequest): Promise<PostFormResponse> {
+async function postForm(data: PostFormRequestData): Promise<PostFormResponse> {
   const axios = AxiosManager.getAxiosInstance();
   const response = await axios.post<PostFormResponse>('/api/v1/forms', data);
   return response.data;
 }
 
 export { postForm };
-export type { PostFormRequest, PostFormResponse, QuestionRequest, CreatedQuestion };
+export type { PostFormRequestData, PostFormResponse, QuestionRequestData, CreatedQuestionResponse };

@@ -1,9 +1,15 @@
+import CacheStateService from '@/entities/cache/lib/cache-state-service';
+
 import { postForm } from '../api';
+import { getForms } from '../api/get-forms';
 import FormSignatureModel from '../model/form-signature';
 
 import type { FormQuestionModel } from '../model';
 
 class FormApiService {
+  private static FORM_LIST_CACHE_KEY = 'form-list';
+  private static FORM_LIST_CACHE_TTL_MS = 5 * 60 * 1000;
+
   /**
    * 폼 생성 요청
    * - formSignature와 questions를 받아 API 호출
@@ -50,6 +56,38 @@ class FormApiService {
       targetCount: response.targetCount,
       standbyCount: response.standbyCount,
     });
+  }
+
+  /**
+   * 폼 목록 조회
+   * - API 응답을 FormSignatureModel[]로 변환
+   */
+  static async fetchFormList(): Promise<FormSignatureModel[]> {
+    const cached = CacheStateService.get<FormSignatureModel[]>(this.FORM_LIST_CACHE_KEY);
+    if (cached) {
+      return cached;
+    }
+
+    const response = await getForms();
+    const models = response.map(item => {
+      return new FormSignatureModel({
+        id: item.id,
+        title: item.title,
+        description: item.description,
+        status: item.status,
+        selectionMethod: item.selectionMethod,
+        publishedAt: item.startDate,
+        closedAt: item.endDate,
+        targetCount: item.targetCount,
+        standbyCount: item.standbyCount,
+        questionIds: item.questionIds,
+        createdAt: item.createdAt,
+        updatedAt: item.updatedAt,
+      });
+    });
+
+    CacheStateService.set(this.FORM_LIST_CACHE_KEY, models, this.FORM_LIST_CACHE_TTL_MS);
+    return models;
   }
 }
 

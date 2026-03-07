@@ -13,7 +13,9 @@ export const usePageFormApplyController = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleApplyClick = useCallback(async () => {
-    if (!formId || isSubmitting) return;
+    if (!formId || isSubmitting) {
+      return;
+    }
 
     setIsSubmitting(true);
     try {
