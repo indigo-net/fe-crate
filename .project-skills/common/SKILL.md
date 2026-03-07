@@ -107,7 +107,15 @@ Imports must be ordered as follows (enforced by eslint-plugin-import):
 
 The path alias `@/` resolves to `src/`.
 
+**Fix import order issues:** `npx eslint --fix <file>`
+
 ## Design System
+
+### Widget Data Fetching Pattern
+
+Widgets fetch their own data via Entity ApiService - NOT via props from page-level hooks:
+- ✅ Widget `hook.ts` calls `XxxApiService.fetchXxx()` internally
+- ❌ Page passes data to widget via props
 
 ### Color Tokens
 
@@ -212,7 +220,7 @@ See `.claude/skills/code-style.md` for detailed code style guidelines including:
 - Use `hook.ts` for component-level hooks
 - `hook.ts` contains pure logic only (data fetching, state, filtering) — text formatting, labels, colors belong in `.tsx` view components
 - Always use `{}` for `if`/`for`/`while` blocks, even single-line bodies
-- Use `DeveloperConsole.log()` instead of `console.log()`
+- Use `DeveloperConsole.log({ title, data })` instead of `console.log()` - accepts ILog object, NOT string args
 - Use `DateStandard.fromISO()` instead of `new Date(isoString)` for ISO date parsing
 - Use `CustomSearchParams.buildURL()` for API URL query string building
 
