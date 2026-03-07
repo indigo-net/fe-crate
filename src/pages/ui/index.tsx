@@ -1,5 +1,6 @@
 export { default as PageDashboard } from './PageDashboard';
 export { default as PageEvaluatorDashboard } from './PageEvaluatorDashboard';
+export { default as PageEvaluation } from './PageEvaluation';
 export { default as PageLanding } from './PageLanding';
 export { default as PageNewForm } from './PageNewForm';
 export { default as PageKakaoRedirect } from './PageKakaoRedirect';
