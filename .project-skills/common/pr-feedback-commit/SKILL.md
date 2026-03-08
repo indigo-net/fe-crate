@@ -47,8 +47,30 @@ gh pr view {number} --comments
 # 리뷰 코멘트 상세 조회
 gh api repos/{owner}/{repo}/pulls/{number}/comments
 
-# 미해결 리뷰 스레드 확인
-gh api repos/{owner}/{repo}/pulls/{number}/review_requests
+# 미해결 리뷰 스레드 확인 (GraphQL API 사용)
+gh api graphql -f query='
+  query($owner: String!, $repo: String!, $number: Int!) {
+    repository(owner: $owner, name: $repo) {
+      pullRequest(number: $number) {
+        reviewThreads(first: 100) {
+          nodes {
+            id
+            isResolved
+            path
+            line
+            comments(first: 100) {
+              nodes {
+                id
+                body
+                author { login }
+                url
+              }
+            }
+          }
+        }
+      }
+    }
+  }' -F owner='{owner}' -F repo='{repo}' -F number={number}
 ```
 
 ### 2. 각 피드백 분석
@@ -223,4 +245,5 @@ AskUserQuestion({
 
 | 버전 | 날짜 | 변경 내용 |
 |------|------|-----------|
+| 1.1.0 | 2026-03-08 | GraphQL 쿼리에 id, path, line, author 필드 추가 |
 | 1.0.0 | 2026-03-08 | 초기 버전 - PR 피드백 대응 스킬 정의 |
