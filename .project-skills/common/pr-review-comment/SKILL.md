@@ -64,8 +64,13 @@ cat > review.json << 'EOF'
 }
 EOF
 
-# 커밋 ID 치환 후 API 호출
-sed -i '' "s/COMMIT_ID_PLACEHOLDER/$PR_HEAD/" review.json
+# 커밋 ID 치환 후 API 호출 (크로스 플랫폼)
+# macOS/BSD: sed -i ''  | Linux: sed -i
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  sed -i '' "s/COMMIT_ID_PLACEHOLDER/$PR_HEAD/" review.json
+else
+  sed -i "s/COMMIT_ID_PLACEHOLDER/$PR_HEAD/" review.json
+fi
 gh api repos/{owner}/{repo}/pulls/{number}/reviews --input @review.json
 rm review.json
 ```
@@ -186,8 +191,12 @@ cat > review.json << 'EOF'
 }
 EOF
 
-# 커밋 ID 치환 후 API 호출
-sed -i '' "s/COMMIT_ID_PLACEHOLDER/$PR_HEAD/" review.json
+# 커밋 ID 치환 후 API 호출 (크로스 플랫폼)
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  sed -i '' "s/COMMIT_ID_PLACEHOLDER/$PR_HEAD/" review.json
+else
+  sed -i "s/COMMIT_ID_PLACEHOLDER/$PR_HEAD/" review.json
+fi
 gh api repos/owner/repo/pulls/123/reviews --input @review.json
 rm review.json
 ```
@@ -200,5 +209,6 @@ rm review.json
 
 | 버전 | 날짜 | 변경 내용 |
 |------|------|-----------|
+| 1.2.0 | 2026-03-08 | 크로스 플랫폼 호환성 개선 - sed -i 플래그 OS별 처리 |
 | 1.1.0 | 2026-03-08 | GitHub API 호출 방식 개선 - heredoc 사용, PR HEAD 커밋 ID 올바르게 획득, 에러 처리 추가 |
 | 1.0.0 | 2026-03-08 | 초기 버전 - PR 리뷰 코멘트 스킬 정의 |
