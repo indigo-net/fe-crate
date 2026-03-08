@@ -45,11 +45,40 @@ gh pr diff {number}
 GitHub Review Comment API 사용:
 
 ```bash
-gh api repos/{owner}/{repo}/pulls/{number}/reviews \
-  -f commit_id="$(git rev-parse HEAD)" \
-  -f body="{review_summary}" \
-  -f event="COMMENT" \
-  -F comments[]='{"path":"{file}","line":{line},"body":"{comment}"}'
+# PR의 HEAD 커밋 ID 가져오기
+PR_HEAD=$(gh pr view {number} --json headRefOid --jq '.headRefOid')
+
+# 리뷰 생성 (JSON 파일로 관리)
+cat > review.json << 'EOF'
+{
+  "commit_id": "COMMIT_ID_PLACEHOLDER",
+  "body": "## 리뷰 요약\n\n전반적으로 잘 작성된 코드입니다.",
+  "event": "COMMENT",
+  "comments": [
+    {
+      "path": "src/file.ts",
+      "line": 42,
+      "body": "### 💡 제안\n\n제안 내용..."
+    }
+  ]
+}
+EOF
+
+# 커밋 ID 치환 후 API 호출
+sed -i '' "s/COMMIT_ID_PLACEHOLDER/$PR_HEAD/" review.json
+gh api repos/{owner}/{repo}/pulls/{number}/reviews --input @review.json
+rm review.json
+```
+
+### 에러 처리
+
+```bash
+# API 호출 실패 시
+if ! gh api repos/{owner}/{repo}/pulls/{number}/reviews --input @review.json 2>/dev/null; then
+  echo "❌ 리뷰 생성 실패. GitHub API 권한을 확인하세요."
+  echo "   필요 권한: repo 스코프"
+  exit 1
+fi
 ```
 
 ### 4. 코멘트 형식
@@ -138,10 +167,29 @@ gh api repos/{owner}/{repo}/pulls/{number}/reviews \
 ### 버그 리뷰
 
 ```bash
-gh api repos/owner/repo/pulls/123/reviews \
-  -f commit_id="abc123" \
-  -f event="COMMENT" \
-  -F comments[]='{"path":"src/entities/form/api/get-form.ts","line":25,"body":"### 🐛 잠재적 버그\n\n`null` 체크가 누락되었습니다.\n\n```typescript\n// 현재\nconst data = response.data.items;\n\n// 제안\nconst data = response.data?.items ?? [];\n```\n\n**영향**: API 응답이 예상과 다를 경우 런타임 에러 발생 가능"}'
+# PR HEAD 커밋 ID 가져오기
+PR_HEAD=$(gh pr view 123 --json headRefOid --jq '.headRefOid')
+
+# 리뷰 JSON 생성
+cat > review.json << 'EOF'
+{
+  "commit_id": "COMMIT_ID_PLACEHOLDER",
+  "body": "## 리뷰 요약\n\n전반적으로 잘 작성된 코드입니다.",
+  "event": "COMMENT",
+  "comments": [
+    {
+      "path": "src/entities/form/api/get-form.ts",
+      "line": 25,
+      "body": "### 🐛 잠재적 버그\n\n`null` 체크가 누락되었습니다.\n\n```typescript\n// 현재\nconst data = response.data.items;\n\n// 제안\nconst data = response.data?.items ?? [];\n```\n\n**영향**: API 응답이 예상과 다를 경우 런타임 에러 발생 가능"
+    }
+  ]
+}
+EOF
+
+# 커밋 ID 치환 후 API 호출
+sed -i '' "s/COMMIT_ID_PLACEHOLDER/$PR_HEAD/" review.json
+gh api repos/owner/repo/pulls/123/reviews --input @review.json
+rm review.json
 ```
 
 ## 관련 스킬
@@ -152,4 +200,5 @@ gh api repos/owner/repo/pulls/123/reviews \
 
 | 버전 | 날짜 | 변경 내용 |
 |------|------|-----------|
+| 1.1.0 | 2026-03-08 | GitHub API 호출 방식 개선 - heredoc 사용, PR HEAD 커밋 ID 올바르게 획득, 에러 처리 추가 |
 | 1.0.0 | 2026-03-08 | 초기 버전 - PR 리뷰 코멘트 스킬 정의 |
