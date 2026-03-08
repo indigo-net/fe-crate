@@ -1,6 +1,9 @@
 import { memo, useEffect, useState, useCallback, useRef } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 
+import DeveloperConsole from '@/shared/lib/developer-console';
+
+
 import {
   EvaluationApiService,
   EvaluationStateService,
@@ -10,7 +13,6 @@ import {
   type ApplicationAnswer,
 } from '@/entities/evaluation';
 import { FormApiService } from '@/entities/form';
-import DeveloperConsole from '@/shared/lib/developer-console';
 import { useDebounce } from '@/shared/lib';
 import {
   ApplicantSidebar,

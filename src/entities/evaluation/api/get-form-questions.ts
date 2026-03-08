@@ -11,12 +11,14 @@ interface FormQuestion {
   id: string;
   formId: string;
   title: string;
-  description?: string;
+  description: string | null;
   type: QuestionType;
   required: boolean;
   order: number;
   options?: string[];
   maxLength?: number;
+  maxScore: number;
+  weight: number;
   createdAt: string;
   updatedAt: string;
 }

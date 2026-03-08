@@ -3,6 +3,7 @@ type EvaluationStatus = 'PENDING' | 'IN_PROGRESS' | 'COMPLETED';
 interface QuestionScore {
   questionId: string;
   score: number;
+  weight: number;
   comment?: string;
 }
 

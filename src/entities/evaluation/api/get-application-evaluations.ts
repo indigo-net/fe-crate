@@ -5,6 +5,7 @@ import type { EvaluationStatus } from '@/entities/evaluation';
 interface QuestionScoreResponse {
   questionId: string;
   score: number;
+  weight: number;
   comment?: string;
 }
 

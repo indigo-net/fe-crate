@@ -19,6 +19,8 @@ interface QuestionInput {
   required: boolean;
   order: number;
   options: string[] | null;
+  maxScore?: number;
+  weight?: number;
 }
 
 interface CreatedQuestion {
@@ -30,6 +32,8 @@ interface CreatedQuestion {
   required: boolean;
   order: number;
   options: string[] | null;
+  maxScore: number;
+  weight: number;
   createdAt: string;
   updatedAt: string;
 }
@@ -174,6 +178,8 @@ export const formsHandlers = [
         required: question.required ?? false,
         order: question.order ?? index + 1,
         options: question.options ?? null,
+        maxScore: question.maxScore ?? 100,
+        weight: question.weight ?? 1.0,
         createdAt: now,
         updatedAt: now,
       };

@@ -9,7 +9,7 @@ import type { EvaluationStatus, QuestionScore } from '@/entities/evaluation';
 interface Question {
   id: string;
   title: string;
-  description?: string;
+  description: string | null;
   type: 'SINGLE_CHOICE' | 'MULTIPLE_CHOICE' | 'SHORT_TEXT' | 'LONG_TEXT';
   options?: { id: string; content: string }[];
 }

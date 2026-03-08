@@ -9,6 +9,7 @@ export interface QuestionScore {
   questionId: string;
   score: number;
   maxScore: number;
+  weight: number;
   comment?: string;
 }
 
@@ -34,8 +35,8 @@ export const evaluationsFixture: EvaluationFixture[] = [
     formId: 'form-2',
     status: 'COMPLETED',
     scores: [
-      { questionId: 'q-4', score: 8, maxScore: 10, comment: '포트폴리오 구성이 좋음' },
-      { questionId: 'q-5', score: 9, maxScore: 10, comment: '다양한 툴 경험 보유' },
+      { questionId: 'q-4', score: 8, maxScore: 10, weight: 2.0, comment: '포트폴리오 구성이 좋음' },
+      { questionId: 'q-5', score: 9, maxScore: 10, weight: 1.0, comment: '다양한 툴 경험 보유' },
     ],
     totalScore: 85,
     overallComment: '채용 추천',
@@ -49,7 +50,7 @@ export const evaluationsFixture: EvaluationFixture[] = [
     formId: 'form-2',
     status: 'IN_PROGRESS',
     scores: [
-      { questionId: 'q-4', score: 7, maxScore: 10 },
+      { questionId: 'q-4', score: 7, maxScore: 10, weight: 2.0 },
     ],
     totalScore: null,
     createdAt: '2026-02-03T10:00:00Z',

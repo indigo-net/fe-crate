@@ -9,6 +9,8 @@ interface QuestionRequestData {
   required: boolean;
   order: number;
   options: string[] | null;
+  maxScore?: number;
+  weight?: number;
 }
 
 interface PostFormRequestData {
@@ -32,6 +34,8 @@ interface CreatedQuestionResponse {
   required: boolean;
   order: number;
   options: string[] | null;
+  maxScore: number;
+  weight: number;
   createdAt: string;
   updatedAt: string;
 }
