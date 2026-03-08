@@ -116,6 +116,7 @@ The path alias `@/` resolves to `src/`.
 Widgets fetch their own data via Entity ApiService - NOT via props from page-level hooks:
 - ✅ Widget `hook.ts` calls `XxxApiService.fetchXxx()` internally
 - ❌ Page passes data to widget via props
+- Use `CachedService` for deduplication when multiple widgets request same data
 
 ### Color Tokens
 
