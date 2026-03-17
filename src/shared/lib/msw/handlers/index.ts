@@ -3,6 +3,7 @@ import { applicationsHandlers } from './applications.handler';
 import { evaluationsHandlers } from './evaluations.handler';
 import { evaluatorsHandlers } from './evaluators.handler';
 import { formsHandlers } from './forms.handler';
+import { invitationsHandlers } from './invitations.handler';
 import { questionsHandlers } from './questions.handler';
 
 export const handlers = [
@@ -12,4 +13,5 @@ export const handlers = [
   ...evaluationsHandlers,
   ...evaluatorsHandlers,
   ...activitiesHandlers,
+  ...invitationsHandlers,
 ];

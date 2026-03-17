@@ -40,3 +40,10 @@ export {
   questionsStore,
   resetQuestionsStore,
 } from './questions.fixture';
+export {
+  type InvitationFixture,
+  type InvitationFixtureStatus,
+  invitationsFixture,
+  invitationsStore,
+  resetInvitationsStore,
+} from './invitations.fixture';

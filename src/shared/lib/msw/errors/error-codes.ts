@@ -110,6 +110,28 @@ export const ErrorCodes = {
     status: 400,
     message: '배정할 지원서가 없습니다.',
   },
+
+  // Invitation Errors
+  INVITATION_NOT_FOUND: {
+    code: 'INVITATION_NOT_FOUND',
+    status: 404,
+    message: '초대를 찾을 수 없습니다.',
+  },
+  INVITATION_EXPIRED: {
+    code: 'INVITATION_EXPIRED',
+    status: 410,
+    message: '만료된 초대입니다.',
+  },
+  INVITATION_ALREADY_ACCEPTED: {
+    code: 'INVITATION_ALREADY_ACCEPTED',
+    status: 409,
+    message: '이미 수락된 초대입니다.',
+  },
+  DUPLICATE_INVITATION: {
+    code: 'DUPLICATE_INVITATION',
+    status: 409,
+    message: '이미 초대된 이메일입니다.',
+  },
 } as const;
 
 export type ErrorCode = keyof typeof ErrorCodes;
