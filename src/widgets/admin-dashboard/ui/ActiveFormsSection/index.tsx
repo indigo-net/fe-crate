@@ -115,10 +115,10 @@ const FormCard = ({
             e.stopPropagation();
             onInvite(form.getValue('id'));
           }}
-          className="ml-auto p-1.5 rounded-slim-md hover:bg-bg-subtle text-text-tertiary hover:text-brand-primary transition-colors"
-          title="평가자 초대"
+          className="ml-auto px-2.5 py-1 rounded-slim-md border border-border-default text-[11px] font-slim-semibold text-text-secondary hover:text-brand-primary hover:border-brand-primary transition-colors flex items-center gap-1"
         >
-          <Iconography.Stroke.Users className="w-4 h-4" />
+          <Iconography.Stroke.Plus className="w-3 h-3" />
+          <span>평가자 초대</span>
         </button>
       </footer>
     </article>
