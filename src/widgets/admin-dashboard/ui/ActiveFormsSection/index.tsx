@@ -1,9 +1,11 @@
-import { memo } from 'react';
+import { memo, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import DateStandard from '@/shared/lib/date-standard';
 
 import type FormSignatureModel from '@/entities/form/model/form-signature';
+
+import ModalInviteEvaluator from '@/pages/ui/ModalInviteEvaluator';
 
 import { Iconography } from '@/shared/ui';
 
@@ -80,6 +82,7 @@ const FormCard = ({ form }: { form: FormSignatureModel }) => {
   const statusLabel = getStatusLabel(status, closedAt);
   const statusColor = getStatusColor(status);
   const updatedAtLabel = formatUpdatedAt(form.getValue('updatedAt'));
+  const [isInviteOpen, setIsInviteOpen] = useState(false);
 
   return (
     <article
@@ -104,7 +107,23 @@ const FormCard = ({ form }: { form: FormSignatureModel }) => {
         <Iconography.Stroke.Users className="w-4 h-4 text-text-tertiary" />
         <span className="text-sm font-slim-semibold">0</span>
         <span className="text-xs text-text-tertiary">지원자</span>
+        <button
+          onClick={e => {
+            e.stopPropagation();
+            setIsInviteOpen(true);
+          }}
+          className="ml-auto p-1.5 rounded-slim-md hover:bg-bg-subtle text-text-tertiary hover:text-brand-primary transition-colors"
+          title="평가자 초대"
+        >
+          <Iconography.Stroke.Users className="w-4 h-4" />
+        </button>
       </footer>
+      <ModalInviteEvaluator
+        formId={form.getValue('id')}
+        formTitle={form.getValue('title') ?? ''}
+        isOpen={isInviteOpen}
+        onClose={() => setIsInviteOpen(false)}
+      />
     </article>
   );
 };

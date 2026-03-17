@@ -7,6 +7,7 @@ import {
   PageEvaluatorDashboard,
   PageFormApply,
   PageFormDetail,
+  PageInviteAccept,
   PageKakaoRedirect,
   PageLanding,
   PageNewForm,
@@ -28,6 +29,7 @@ const App = () => {
                 <Route path="/new-form" element={<PageNewForm />} />
                 <Route path="/form/:formId" element={<PageFormDetail />} />
                 <Route path="/form/:formId/apply" element={<PageFormApply />} />
+                <Route path="/invite/:inviteToken" element={<PageInviteAccept />} />
               </Routes>
             </ModalProvider>
           </AlertProvider>
