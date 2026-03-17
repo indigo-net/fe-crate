@@ -7,5 +7,4 @@ export { default as PageKakaoRedirect } from './PageKakaoRedirect';
 export { default as PageFormDetail } from './PageFormDetail';
 export { default as PageFormApply } from './PageFormApply';
 export { default as ModalPublishSetting } from './ModalPublishSetting';
-export { default as ModalInviteEvaluator } from './ModalInviteEvaluator';
 export { default as PageInviteAccept } from './PageInviteAccept';

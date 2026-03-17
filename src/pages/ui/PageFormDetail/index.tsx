@@ -1,4 +1,4 @@
-import { memo, useState } from 'react';
+import { memo } from 'react';
 import { Link } from 'react-router-dom';
 
 import { FormSignatureModel, FormQuestionModel, FormQuestionOptionModel } from '@/entities/form';
@@ -6,13 +6,11 @@ import { DarkModeButton } from '@/features/toggle-theme/ui';
 import { Iconography } from '@/shared/ui';
 import { FormMetaInfo, QuestionPreview } from '@/widgets/form-detail/ui';
 
-import ModalInviteEvaluator from '../ModalInviteEvaluator';
-
 import { usePageFormDetailController } from './hook';
 
 const PageFormDetail = memo(() => {
-  const { formSignature, formQuestions, canEdit, handleEditClick } = usePageFormDetailController();
-  const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
+  const { formSignature, formQuestions, canEdit, handleEditClick, handleInviteButtonClick } =
+    usePageFormDetailController();
 
   // Mock data for development/testing
   const displayFormSignature =
@@ -62,7 +60,7 @@ const PageFormDetail = memo(() => {
           <div className="flex items-center gap-4">
             <DarkModeButton />
             <button
-              onClick={() => setIsInviteModalOpen(true)}
+              onClick={handleInviteButtonClick}
               className="px-5 py-2.5 bg-bg-subtle text-text-primary font-slim-bold text-sm rounded-slim-lg hover:bg-bg-base hover:shadow-md transition-all flex items-center gap-2 border border-border-default"
             >
               <Iconography.Stroke.Users className="w-4 h-4" />
@@ -90,12 +88,6 @@ const PageFormDetail = memo(() => {
           <QuestionPreview questions={displayQuestions} />
         </div>
       </main>
-      <ModalInviteEvaluator
-        formId={formSignature?.getValue('id') ?? ''}
-        formTitle={displayFormSignature.getValue('title') ?? ''}
-        isOpen={isInviteModalOpen}
-        onClose={() => setIsInviteModalOpen(false)}
-      />
     </div>
   );
 });

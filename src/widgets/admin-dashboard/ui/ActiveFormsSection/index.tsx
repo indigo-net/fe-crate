@@ -1,11 +1,9 @@
-import { memo, useState } from 'react';
+import { memo } from 'react';
 import { Link } from 'react-router-dom';
 
 import DateStandard from '@/shared/lib/date-standard';
 
 import type FormSignatureModel from '@/entities/form/model/form-signature';
-
-import ModalInviteEvaluator from '@/pages/ui/ModalInviteEvaluator';
 
 import { Iconography } from '@/shared/ui';
 
@@ -76,13 +74,18 @@ const formatUpdatedAt = (updatedAt: string | null): string => {
   return `${diffDays}일 전`;
 };
 
-const FormCard = ({ form }: { form: FormSignatureModel }) => {
+const FormCard = ({
+  form,
+  onInvite,
+}: {
+  form: FormSignatureModel;
+  onInvite: (formId: string) => void;
+}) => {
   const status = form.getValue('status');
   const closedAt = form.getValue('closedAt');
   const statusLabel = getStatusLabel(status, closedAt);
   const statusColor = getStatusColor(status);
   const updatedAtLabel = formatUpdatedAt(form.getValue('updatedAt'));
-  const [isInviteOpen, setIsInviteOpen] = useState(false);
 
   return (
     <article
@@ -110,7 +113,7 @@ const FormCard = ({ form }: { form: FormSignatureModel }) => {
         <button
           onClick={e => {
             e.stopPropagation();
-            setIsInviteOpen(true);
+            onInvite(form.getValue('id'));
           }}
           className="ml-auto p-1.5 rounded-slim-md hover:bg-bg-subtle text-text-tertiary hover:text-brand-primary transition-colors"
           title="평가자 초대"
@@ -118,18 +121,12 @@ const FormCard = ({ form }: { form: FormSignatureModel }) => {
           <Iconography.Stroke.Users className="w-4 h-4" />
         </button>
       </footer>
-      <ModalInviteEvaluator
-        formId={form.getValue('id')}
-        formTitle={form.getValue('title') ?? ''}
-        isOpen={isInviteOpen}
-        onClose={() => setIsInviteOpen(false)}
-      />
     </article>
   );
 };
 
 const ActiveFormsSection = memo(() => {
-  const { forms } = useActiveFormsSectionController();
+  const { forms, handleInviteButtonClick } = useActiveFormsSectionController();
 
   return (
     <section className="desktop:col-span-2 space-y-6">
@@ -148,7 +145,7 @@ const ActiveFormsSection = memo(() => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {forms.map(form => (
-          <FormCard key={form.getValue('id')} form={form} />
+          <FormCard key={form.getValue('id')} form={form} onInvite={handleInviteButtonClick} />
         ))}
         <Link
           to="/new-form"

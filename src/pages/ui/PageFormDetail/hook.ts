@@ -1,11 +1,15 @@
-import { useCallback } from 'react';
+import { createElement, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
+import { useModalContext } from '@/app/lib';
 import { useFormQuestionListStore, useFormSignatureStore } from '@/entities/form/store';
+import { UUID } from '@/shared/lib';
+import { ModalInviteEvaluator } from '@/widgets/evaluator-invitation/ui';
 
 export const usePageFormDetailController = () => {
   const { formId } = useParams<{ formId: string }>();
   const navigate = useNavigate();
+  const { openModal } = useModalContext();
 
   const { formSignature } = useFormSignatureStore();
   const { formQuestions } = useFormQuestionListStore();
@@ -27,6 +31,16 @@ export const usePageFormDetailController = () => {
     navigate('/dashboard');
   }, [navigate]);
 
+  const handleInviteButtonClick = useCallback(() => {
+    openModal({
+      id: UUID.v4(),
+      title: '평가자 초대',
+      content: createElement(ModalInviteEvaluator, {
+        formId: formSignature?.getValue('id') ?? '',
+      }),
+    });
+  }, [formSignature, openModal]);
+
   return {
     formId,
     formSignature,
@@ -34,5 +48,6 @@ export const usePageFormDetailController = () => {
     canEdit,
     handleEditClick,
     handleBackToDashboard,
+    handleInviteButtonClick,
   };
 };
