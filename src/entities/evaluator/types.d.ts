@@ -1,3 +1,5 @@
 type EvaluatorRoleType = 'ADMIN' | 'EVALUATOR';
 
-export type { EvaluatorRoleType };
+type InvitationStatus = 'PENDING' | 'ACCEPTED' | 'EXPIRED';
+
+export type { EvaluatorRoleType, InvitationStatus };
