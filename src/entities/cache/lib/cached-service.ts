@@ -4,7 +4,7 @@ import { CacheModel } from '../model';
 
 import type { CacheData } from '../types';
 
-class CacheStateService {
+class CachedService {
   static CACHE_MAP = new Map<string, CacheModel<CacheData>>();
 
   static get<T extends CacheData>(key: string): T | null {
@@ -31,4 +31,4 @@ class CacheStateService {
   }
 }
 
-export default CacheStateService;
+export default CachedService;

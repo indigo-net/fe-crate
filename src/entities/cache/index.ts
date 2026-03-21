@@ -5,4 +5,4 @@ export type { CacheData } from './types';
 export { CacheModel } from './model';
 
 // Services
-export { CacheStateService } from './lib';
+export { CachedService } from './lib';

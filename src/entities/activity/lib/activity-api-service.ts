@@ -1,4 +1,4 @@
-import CacheStateService from '@/entities/cache/lib/cache-state-service';
+import CachedService from '@/entities/cache/lib/cached-service';
 
 import { getActivities } from '../api/get-activities';
 
@@ -10,13 +10,13 @@ class ActivityApiService {
 
   static async fetchRecentActivities(limit?: number): Promise<GetActivitiesResponse[]> {
     const cacheKey = `${this.CACHE_KEY}:${limit ?? 'default'}`;
-    const cached = CacheStateService.get<GetActivitiesResponse[]>(cacheKey);
+    const cached = CachedService.get<GetActivitiesResponse[]>(cacheKey);
     if (cached) {
       return cached;
     }
 
     const response = await getActivities(limit ? { limit } : undefined);
-    CacheStateService.set(cacheKey, response, this.CACHE_TTL_MS);
+    CachedService.set(cacheKey, response, this.CACHE_TTL_MS);
     return response;
   }
 }

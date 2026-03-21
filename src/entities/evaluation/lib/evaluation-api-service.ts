@@ -1,4 +1,4 @@
-import CacheStateService from '@/entities/cache/lib/cache-state-service';
+import CachedService from '@/entities/cache/lib/cached-service';
 
 import {
   getApplication,
@@ -22,7 +22,7 @@ class EvaluationApiService {
 
   static async fetchEvaluation(applicationId: string): Promise<EvaluationModel | null> {
     const cacheKey = this.getCacheKey(applicationId);
-    const cached = CacheStateService.get<EvaluationModel>(cacheKey);
+    const cached = CachedService.get<EvaluationModel>(cacheKey);
     if (cached) {
       return cached;
     }
@@ -44,8 +44,8 @@ class EvaluationApiService {
       overallComment: evaluationData.overallComment,
     });
 
-    CacheStateService.invalidate(cacheKey);
-    CacheStateService.set(cacheKey, model, this.EVALUATION_CACHE_TTL_MS);
+    CachedService.invalidate(cacheKey);
+    CachedService.set(cacheKey, model, this.EVALUATION_CACHE_TTL_MS);
     return model;
   }
 
@@ -69,7 +69,7 @@ class EvaluationApiService {
       overallComment: response.overallComment,
     });
 
-    CacheStateService.set(this.getCacheKey(applicationId), model, this.EVALUATION_CACHE_TTL_MS);
+    CachedService.set(this.getCacheKey(applicationId), model, this.EVALUATION_CACHE_TTL_MS);
     return model;
   }
 
@@ -95,7 +95,7 @@ class EvaluationApiService {
       overallComment: response.overallComment,
     });
 
-    CacheStateService.set(this.getCacheKey(applicationId), model, this.EVALUATION_CACHE_TTL_MS);
+    CachedService.set(this.getCacheKey(applicationId), model, this.EVALUATION_CACHE_TTL_MS);
     return model;
   }
 

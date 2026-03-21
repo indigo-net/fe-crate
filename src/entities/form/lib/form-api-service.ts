@@ -1,4 +1,4 @@
-import CacheStateService from '@/entities/cache/lib/cache-state-service';
+import CachedService from '@/entities/cache/lib/cached-service';
 
 import { postForm } from '../api';
 import { getForms } from '../api/get-forms';
@@ -63,7 +63,7 @@ class FormApiService {
    * - API 응답을 FormSignatureModel[]로 변환
    */
   static async fetchFormList(): Promise<FormSignatureModel[]> {
-    const cached = CacheStateService.get<FormSignatureModel[]>(this.FORM_LIST_CACHE_KEY);
+    const cached = CachedService.get<FormSignatureModel[]>(this.FORM_LIST_CACHE_KEY);
     if (cached) {
       return cached;
     }
@@ -86,7 +86,7 @@ class FormApiService {
       });
     });
 
-    CacheStateService.set(this.FORM_LIST_CACHE_KEY, models, this.FORM_LIST_CACHE_TTL_MS);
+    CachedService.set(this.FORM_LIST_CACHE_KEY, models, this.FORM_LIST_CACHE_TTL_MS);
     return models;
   }
 }

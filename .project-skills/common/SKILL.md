@@ -185,6 +185,20 @@ Global UI contexts are provided in `app/lib/context-provider/`:
 
 Wrap the app with these providers in order: `ToastProvider` → `AlertProvider` → `ModalProvider`.
 
+### Modal Usage Pattern
+
+모달은 반드시 `useModalContext().openModal()` + `createElement`로 열어야 함:
+```typescript
+const { openModal } = useModalContext();
+openModal({
+  id: UUID.v4(),
+  title: '모달 제목',
+  content: createElement(ModalComponent, { prop1 }),
+});
+```
+- ❌ `useState(isOpen)` + `<Modal isOpen={isOpen} />` 직접 렌더링 금지
+- ✅ `openModal()` 호출은 hook.ts에 위치 (tsx에서 직접 호출하지 않음)
+
 ## Routing
 
 Routes are defined in `src/app/ui/index.tsx`:
@@ -193,6 +207,11 @@ Routes are defined in `src/app/ui/index.tsx`:
 - `/new-form` - Form creation page
 - `/kakao-authorize` - Kakao OAuth redirect handler
 - `/dashboard` - Admin dashboard
+- `/evaluator/dashboard` - Evaluator dashboard
+- `/evaluation/:formId` - Evaluation workspace
+- `/form/:formId` - Form detail page
+- `/form/:formId/apply` - Form application page
+- `/invite/:inviteToken` - Evaluator invite accept page
 
 ## Environment Variables
 
@@ -201,6 +220,12 @@ Access via `EnvManager.getAppEnv(key)` or `import.meta.env[key]`:
 - `VITE_API_BASE_URL` - API base URL
 - `VITE_KAKAO_CLIENT_ID` - Kakao OAuth client ID
 - `VITE_KAKAO_REDIRECT_URI` - Kakao OAuth redirect URI
+
+## HTTP Client & MSW Response Pattern
+
+- AxiosManager 인터셉터가 MSW 래핑 응답(`{ success: true, data, meta }`)의 `data`를 자동 추출
+- API 함수에서 `response.data`를 반환하면 래핑 없이 순수 데이터가 반환됨
+- 에러 응답(`success: false`)은 래핑 해제하지 않음 — Axios 에러 핸들러로 전달
 
 ## Code Style Guide
 
@@ -221,7 +246,7 @@ See `.claude/skills/code-style.md` for detailed code style guidelines including:
 - Use `hook.ts` for component-level hooks
 - `hook.ts` contains pure logic only (data fetching, state, filtering) — text formatting, labels, colors belong in `.tsx` view components
 - Always use `{}` for `if`/`for`/`while` blocks, even single-line bodies
-- Use `DeveloperConsole.log({ title, data })` instead of `console.log()` - accepts ILog object, NOT string args
+- Use `DeveloperConsole.log({ message, data })` instead of `console.log()` - accepts ILog object (`{ message: string, data?: T, location?: string }`), NOT string args
 - Use `DateStandard.fromISO()` instead of `new Date(isoString)` for ISO date parsing
 - Use `CustomSearchParams.buildURL()` for API URL query string building
 
@@ -307,7 +332,7 @@ For detailed layer-specific best practices, see the skill files:
 - **Pages**: `Page*/index.tsx` (e.g., `PageDashboard/index.tsx`)
 - **Modals**: `Modal*/index.tsx` (e.g., `ModalPublishSetting/index.tsx`)
 
-### Layer Structure (No Slices for app, pages, widgets)
+### Layer Structure (No Slices for app, pages, shared)
 
 ```
 src/

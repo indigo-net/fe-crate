@@ -1,4 +1,4 @@
-import CacheStateService from '@/entities/cache/lib/cache-state-service';
+import CachedService from '@/entities/cache/lib/cached-service';
 
 import { deleteInvitation } from '../api/delete-invitation';
 import { getEvaluators } from '../api/get-evaluators';
@@ -19,13 +19,13 @@ class EvaluatorApiService {
   private static INVITATION_CACHE_TTL_MS = 1 * 60 * 1000;
 
   static async fetchDashboardEvaluators(): Promise<GetEvaluatorsResponse[]> {
-    const cached = CacheStateService.get<GetEvaluatorsResponse[]>(this.DASHBOARD_CACHE_KEY);
+    const cached = CachedService.get<GetEvaluatorsResponse[]>(this.DASHBOARD_CACHE_KEY);
     if (cached) {
       return cached;
     }
 
     const response = await getEvaluators();
-    CacheStateService.set(this.DASHBOARD_CACHE_KEY, response, this.DASHBOARD_CACHE_TTL_MS);
+    CachedService.set(this.DASHBOARD_CACHE_KEY, response, this.DASHBOARD_CACHE_TTL_MS);
     return response;
   }
 
@@ -35,15 +35,15 @@ class EvaluatorApiService {
   ): Promise<GetInvitationResponse[]> {
     const cacheKey = `invitations-${formId}`;
     if (!force) {
-      const cached = CacheStateService.get<GetInvitationResponse[]>(cacheKey);
+      const cached = CachedService.get<GetInvitationResponse[]>(cacheKey);
       if (cached) {
         return cached;
       }
     }
 
     const response = await getInvitations(formId);
-    CacheStateService.invalidate(cacheKey);
-    CacheStateService.set(cacheKey, response, this.INVITATION_CACHE_TTL_MS);
+    CachedService.invalidate(cacheKey);
+    CachedService.set(cacheKey, response, this.INVITATION_CACHE_TTL_MS);
     return response;
   }
 
@@ -52,7 +52,7 @@ class EvaluatorApiService {
     email: string,
   ): Promise<PostInvitationResponse> {
     const result = await postInvitation(formId, { email });
-    CacheStateService.invalidate(`invitations-${formId}`);
+    CachedService.invalidate(`invitations-${formId}`);
     return result;
   }
 
@@ -61,7 +61,7 @@ class EvaluatorApiService {
     invitationId: string,
   ): Promise<void> {
     await deleteInvitation(invitationId);
-    CacheStateService.invalidate(`invitations-${formId}`);
+    CachedService.invalidate(`invitations-${formId}`);
   }
 
   static async fetchInviteInfo(

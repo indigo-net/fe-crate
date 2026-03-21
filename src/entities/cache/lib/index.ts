@@ -1,1 +1,1 @@
-export { default as CacheStateService } from './cache-state-service';
+export { default as CachedService } from './cached-service';
