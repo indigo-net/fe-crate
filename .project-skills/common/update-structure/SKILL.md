@@ -3,6 +3,9 @@ name: update-layer-structure
 description: "Use this skill when you need to update or regenerate STRUCTURE.md files for FSD layers. Triggers include: 'update structure', 'regenerate structure', 'update STRUCTURE.md', or when the codebase structure has changed significantly. Also use when asked about how to document current layer structure. Do NOT use for reading or understanding existing structure - use the STRUCTURE.md files directly instead."
 ---
 
+> **원본 경로**: `.project-skills/common/update-structure/SKILL.md`
+> symlink 혹은 원본을 수정하여 커밋할 경우, 반드시 `.project-skills/` 내 원본 파일과 symlink 대상 파일을 함께 커밋해야 합니다.
+
 # Update Layer Structure
 
 ## Overview

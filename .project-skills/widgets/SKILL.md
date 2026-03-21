@@ -3,6 +3,9 @@ name: widgets-layer
 description: "Use this skill when working on the Widgets layer of the FSD architecture. Triggers include: 'widgets layer', 'widget component', 'large UI block', 'DashboardHeader', 'FormBuilder', 'EvaluationPanel', or when extracting large UI sections from pages. Also use when page component exceeds 150 lines. Do NOT use for simple components or business logic."
 ---
 
+> **원본 경로**: `.project-skills/widgets/SKILL.md`
+> symlink 혹은 원본을 수정하여 커밋할 경우, 반드시 `.project-skills/` 내 원본 파일과 symlink 대상 파일을 함께 커밋해야 합니다.
+
 # Widgets Layer Guide
 
 ## Overview

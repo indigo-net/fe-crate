@@ -3,6 +3,9 @@ name: msw-handler
 description: "Use this skill when working with MSW handlers. Triggers include: 'msw', 'mock api', 'api handler', 'mock server', adding new API endpoints to mock, or when modifying src/shared/lib/msw/ directory."
 ---
 
+> **원본 경로**: `.project-skills/common/msw-handler/SKILL.md`
+> symlink 혹은 원본을 수정하여 커밋할 경우, 반드시 `.project-skills/` 내 원본 파일과 symlink 대상 파일을 함께 커밋해야 합니다.
+
 # MSW Handler 작성 가이드
 
 MSW(Mock Service Worker) 핸들러를 작성할 때 따라야 할 패턴과 규칙입니다.

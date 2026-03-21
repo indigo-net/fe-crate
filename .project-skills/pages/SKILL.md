@@ -3,6 +3,9 @@ name: pages-layer
 description: "Use this skill when working on the Pages layer of the FSD architecture. Triggers include: 'pages layer', 'page component', 'modal component', 'route-level', 'PageDashboard', 'PageLanding', 'ModalPublishSetting', or when modifying src/pages/ directory. Also use when creating new pages or modals. Do NOT use for business logic or reusable UI components."
 ---
 
+> **원본 경로**: `.project-skills/pages/SKILL.md`
+> symlink 혹은 원본을 수정하여 커밋할 경우, 반드시 `.project-skills/` 내 원본 파일과 symlink 대상 파일을 함께 커밋해야 합니다.
+
 # Pages Layer Guide
 
 ## Overview

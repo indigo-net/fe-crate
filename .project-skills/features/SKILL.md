@@ -3,6 +3,9 @@ name: features-layer
 description: "Use this skill when working on the Features layer of the FSD architecture. Triggers include: 'features layer', 'feature component', 'user action', 'edit-form', 'authenticate', 'toggle-theme', 'QuestionAddSection', 'FormSignatureEditSection', or when modifying src/features/ directory. Also use when implementing interactive UI with event handling. Do NOT use for static/presentational UI or business models."
 ---
 
+> **원본 경로**: `.project-skills/features/SKILL.md`
+> symlink 혹은 원본을 수정하여 커밋할 경우, 반드시 `.project-skills/` 내 원본 파일과 symlink 대상 파일을 함께 커밋해야 합니다.
+
 # Features Layer Guide
 
 ## Overview

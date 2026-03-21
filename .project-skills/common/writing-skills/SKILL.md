@@ -3,6 +3,9 @@ name: writing-skills
 description: "Use when creating new skills, editing existing skills, or verifying skills work before deployment. Triggers: 'create skill', 'write SKILL.md', 'new skill', 'update skill', 'skill guide'. Do NOT use for general documentation or README files."
 ---
 
+> **원본 경로**: `.project-skills/common/writing-skills/SKILL.md`
+> symlink 혹은 원본을 수정하여 커밋할 경우, 반드시 `.project-skills/` 내 원본 파일과 symlink 대상 파일을 함께 커밋해야 합니다.
+
 # SKILL.md Writing Guide
 
 Claude Code 스킬 문서 작성 가이드입니다.

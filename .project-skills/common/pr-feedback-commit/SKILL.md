@@ -3,6 +3,9 @@ name: pr-feedback-commit
 description: "Use when responding to PR review feedback. Triggers include: '/pr-feedback', '피드백 반영', '리뷰 대응', '피드백 커밋', or when user wants to address unresolved review comments. Do NOT use for creating new reviews."
 ---
 
+> **원본 경로**: `.project-skills/common/pr-feedback-commit/SKILL.md`
+> symlink 혹은 원본을 수정하여 커밋할 경우, 반드시 `.project-skills/` 내 원본 파일과 symlink 대상 파일을 함께 커밋해야 합니다.
+
 # PR 피드백 대응 스킬
 
 ## 목적

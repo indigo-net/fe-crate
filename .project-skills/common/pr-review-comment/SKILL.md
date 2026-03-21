@@ -3,6 +3,9 @@ name: pr-review-comment
 description: "Use when the user wants to leave code review comments on a PR. Triggers include: '/pr-review', 'pr 리뷰', '리뷰 코멘트', '코드 리뷰', or when user provides a PR number and asks for review. Do NOT use for committing changes or responding to feedback."
 ---
 
+> **원본 경로**: `.project-skills/common/pr-review-comment/SKILL.md`
+> symlink 혹은 원본을 수정하여 커밋할 경우, 반드시 `.project-skills/` 내 원본 파일과 symlink 대상 파일을 함께 커밋해야 합니다.
+
 # PR 리뷰 코멘트 스킬
 
 ## 목적

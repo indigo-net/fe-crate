@@ -3,6 +3,9 @@ name: storybook-guide
 description: "Use when writing Storybook stories for React components. Triggers: 'story', 'storybook', '.stories.tsx', 'component documentation'. Do NOT use for test files or general component implementation."
 ---
 
+> **원본 경로**: `.project-skills/common/storybook-guide/SKILL.md`
+> symlink 혹은 원본을 수정하여 커밋할 경우, 반드시 `.project-skills/` 내 원본 파일과 symlink 대상 파일을 함께 커밋해야 합니다.
+
 # Storybook Writing Guide
 
 React 컴포넌트의 Storybook 스토리 작성 가이드입니다.

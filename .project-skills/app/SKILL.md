@@ -3,6 +3,9 @@ name: app-layer
 description: "Use this skill when working on the App layer of the FSD architecture. Triggers include: 'app layer', 'routing', 'context provider', 'entry point', 'provider setup', or when modifying src/app/ directory. Also use when adding new routes, providers, or understanding application initialization. Do NOT use for page-level components or business logic."
 ---
 
+> **원본 경로**: `.project-skills/app/SKILL.md`
+> symlink 혹은 원본을 수정하여 커밋할 경우, 반드시 `.project-skills/` 내 원본 파일과 symlink 대상 파일을 함께 커밋해야 합니다.
+
 # App Layer Guide
 
 ## Overview

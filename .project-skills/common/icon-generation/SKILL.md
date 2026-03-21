@@ -5,6 +5,9 @@ trigger: glob
 globs: src/shared/ui/iconography/**/*.{ts,tsx}
 ---
 
+> **원본 경로**: `.project-skills/common/icon-generation/SKILL.md`
+> symlink 혹은 원본을 수정하여 커밋할 경우, 반드시 `.project-skills/` 내 원본 파일과 symlink 대상 파일을 함께 커밋해야 합니다.
+
 # Icon Generation Rules
 
 When generating an icon, the model MUST follow this rule set without exception. Any output that violates the rules is invalid.

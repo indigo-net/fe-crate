@@ -3,6 +3,9 @@ name: commit-guide
 description: "Use this skill when creating git commits for this project. Triggers include: 'commit', 'git commit', '커밋', '커밋 메시지', or when user asks to commit changes. Also use when writing commit messages to ensure they follow project conventions. Do NOT use for reading commit history or git operations other than committing."
 ---
 
+> **원본 경로**: `.project-skills/common/commit/SKILL.md`
+> symlink 혹은 원본을 수정하여 커밋할 경우, 반드시 `.project-skills/` 내 원본 파일과 symlink 대상 파일을 함께 커밋해야 합니다.
+
 # Git 커밋 가이드
 
 ## Overview

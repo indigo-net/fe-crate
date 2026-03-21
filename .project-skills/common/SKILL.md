@@ -3,6 +3,9 @@
 > **Universal Instruction for AI Coding Assistants**
 > This repository contains specific guidelines and standards. All AI agents (e.g., Cursor, Claude Code, Windsurf, Trae, etc.) must prioritize this document as the **Single Source of Truth** before modifying or generating any code.
 
+> **원본 경로**: `.project-skills/common/SKILL.md`
+> symlink 혹은 원본을 수정하여 커밋할 경우, 반드시 `.project-skills/` 내 원본 파일과 symlink 대상 파일을 함께 커밋해야 합니다.
+
 ## Project Overview
 
 CRATE is a selection optimization solution - a React application that streamlines recruitment processes from application collection to evaluation. It provides an integrated platform for creating forms, managing evaluators, and conducting fair selection processes.
