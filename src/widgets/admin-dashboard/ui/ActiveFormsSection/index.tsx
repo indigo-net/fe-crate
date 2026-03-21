@@ -90,7 +90,7 @@ const FormCard = ({
   return (
     <article
       key={form.getValue('id')}
-      className="p-6 bg-bg-base border border-border-default rounded-slim-2xl shadow-sm hover:shadow-md hover:border-brand-primary transition-all group cursor-pointer flex flex-col justify-between min-h-[160px]"
+      className="p-6 bg-bg-base border border-border-default rounded-slim-2xl shadow-sm flex flex-col justify-between min-h-[160px]"
     >
       <header className="flex justify-between items-start">
         <span
@@ -103,7 +103,7 @@ const FormCard = ({
         </span>
         <time className="text-[11px] text-text-tertiary">{updatedAtLabel}</time>
       </header>
-      <h3 className="text-lg font-slim-bold text-text-primary group-hover:text-brand-primary transition-colors my-4">
+      <h3 className="text-lg font-slim-bold text-text-primary my-4">
         {form.getValue('title')}
       </h3>
       <footer className="pt-4 border-t border-border-subtle flex items-center gap-2">
