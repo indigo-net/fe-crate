@@ -1,11 +1,12 @@
 // Types
-export type { EvaluationStatus, EvaluationState, QuestionScore } from './types';
+export type { EvaluationStatus, EvaluationState, QuestionScore, LegacyEvaluationState } from './types';
 
 // Models
-export { EvaluationModel } from './model';
+export { EvaluationModel, LegacyEvaluationModel } from './model';
 
 // Services
-export { EvaluationApiService, EvaluationStateService } from './lib';
+export { EvaluationApiService, EvaluationStateService, EvaluationListStateService } from './lib';
+export { default as LegacyEvaluationStateService } from './lib/legacy-evaluation-state-service';
 
 // API
 export {
@@ -30,7 +31,9 @@ export type {
   PostEvaluationResponse,
   PatchEvaluationRequestData,
   PatchEvaluationResponse,
+  GetEvaluatorAssignedFormsResponse,
+  AssignedForm,
 } from './api';
 
 // Stores
-export { useEvaluationStore } from './store';
+export { useEvaluationStore, useEvaluationListStore } from './store';

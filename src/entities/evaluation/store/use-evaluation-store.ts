@@ -1,11 +1,13 @@
 import { create } from 'zustand';
 
-import EvaluationModel from '../model/evaluation';
+import LegacyEvaluationModel from '../model/evaluation/legacy';
 
 interface State {
-  evaluation: EvaluationModel | null;
+  evaluation: LegacyEvaluationModel | null;
   setEvaluation: (
-    next: EvaluationModel | ((prev: EvaluationModel | null) => EvaluationModel | null),
+    next:
+      | LegacyEvaluationModel
+      | ((prev: LegacyEvaluationModel | null) => LegacyEvaluationModel | null),
   ) => void;
   clearEvaluation: () => void;
 }

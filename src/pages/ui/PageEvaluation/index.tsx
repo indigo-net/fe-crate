@@ -6,7 +6,7 @@ import DeveloperConsole from '@/shared/lib/developer-console';
 
 import {
   EvaluationApiService,
-  EvaluationStateService,
+  LegacyEvaluationStateService as EvaluationStateService,
   useEvaluationStore,
   type ApplicationListItem,
   type FormQuestion,

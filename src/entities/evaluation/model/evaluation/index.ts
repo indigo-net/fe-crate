@@ -1,54 +1,54 @@
 import { UUID } from '@/shared/lib';
 import { CustomModel } from '@/shared/model';
 
-import type { EvaluationState, EvaluationStatus, QuestionScore } from '@/entities/evaluation';
+import type { EvaluationState } from '../../types';
 
-interface Props {
+interface Props<T> {
   id?: string;
-  applicationId?: string;
-  evaluatorId?: string;
-  formId?: string;
-  status?: EvaluationStatus;
-  scores?: QuestionScore[];
-  totalScore?: number;
-  overallComment?: string;
+  target: T;
+  score?: number;
+  weight?: number;
+  comment?: string;
 }
 
-class EvaluationModel extends CustomModel<EvaluationState> {
-  private state: EvaluationState;
+class EvaluationModel<T> extends CustomModel<EvaluationState<T>> {
+  private state: EvaluationState<T>;
 
-  constructor(props: Props) {
+  constructor(props: Props<T>) {
     super();
     this.state = {
       id: props.id || UUID.v4(),
-      applicationId: props.applicationId || '',
-      evaluatorId: props.evaluatorId || '',
-      formId: props.formId || '',
-      status: props.status || 'PENDING',
-      scores: props.scores || [],
-      totalScore: props.totalScore ?? 0,
-      overallComment: props.overallComment ?? undefined,
+      target: props.target,
+      score: props.score ?? 0,
+      weight: props.weight ?? 1,
+      comment: props.comment ?? undefined,
     };
   }
 
-  getValue<K extends keyof EvaluationState>(key: K): EvaluationState[K] {
+  getValue<K extends keyof EvaluationState<T>>(key: K): EvaluationState<T>[K] {
     return this.state[key];
   }
 
-  setValue<K extends keyof EvaluationState>(key: K, value: EvaluationState[K]): EvaluationModel {
+  setValue<K extends keyof EvaluationState<T>>(
+    key: K,
+    value: EvaluationState<T>[K],
+  ): EvaluationModel<T> {
     return this.clone({
       [key]: value,
     });
   }
 
-  toJSON(): EvaluationState {
+  toJSON(): EvaluationState<T> {
     return this.state;
   }
 
-  clone(props?: Partial<EvaluationState>): EvaluationModel {
-    return new EvaluationModel({
-      ...this.toJSON(),
-      ...props,
+  clone(props?: Partial<EvaluationState<T>>): EvaluationModel<T> {
+    return new EvaluationModel<T>({
+      id: this.state.id,
+      target: props?.target ?? this.state.target,
+      score: props?.score !== undefined ? props.score : this.state.score,
+      weight: props?.weight !== undefined ? props.weight : this.state.weight,
+      comment: props?.comment !== undefined ? props.comment : this.state.comment,
     });
   }
 }

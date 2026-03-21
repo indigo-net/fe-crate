@@ -5,6 +5,7 @@ export { default as DeveloperConsole } from './developer-console';
 export { default as EnvManager } from './env-manager';
 export { default as TypeGuard } from './type-guard';
 export { default as UUID } from './uuid';
+export { default as IndexedDBManager } from './indexed-db-manager';
 export { useDebounce } from './use-debounce';
 
 // MSW (Mock Service Worker)

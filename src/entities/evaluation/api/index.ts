@@ -15,3 +15,6 @@ export type { PostEvaluationRequestData, PostEvaluationResponse } from './post-e
 
 export { patchEvaluation } from './patch-evaluation';
 export type { PatchEvaluationRequestData, PatchEvaluationResponse } from './patch-evaluation';
+
+export { getEvaluatorAssignedForms } from './get-evaluator-assigned-forms';
+export type { GetEvaluatorAssignedFormsResponse, AssignedForm } from './get-evaluator-assigned-forms';

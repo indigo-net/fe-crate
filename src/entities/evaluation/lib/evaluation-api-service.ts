@@ -4,13 +4,14 @@ import {
   getApplication,
   getApplicationEvaluations,
   getApplications,
+  getEvaluatorAssignedForms,
   getFormQuestions,
   patchEvaluation,
   postEvaluation,
 } from '../api';
-import EvaluationModel from '../model/evaluation';
+import LegacyEvaluationModel from '../model/evaluation/legacy';
 
-import type { ApplicationAnswer, ApplicationListItem, FormQuestion } from '../api';
+import type { ApplicationAnswer, ApplicationListItem, AssignedForm, FormQuestion } from '../api';
 
 class EvaluationApiService {
   private static EVALUATION_CACHE_KEY_PREFIX = 'evaluation-';
@@ -20,9 +21,9 @@ class EvaluationApiService {
     return `${this.EVALUATION_CACHE_KEY_PREFIX}${applicationId}`;
   }
 
-  static async fetchEvaluation(applicationId: string): Promise<EvaluationModel | null> {
+  static async fetchEvaluation(applicationId: string): Promise<LegacyEvaluationModel | null> {
     const cacheKey = this.getCacheKey(applicationId);
-    const cached = CachedService.get<EvaluationModel>(cacheKey);
+    const cached = CachedService.get<LegacyEvaluationModel>(cacheKey);
     if (cached) {
       return cached;
     }
@@ -33,7 +34,7 @@ class EvaluationApiService {
     }
 
     const evaluationData = response[0];
-    const model = new EvaluationModel({
+    const model = new LegacyEvaluationModel({
       id: evaluationData.id,
       applicationId: evaluationData.applicationId,
       evaluatorId: evaluationData.evaluatorId,
@@ -52,13 +53,13 @@ class EvaluationApiService {
   static async createEvaluation(
     applicationId: string,
     formId: string,
-  ): Promise<EvaluationModel> {
+  ): Promise<LegacyEvaluationModel> {
     const response = await postEvaluation({
       applicationId,
       formId,
     });
 
-    const model = new EvaluationModel({
+    const model = new LegacyEvaluationModel({
       id: response.id,
       applicationId: response.applicationId,
       evaluatorId: response.evaluatorId,
@@ -81,10 +82,10 @@ class EvaluationApiService {
       overallComment?: string;
     },
     applicationId: string,
-  ): Promise<EvaluationModel> {
+  ): Promise<LegacyEvaluationModel> {
     const response = await patchEvaluation(evaluationId, data);
 
-    const model = new EvaluationModel({
+    const model = new LegacyEvaluationModel({
       id: response.id,
       applicationId: response.applicationId,
       evaluatorId: response.evaluatorId,
@@ -119,6 +120,19 @@ class EvaluationApiService {
 
   static async fetchQuestions(formId: string): Promise<FormQuestion[]> {
     return getFormQuestions(formId);
+  }
+
+  private static ASSIGNED_FORMS_CACHE_KEY = 'evaluator-assigned-forms';
+
+  static async fetchAssignedForms(): Promise<AssignedForm[]> {
+    const cached = CachedService.get<AssignedForm[]>(this.ASSIGNED_FORMS_CACHE_KEY);
+    if (cached) {
+      return cached;
+    }
+
+    const response = await getEvaluatorAssignedForms();
+    CachedService.set(this.ASSIGNED_FORMS_CACHE_KEY, response, this.EVALUATION_CACHE_TTL_MS);
+    return response;
   }
 }
 
