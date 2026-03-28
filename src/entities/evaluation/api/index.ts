@@ -2,7 +2,7 @@ export { getApplicationEvaluations } from './get-application-evaluations';
 export type { GetApplicationEvaluationsResponse, QuestionScoreResponse } from './get-application-evaluations';
 
 export { getApplications } from './get-applications';
-export type { GetApplicationsParams, ApplicationListItem } from './get-applications';
+export type { GetApplicationsParams, GetApplicationsResponse } from './get-applications';
 
 export { getApplication } from './get-application';
 export type { GetApplicationResponse, ApplicationAnswer } from './get-application';

@@ -1,4 +1,5 @@
 import AxiosManager from '@/shared/lib/axios-manager';
+import CustomSearchParams from '@/shared/lib/custom-search-params';
 
 interface GetApplicationsParams {
   page?: number;
@@ -16,26 +17,15 @@ interface ApplicationListItem {
   updatedAt: string;
 }
 
-interface GetApplicationsResponse {
-  data: ApplicationListItem[];
-  pagination: {
-    page: number;
-    limit: number;
-    total: number;
-  };
-}
-
 async function getApplications(
   formId: string,
   params?: GetApplicationsParams,
-): Promise<GetApplicationsResponse> {
+): Promise<ApplicationListItem[]> {
   const axios = AxiosManager.getAxiosInstance();
-  const response = await axios.get<GetApplicationsResponse>(
-    `/api/v1/forms/${formId}/applications`,
-    { params },
-  );
+  const url = CustomSearchParams.buildURL(`/api/v1/forms/${formId}/applications`, params ?? {});
+  const response = await axios.get<ApplicationListItem[]>(url);
   return response.data;
 }
 
 export { getApplications };
-export type { GetApplicationsParams, GetApplicationsResponse, ApplicationListItem };
+export type { GetApplicationsParams, ApplicationListItem };

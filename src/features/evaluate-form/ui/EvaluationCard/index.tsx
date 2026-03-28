@@ -1,10 +1,9 @@
 import { memo } from 'react';
 
-import { ScoreInput } from '@/shared/ui';
-
 import { AnswerModel } from '@/entities/answer';
 import { EvaluationModel } from '@/entities/evaluation';
 import { FormQuestionModel } from '@/entities/form';
+import { ScoreInput } from '@/shared/ui';
 
 type Evaluation = EvaluationModel<AnswerModel<FormQuestionModel>>;
 

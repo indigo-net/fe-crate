@@ -1,5 +1,10 @@
 import CachedService from '@/entities/cache/lib/cached-service';
 
+import FormQuestionModel from '@/entities/form/model/form-question';
+import FormSignatureModel from '@/entities/form/model/form-signature';
+
+import { AnswerModel } from '@/entities/answer';
+
 import {
   getApplication,
   getApplicationEvaluations,
@@ -9,9 +14,15 @@ import {
   patchEvaluation,
   postEvaluation,
 } from '../api';
-import LegacyEvaluationModel from '../model/evaluation/legacy';
+import EvaluationModel from '../model/evaluation';
 
-import type { ApplicationAnswer, ApplicationListItem, AssignedForm, FormQuestion } from '../api';
+import type { ApplicationAnswer, ApplicationListItem, FormQuestion } from '../api';
+import type { GetApplicationEvaluationsResponse } from '../api';
+
+interface AssignedFormsResult {
+  forms: FormSignatureModel[];
+  progressMap: Map<string, { total: number; completed: number }>;
+}
 
 class EvaluationApiService {
   private static EVALUATION_CACHE_KEY_PREFIX = 'evaluation-';
@@ -21,9 +32,11 @@ class EvaluationApiService {
     return `${this.EVALUATION_CACHE_KEY_PREFIX}${applicationId}`;
   }
 
-  static async fetchEvaluation(applicationId: string): Promise<LegacyEvaluationModel | null> {
+  private static async fetchEvaluation(
+    applicationId: string,
+  ): Promise<GetApplicationEvaluationsResponse | null> {
     const cacheKey = this.getCacheKey(applicationId);
-    const cached = CachedService.get<LegacyEvaluationModel>(cacheKey);
+    const cached = CachedService.get<GetApplicationEvaluationsResponse>(cacheKey);
     if (cached) {
       return cached;
     }
@@ -34,78 +47,29 @@ class EvaluationApiService {
     }
 
     const evaluationData = response[0];
-    const model = new LegacyEvaluationModel({
-      id: evaluationData.id,
-      applicationId: evaluationData.applicationId,
-      evaluatorId: evaluationData.evaluatorId,
-      formId: evaluationData.formId,
-      status: evaluationData.status,
-      scores: evaluationData.scores,
-      totalScore: evaluationData.totalScore,
-      overallComment: evaluationData.overallComment,
-    });
-
     CachedService.invalidate(cacheKey);
-    CachedService.set(cacheKey, model, this.EVALUATION_CACHE_TTL_MS);
-    return model;
+    CachedService.set(cacheKey, evaluationData, this.EVALUATION_CACHE_TTL_MS);
+    return evaluationData;
   }
 
-  static async createEvaluation(
+  private static async createEvaluation(
     applicationId: string,
     formId: string,
-  ): Promise<LegacyEvaluationModel> {
+  ): Promise<{ id: string }> {
     const response = await postEvaluation({
       applicationId,
       formId,
     });
 
-    const model = new LegacyEvaluationModel({
-      id: response.id,
-      applicationId: response.applicationId,
-      evaluatorId: response.evaluatorId,
-      formId: response.formId,
-      status: response.status,
-      scores: response.scores,
-      totalScore: response.totalScore,
-      overallComment: response.overallComment,
-    });
-
-    CachedService.set(this.getCacheKey(applicationId), model, this.EVALUATION_CACHE_TTL_MS);
-    return model;
-  }
-
-  static async updateEvaluation(
-    evaluationId: string,
-    data: {
-      scores?: { questionId: string; score: number; comment?: string }[];
-      status?: 'PENDING' | 'IN_PROGRESS' | 'COMPLETED';
-      overallComment?: string;
-    },
-    applicationId: string,
-  ): Promise<LegacyEvaluationModel> {
-    const response = await patchEvaluation(evaluationId, data);
-
-    const model = new LegacyEvaluationModel({
-      id: response.id,
-      applicationId: response.applicationId,
-      evaluatorId: response.evaluatorId,
-      formId: response.formId,
-      status: response.status,
-      scores: response.scores,
-      totalScore: response.totalScore,
-      overallComment: response.overallComment,
-    });
-
-    CachedService.set(this.getCacheKey(applicationId), model, this.EVALUATION_CACHE_TTL_MS);
-    return model;
+    CachedService.set(this.getCacheKey(applicationId), response, this.EVALUATION_CACHE_TTL_MS);
+    return { id: response.id };
   }
 
   static async fetchApplications(
     formId: string,
     params?: { limit?: number; page?: number },
   ): Promise<ApplicationListItem[]> {
-    const response = await getApplications(formId, params);
-    return response.data;
+    return getApplications(formId, params);
   }
 
   static async fetchApplicationWithAnswers(
@@ -124,15 +88,101 @@ class EvaluationApiService {
 
   private static ASSIGNED_FORMS_CACHE_KEY = 'evaluator-assigned-forms';
 
-  static async fetchAssignedForms(): Promise<AssignedForm[]> {
-    const cached = CachedService.get<AssignedForm[]>(this.ASSIGNED_FORMS_CACHE_KEY);
+  static async fetchAssignedForms(): Promise<AssignedFormsResult> {
+    const cached = CachedService.get<AssignedFormsResult>(this.ASSIGNED_FORMS_CACHE_KEY);
     if (cached) {
       return cached;
     }
 
     const response = await getEvaluatorAssignedForms();
-    CachedService.set(this.ASSIGNED_FORMS_CACHE_KEY, response, this.EVALUATION_CACHE_TTL_MS);
-    return response;
+
+    const forms = response.map(
+      item => new FormSignatureModel({ id: item.formId, title: item.title }),
+    );
+    const progressMap = new Map(
+      response.map(item => [
+        item.formId,
+        { total: item.totalApplications, completed: item.completedEvaluations },
+      ]),
+    );
+
+    const result: AssignedFormsResult = { forms, progressMap };
+    CachedService.set(this.ASSIGNED_FORMS_CACHE_KEY, result, this.EVALUATION_CACHE_TTL_MS);
+    return result;
+  }
+
+  static async fetchFormEvaluations(
+    formId: string,
+  ): Promise<{
+    evaluations: EvaluationModel<AnswerModel<FormQuestionModel>>[];
+    isSubmitted: boolean;
+  }> {
+    const applications = await this.fetchApplications(formId);
+    if (applications.length === 0) {
+      return { evaluations: [], isSubmitted: false };
+    }
+
+    const applicationId = applications[0].id;
+
+    const [questions, answersData, existingEvaluation] = await Promise.all([
+      this.fetchQuestions(formId),
+      this.fetchApplicationWithAnswers(applicationId),
+      this.fetchEvaluation(applicationId),
+    ]);
+
+    const existingScores = existingEvaluation?.scores ?? [];
+    const isSubmitted = existingEvaluation?.status === 'COMPLETED';
+
+    const evaluations = questions.map(q => {
+      const questionModel = new FormQuestionModel({
+        id: q.id,
+        title: q.title,
+        description: q.description,
+        type: q.type,
+        required: q.required,
+      });
+
+      const answer = answersData.answers.find(a => a.questionId === q.id);
+      const answerModel = new AnswerModel<FormQuestionModel>({
+        question: questionModel,
+        value: answer?.value ?? null,
+      });
+
+      const existingScore = existingScores.find(s => s.questionId === q.id);
+
+      return new EvaluationModel<AnswerModel<FormQuestionModel>>({
+        target: answerModel,
+        weight: q.weight,
+        score: existingScore?.score,
+        comment: existingScore?.comment,
+        status: existingScore && existingScore.score > 0 ? 'COMPLETED' : 'IN_COMPLETE',
+      });
+    });
+
+    return { evaluations, isSubmitted };
+  }
+
+  static async submitEvaluation(
+    formId: string,
+    evaluations: EvaluationModel<AnswerModel<FormQuestionModel>>[],
+  ): Promise<void> {
+    const applications = await this.fetchApplications(formId);
+    if (applications.length === 0) {
+      return;
+    }
+
+    const applicationId = applications[0].id;
+    const existingEvaluation = await this.fetchEvaluation(applicationId);
+    const evaluationId = existingEvaluation?.id
+      ?? (await this.createEvaluation(applicationId, formId)).id;
+
+    const scores = evaluations.map(e => ({
+      questionId: e.getValue('target').getValue('question').getValue('id'),
+      score: e.getValue('score'),
+      comment: e.getValue('comment'),
+    }));
+
+    await patchEvaluation(evaluationId, { status: 'COMPLETED', scores });
   }
 }
 

@@ -20,7 +20,7 @@ export type {
   GetApplicationEvaluationsResponse,
   QuestionScoreResponse,
   GetApplicationsParams,
-  ApplicationListItem,
+  GetApplicationsResponse,
   GetApplicationResponse,
   ApplicationAnswer,
   FormQuestion,
