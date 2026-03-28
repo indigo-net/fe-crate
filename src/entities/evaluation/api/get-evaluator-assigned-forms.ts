@@ -1,13 +1,11 @@
 import AxiosManager from '@/shared/lib/axios-manager';
 
-interface AssignedForm {
+type GetEvaluatorAssignedFormsResponse = {
   formId: string;
   title: string;
   totalApplications: number;
   completedEvaluations: number;
-}
-
-type GetEvaluatorAssignedFormsResponse = AssignedForm[];
+}[];
 
 async function getEvaluatorAssignedForms(): Promise<GetEvaluatorAssignedFormsResponse> {
   const axios = AxiosManager.getAxiosInstance();
@@ -18,4 +16,3 @@ async function getEvaluatorAssignedForms(): Promise<GetEvaluatorAssignedFormsRes
 }
 
 export { getEvaluatorAssignedForms };
-export type { GetEvaluatorAssignedFormsResponse, AssignedForm };

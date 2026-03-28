@@ -1,6 +1,6 @@
 import AxiosManager from '@/shared/lib/axios-manager';
 
-import type { EvaluationStatus } from '@/entities/evaluation';
+import type { ServerEvaluationStatus } from '../types';
 
 interface QuestionScoreResponse {
   questionId: string;
@@ -14,7 +14,7 @@ interface GetApplicationEvaluationsResponse {
   applicationId: string;
   evaluatorId: string;
   formId: string;
-  status: EvaluationStatus;
+  status: ServerEvaluationStatus;
   scores: QuestionScoreResponse[];
   totalScore: number;
   overallComment?: string;

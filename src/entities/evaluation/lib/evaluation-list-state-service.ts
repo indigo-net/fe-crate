@@ -1,4 +1,5 @@
 import EvaluationModel from '../model/evaluation';
+
 import EvaluationStateService from './evaluation-state-service';
 
 class EvaluationListStateService {
@@ -43,8 +44,12 @@ class EvaluationListStateService {
     return list.reduce((sum, item) => sum + item.getValue('weight') * 100, 0);
   }
 
+  static getCompletedCount<T>(list: EvaluationModel<T>[]): number {
+    return list.filter(item => item.getValue('status') === 'COMPLETED').length;
+  }
+
   static checkIsAllScored<T>(list: EvaluationModel<T>[]): boolean {
-    return list.length > 0 && list.every(item => item.getValue('score') > 0);
+    return list.length > 0 && list.every(item => item.getValue('status') === 'COMPLETED');
   }
 }
 

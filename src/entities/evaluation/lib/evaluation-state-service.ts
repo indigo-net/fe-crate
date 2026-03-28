@@ -6,7 +6,7 @@ class EvaluationStateService {
   }
 
   static setScore<T>(model: EvaluationModel<T>, score: number): EvaluationModel<T> {
-    return model.setValue('score', score);
+    return model.setValue('score', score).setValue('status', 'COMPLETED');
   }
 
   static setComment<T>(model: EvaluationModel<T>, comment: string): EvaluationModel<T> {
