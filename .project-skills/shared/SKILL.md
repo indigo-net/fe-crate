@@ -10,112 +10,109 @@ description: "Use this skill when working on the Shared layer of the FSD archite
 
 ## Overview
 
-The `shared` layer contains reusable utilities, base components, and foundational code used across the entire application. This layer has no slices - all code is organized directly under segments.
+`shared` 레이어는 앱 전체에서 사용되는 유틸리티, 기반 컴포넌트, 기초 코드. 슬라이스 없이 세그먼트로 직접 구성.
 
 ## Quick Reference
 
-| Task                     | Location                                    |
-| ------------------------ | ------------------------------------------- |
-| Create utility class     | `shared/lib/`                               |
-| Create base UI component | `shared/ui/`                                |
-| Create base model class  | `shared/model/`                             |
-| Access HTTP client       | `AxiosManager.getAxiosInstance()`           |
-| Access env variables     | `EnvManager.getAppEnv(key)`                 |
-| Type checking            | `TypeGuard.checkNull(value)`                |
-| Generate UUID            | `UUID.v4()`                                 |
-| 파일 구조 확인           | `/.project-skills/shared/STRUCTURE.md` 참조 |
+| Task | Location |
+|------|----------|
+| 유틸리티 클래스 | `shared/lib/` |
+| 기반 UI 컴포넌트 | `shared/ui/` |
+| 기반 모델 클래스 | `shared/model/` |
+| HTTP 클라이언트 | `AxiosManager.getAxiosInstance()` |
+| 환경변수 | `EnvManager.getAppEnv(key)` |
+| 타입 체크 | `TypeGuard.checkNull(value)` |
+| UUID 생성 | `UUID.v4()` |
+| 로깅 | `DeveloperConsole.log({ message, data, location })` |
+| 날짜 파싱 | `DateStandard.fromISO(isoString)` |
+| URL 빌드 | `CustomSearchParams.buildURL(path, params)` |
+| 파일 구조 확인 | `/.project-skills/shared/STRUCTURE.md` 참조 |
 
-## Shared vs Domain Modules
+## shared vs domain 모듈 판단
 
-When creating a new module, decide the location based on scope:
+| 범위 | 위치 | 예시 |
+|------|------|------|
+| 하나의 도메인에서만 사용 | `entities/(domain)/lib/` | `QuestionStateService` |
+| 여러 도메인에서 사용 | `shared/lib/` | `TypeGuard`, `UUID` |
+| 도메인 모델 | `entities/(domain)/model/` | `FormQuestionModel` |
+| 모든 모델의 기반 클래스 | `shared/model/` | `CustomModel` |
 
-| Scope                        | Location                   | Example                |
-| ---------------------------- | -------------------------- | ---------------------- |
-| Used in one domain           | `entities/(domain)/lib/`   | `QuestionStateService` |
-| Used across multiple domains | `shared/lib/`              | `TypeGuard`, `UUID`    |
-| Domain-specific model        | `entities/(domain)/model/` | `FormQuestionModel`    |
-| Base class for all models    | `shared/model/`            | `CustomModel`          |
+## shared/lib 주요 모듈
 
-## shared/lib Modules
-
-### Utility Classes (singleton pattern)
+### 유틸리티 클래스
 
 ```typescript
-// AxiosManager - HTTP client instance
+// HTTP 클라이언트
 import { AxiosManager } from '@/shared/lib';
 const axios = AxiosManager.getAxiosInstance();
 
-// EnvManager - Environment variables
+// 환경변수
 const apiUrl = EnvManager.getAppEnv('VITE_API_BASE_URL');
 
-// TypeGuard - Runtime type checking
-if (TypeGuard.checkNull(value)) {
-  /* ... */
-}
-if (TypeGuard.checkString(value)) {
-  /* ... */
-}
-```
+// 타입 가드
+if (TypeGuard.checkNull(value)) { /* null 처리 */ }
+if (TypeGuard.checkUndefined(value)) { /* undefined 처리 */ }
 
-### Helper Functions
-
-```typescript
-// UUID - Unique identifier generation
+// UUID
 const id = UUID.v4();
 
-// DateStandard - Date formatting standards
-const now = DateStandard.now(); // ISO 8601 UTC
+// URL 빌드 (쿼리스트링)
+const url = CustomSearchParams.buildURL('/api/v1/forms', { status: 'PUBLISHED' });
 
-// DeveloperConsole - Development logging (replaces console.*)
-DeveloperConsole.log({ message: 'Action completed', data: { id: 123 } });
+// 날짜 (ISO 문자열 파싱 시 new Date() 대신)
+const date = DateStandard.fromISO(isoString);
+```
+
+### 로깅 — console.log 대신 DeveloperConsole
+
+```typescript
+// ✅ ILog 객체 사용
+DeveloperConsole.log({ message: 'Action completed', data: { id: 123 }, location: 'Component/hook.ts' });
+
+// ❌ 문자열 인자 사용 금지
+console.log('Action completed');
+```
+
+### IndexedDB 관리
+
+```typescript
+import { IndexedDBManager } from '@/shared/lib';
+
+await IndexedDBManager.open({ name: 'db', version: 1, onUpgrade: db => { /* ... */ } });
+await IndexedDBManager.put(storeName, key, value);
+const data = await IndexedDBManager.get<T>(storeName, key);
+await IndexedDBManager.delete(storeName, key);
 ```
 
 ## shared/model
 
-Contains only base classes that domain models extend:
+도메인 모델이 상속하는 기반 클래스만:
 
 ```typescript
-// shared/model/custom-model/index.ts
 abstract class CustomModel<T> {
   abstract toJSON(): T;
   abstract clone(props?: Partial<T>): CustomModel<T>;
 }
 ```
 
-**CRITICAL**: Only add base classes to `shared/model/`. Domain-specific models belong in `entities/*/model/`.
+도메인 모델은 반드시 `entities/*/model/`에 위치.
 
 ## shared/ui
 
-Base UI components used throughout the application:
+앱 전체에서 사용하는 기반 UI 컴포넌트:
 
-| Category          | Components               |
-| ----------------- | ------------------------ |
-| Layout components | Modal, Alert, Toast      |
-| Form components   | Radio                    |
-| Iconography       | Logo icons, Stroke icons |
+| 카테고리 | 컴포넌트 |
+|----------|----------|
+| 레이아웃 | Modal, Alert, Toast |
+| 폼 | Radio |
+| 아이콘 | `Iconography.Stroke.*`, `Iconography.Logo.*` |
 
-```typescript
-// Usage example
-import { Iconography, Modal, Alert, Toast, Radio } from '@/shared/ui';
-```
+## MSW & HTTP 응답 패턴
 
-## shared/types.d.ts
-
-Common type definitions shared across the application:
-
-```typescript
-// shared/types.d.ts
-type AppEnvKey = 'VITE_API_BASE_URL' | 'VITE_KAKAO_CLIENT_ID' | 'VITE_KAKAO_REDIRECT_URI';
-
-export type { AppEnvKey };
-```
-
-## Context Providers (in app layer)
-
-Global context providers are located in `app/lib/context-provider/`.
-
-**Note**: All pages are wrapped with the same providers. Provider order: `ToastProvider` → `AlertProvider` → `ModalProvider`.
+- AxiosManager 인터셉터가 MSW 래핑 응답(`{ success: true, data, meta }`)의 `data`를 자동 추출
+- API 함수에서 `response.data`를 반환하면 래핑 없이 순수 데이터가 반환됨
+- 에러 응답(`success: false`)은 래핑 해제하지 않음
 
 ## Reference
 
-For current file structure and module list, see `/.project-skills/shared/STRUCTURE.md`.
+파일 구조: `/.project-skills/shared/STRUCTURE.md` 참조.

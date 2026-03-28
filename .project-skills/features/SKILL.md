@@ -10,110 +10,58 @@ description: "Use this skill when working on the Features layer of the FSD archi
 
 ## Overview
 
-The `features` layer contains user-facing features that represent user actions. Each feature handles user interactions and may communicate with APIs.
+`features` 레이어는 사용자 액션/인터랙션을 구현하는 컴포넌트. entities의 모델/서비스를 사용하되, 새로운 도메인 모델을 정의하지 않는다.
 
 ## Quick Reference
 
-| Task                  | Location                                              |
-| --------------------- | ----------------------------------------------------- |
-| Create interactive UI | `features/(feature)/ui/`                              |
-| Add API calls         | `features/(feature)/api/`                             |
-| Add feature logic     | `features/(feature)/lib/`                             |
-| Name feature          | verb-noun pattern (e.g., `edit-form`, `toggle-theme`) |
-| 파일 구조 확인        | `/.project-skills/features/STRUCTURE.md` 참조         |
+| Task | Location |
+|------|----------|
+| 인터랙티브 UI 생성 | `features/(feature)/ui/` |
+| API 호출 추가 | `features/(feature)/api/` |
+| 로직 추가 | `features/(feature)/lib/` |
+| 네이밍 | verb-noun 패턴 (e.g., `edit-form`, `toggle-theme`) |
+| 파일 구조 확인 | `/.project-skills/features/STRUCTURE.md` 참조 |
 
-## Feature Definition
+## Feature Naming
 
-A **feature** represents a user action or interaction:
-
-| Feature              | Purpose                    |
-| -------------------- | -------------------------- |
-| `edit-form`          | Form editing functionality |
-| `authenticate`       | User authentication        |
-| `toggle-theme`       | Theme switching            |
-| `submit-application` | Application submission     |
-
-## Naming Convention
-
-Use **verb-noun** pattern for feature names:
+**verb-noun** 패턴 사용:
 
 ```
-✅ edit-form, toggle-theme, submit-application, authenticate
+✅ edit-form, toggle-theme, submit-application, evaluate-form, start-evaluation
 ❌ form-editor, theme-switcher, application-submitter
 ```
 
-## Segments
+## Export Pattern
 
-| Segment      | Purpose                     | When to Use                  |
-| ------------ | --------------------------- | ---------------------------- |
-| `ui/`        | Interactive components      | Always (required)            |
-| `api/`       | API call declarations       | When API calls are needed    |
-| `lib/`       | Feature logic, API services | When complex logic is needed |
-| `types.d.ts` | Feature-specific types      | When custom types are needed |
+Features는 **세그먼트 레벨 export** 사용 (슬라이스 레벨 아님):
+
+```
+✅ features/publish-form/ui/index.ts — UI 컴포넌트 export
+❌ features/publish-form/index.ts — 불필요한 슬라이스 레벨 export
+```
 
 ## UI Components
 
-### When to use features/ui vs entities/ui
+### features vs entities vs shared
 
-| Component Type                     | Location         | Example                                          |
-| ---------------------------------- | ---------------- | ------------------------------------------------ |
-| Interactive UI with event handling | `features/*/ui/` | `QuestionAddSection`, `FormSignatureEditSection` |
-| Static/presentational UI           | `entities/*/ui/` | `QuestionCard`, `FormSignatureDisplay`           |
-| Base reusable UI                   | `shared/ui/`     | `Modal`, `Button`, `Input`                       |
+| 컴포넌트 타입 | 위치 | 예시 |
+|--------------|------|------|
+| 이벤트 핸들링이 있는 인터랙티브 UI | `features/*/ui/` | `QuestionAddSection`, `EvaluationCard` |
+| 정적/표현용 UI | `entities/*/ui/` | `QuestionCard`, `FormSignatureDisplay` |
+| 범용 재사용 UI | `shared/ui/` | `Modal`, `Button`, `Input` |
 
 ### Component Naming
 
-Use role-based naming:
-
-| Suffix     | Purpose           | Example                          |
-| ---------- | ----------------- | -------------------------------- |
-| `*Section` | Major UI sections | `FormSignatureEditSection`       |
-| `*Button`  | Action buttons    | `SubmitButton`, `DarkModeButton` |
-| `*List`    | List components   | `QuestionList`                   |
-
-## API Layer Pattern
-
-### API Functions
-
-`api/(feature)-api.ts`: Declare raw API calls
-
-```typescript
-// src/features/submit-form/api/submit-form-api.ts
-import { AxiosManager } from '@/shared/lib';
-
-const submitFormApi = {
-  submitForm: (data: SubmitFormRequest) =>
-    AxiosManager.getAxiosInstance().post('/forms/submit', data),
-  saveDraft: (data: SaveDraftRequest) => AxiosManager.getAxiosInstance().post('/forms/draft', data),
-};
-
-export { submitFormApi };
-```
-
-### API Service
-
-`lib/(feature)-api-service.ts`: Execute API and handle responses
-
-```typescript
-// src/features/submit-form/lib/submit-form-api-service.ts
-import { submitFormApi } from '../api';
-import { FormQuestionModel } from '@/entities/form/model';
-
-class SubmitFormApiService {
-  static async submitForm(questions: FormQuestionModel[]): Promise<void> {
-    const requestData = {
-      questions: questions.map(q => q.toJSON()),
-    };
-    await submitFormApi.submitForm(requestData);
-  }
-}
-
-export default SubmitFormApiService;
-```
+| 접미사 | 용도 | 예시 |
+|--------|------|------|
+| `*Section` | 주요 UI 섹션 | `FormSignatureEditSection` |
+| `*Button` | 액션 버튼 | `SubmitButton`, `DarkModeButton` |
+| `*Card` | 카드형 UI | `EvaluationCard`, `AssignedFormCard` |
+| `*Navigation` | 네비게이션 UI | `EvaluationNavigation` |
 
 ## Hook Pattern
 
-Use `hook.ts` for component logic:
+`hook.ts`에서 entities 스토어/서비스를 호출하고, 핸들러를 반환.
 
 ```typescript
 // src/features/edit-form/ui/QuestionAddSection/hook.ts
@@ -139,22 +87,26 @@ const useQuestionAddSectionController = () => {
 export default useQuestionAddSectionController;
 ```
 
+### hook.ts 규칙
+
+- **순수 로직만**: 데이터 페칭, 상태 관리, 필터링, 핸들러
+- **텍스트/스타일은 tsx에서**: 포맷팅, 라벨, 색상은 `.tsx` 뷰 컴포넌트 담당
+- **모달 열기**: `openModal()` 호출은 hook.ts에서
+- **memo() + displayName**: 모든 컴포넌트 필수
+
 ## Relationship with Entities
 
-Features **use** entities but don't define new models:
+features는 entities를 **사용**하되 새로운 모델을 정의하지 않는다:
 
 ```typescript
-// ✅ Correct: Using entities models and stores
+// ✅ entities 모델/스토어/서비스 사용
 import { FormQuestionModel } from '@/entities/form/model';
 import { useFormQuestionListStore } from '@/entities/form/store';
-import { QuestionStateService } from '@/entities/form/lib';
 
-// ❌ Avoid: Defining new models in features
+// ❌ features에서 새 도메인 모델 정의 금지
 class FeatureSpecificModel { ... }
 ```
 
-**CRITICAL**: Never define domain models in the features layer. Use models from entities instead.
-
 ## Reference
 
-For current file structure and module list, see `/.project-skills/features/STRUCTURE.md`.
+파일 구조: `/.project-skills/features/STRUCTURE.md` 참조.

@@ -10,96 +10,70 @@ description: "Use this skill when working on the Entities layer of the FSD archi
 
 ## Overview
 
-The `entities` layer defines domain models, types, and related utilities for specific business concerns. This is where business logic and state management live.
+`entities` 레이어는 비즈니스 도메인 모델, 상태 관리, API 통신을 담당한다.
 
 ## Quick Reference
 
-| Task                 | Naming Pattern                                 |
-| -------------------- | ---------------------------------------------- |
-| Create model         | `*Model` (e.g., `FormQuestionModel`)           |
-| Create store         | `use*Store` (e.g., `useFormQuestionListStore`) |
-| Create state service | `*StateService` (e.g., `QuestionStateService`) |
-| Create API service   | `*ApiService` (e.g., `FormApiService`)         |
-| Create API functions | `*Api` (e.g., `formApi`)                       |
-| 파일 구조 확인       | `/.project-skills/entities/STRUCTURE.md` 참조  |
-
-## Naming Conventions
-
-| Type            | Pattern         | Example                                             |
-| --------------- | --------------- | --------------------------------------------------- |
-| Model           | `*Model`        | `FormQuestionModel`, `FormSignatureModel`           |
-| Store           | `use*Store`     | `useFormQuestionListStore`, `useFormSignatureStore` |
-| Service (State) | `*StateService` | `QuestionStateService`, `QuestionListStateService`  |
-| Service (API)   | `*ApiService`   | `QuestionApiService`, `FormApiService`              |
-| Service (Cache) | `*CacheService` | `CacheService`                                      |
-| Service (Sort)  | `*SortService`  | `QuestionSortService`                               |
-| API Function    | `*Api`          | `questionApi`, `formApi`                            |
-
-**Note**: Service naming follows its purpose - not all services need `State` suffix.
+| Task | Naming Pattern |
+|------|----------------|
+| 모델 생성 | `*Model` (e.g., `FormQuestionModel`) |
+| 스토어 생성 | `use*Store` (e.g., `useFormQuestionListStore`) |
+| 상태 서비스 | `*StateService` (e.g., `QuestionStateService`) |
+| API 서비스 | `*ApiService` (e.g., `FormApiService`) |
+| API 함수 | 개별 함수 export (e.g., `getForms`, `postEvaluation`) |
+| 파일 구조 확인 | `/.project-skills/entities/STRUCTURE.md` 참조 |
 
 ## Type Definitions
 
-### Domain Types
+### types.d.ts — union 타입만
 
-Place enums and type aliases in `entities/(domain)/types.d.ts`:
+`types.d.ts`에는 union 타입/enum만 선언한다. interface는 사용처 파일 내부에 선언.
 
 ```typescript
 // src/entities/form/types.d.ts
 type FormQuestionType = 'SINGLE_CHOICE' | 'MULTIPLE_CHOICE' | 'SHORT_TEXT' | 'LONG_TEXT';
+type FormStatusType = 'DRAFT' | 'SCHEDULED' | 'PUBLISHED' | 'CLOSED';
 
-export type { FormQuestionType };
+export type { FormQuestionType, FormStatusType };
 ```
 
-### Model I/O Types
+### Model State/Props — 모델 파일 내부에 선언
 
-Define Props and State inside the Model file:
+`FormQuestionModel` 패턴을 따른다. `State`와 `Props` 인터페이스는 모델 파일 상단에 선언.
 
 ```typescript
 // src/entities/form/model/form-question/index.ts
+import type { FormQuestionType } from '../../types';
+
 interface State {
   id: string;
+  type: FormQuestionType;
   title: string;
-  // ...
+  description: string | null;
+  required: boolean;
+  options: FormQuestionOptionModel[] | null;
 }
 
 interface Props {
   id?: string;
+  type: FormQuestionType;
   title: string;
-  // ...
+  description?: string | null;
+  required?: boolean;
+  options?: FormQuestionOptionModel[] | null;
 }
 
-class FormQuestionModel extends CustomModel<State> {
-  // ...
-}
-```
-
-## Model Pattern
-
-Extend `CustomModel<T>` and use `getValue`/`setValue` pattern:
-
-```typescript
 class FormQuestionModel extends CustomModel<State> {
   private state: State;
-
   constructor(props: Props) {
     super();
-    this.state = {
-      /* initialize from props */
-    };
+    this.state = { /* initialize from props with defaults */ };
   }
-
-  getValue<K extends keyof State>(key: K): State[K] {
-    return this.state[key];
-  }
-
+  getValue<K extends keyof State>(key: K): State[K] { return this.state[key]; }
   setValue<K extends keyof State>(key: K, value: State[K]): FormQuestionModel {
     return this.clone({ [key]: value });
   }
-
-  toJSON(): State {
-    return this.state;
-  }
-
+  toJSON(): State { return this.state; }
   clone(props?: Partial<Exclude<State, 'id'>>): FormQuestionModel {
     return new FormQuestionModel({ ...this.state, ...props });
   }
@@ -108,7 +82,7 @@ class FormQuestionModel extends CustomModel<State> {
 
 ## State Service Pattern
 
-Use static methods for state mutations:
+정적 메서드로 모델 상태 변환. 부수효과 없는 순수 함수.
 
 ```typescript
 // src/entities/form/lib/question-state-service.ts
@@ -116,100 +90,125 @@ class QuestionStateService {
   static getInitialQuestion(type: FormQuestionType): FormQuestionModel {
     return new FormQuestionModel({ title: '', type });
   }
-
   static editQuestionTitle(prev: FormQuestionModel, title: string): FormQuestionModel {
     return prev.setValue('title', title);
-  }
-
-  static editQuestionType(prev: FormQuestionModel, type: FormQuestionType): FormQuestionModel {
-    return prev.setValue('type', type);
   }
 }
 ```
 
 ## Store Pattern
 
-Use Zustand with type-safe state interface:
+Zustand 스토어는 **상태 데이터 + setter만** 포함. clear/reset 등 별도 액션 불필요.
 
 ```typescript
-// src/entities/form/store/use-form-question-list-store.ts
+// src/entities/evaluation/store/use-evaluation-list-store.ts
 interface State {
-  formQuestions: FormQuestionModel[];
-  setFormQuestions: (
-    next: FormQuestionModel[] | ((prev: FormQuestionModel[]) => FormQuestionModel[]),
-  ) => void;
+  evaluations: Evaluation[];
+  setEvaluations: (next: Evaluation[] | ((prev: Evaluation[]) => Evaluation[])) => void;
 }
 
-const useFormQuestionListStore = create<State>(set => ({
-  formQuestions: [],
-  setFormQuestions: next => {
+const useEvaluationListStore = create<State>(set => ({
+  evaluations: [],
+  setEvaluations: next => {
     set(state => ({
-      formQuestions: typeof next === 'function' ? next(state.formQuestions) : next,
+      evaluations: typeof next === 'function' ? next(state.evaluations) : next,
     }));
   },
 }));
 ```
 
-## API Layer Pattern
-
-### API Functions
-
-`api/(feature)-api.ts`: Define raw API calls using `AxiosManager`
+Nullable 상태에서 setter 콜백 시 `TypeGuard.checkNull(prev)`로 null 체크:
 
 ```typescript
-// src/entities/form/api/form-api.ts
-import { AxiosManager } from '@/shared/lib';
-
-const formApi = {
-  getFormList: () => AxiosManager.getAxiosInstance().get('/forms'),
-  getFormDetail: (id: string) => AxiosManager.getAxiosInstance().get(`/forms/${id}`),
-  createForm: (data: CreateFormRequest) => AxiosManager.getAxiosInstance().post('/forms', data),
-};
+setFormSignature(prev => {
+  if (TypeGuard.checkNull(prev)) {
+    return SomeStateService.getInitialState();
+  }
+  return SomeStateService.updateState(prev, newValue);
+});
 ```
 
-### API Service
+## API Layer Pattern
 
-`lib/(model)-api-service.ts`: Execute API calls and convert responses to models
+### API 함수 — 개별 함수 export
+
+`api/` 디렉토리에 파일별로 하나의 API 함수를 선언한다. 인터페이스도 같은 파일에.
 
 ```typescript
-// src/entities/form/lib/form-api-service.ts
-import { formApi } from '../api';
-import { FormQuestionModel } from '../model';
+// src/entities/form/api/get-forms.ts
+import AxiosManager from '@/shared/lib/axios-manager';
+import CustomSearchParams from '@/shared/lib/custom-search-params';
 
-class FormApiService {
-  static async getFormQuestions(formId: string): Promise<FormQuestionModel[]> {
-    const response = await formApi.getFormDetail(formId);
-    return response.data.questions.map(q => new FormQuestionModel(q));
+interface GetFormsParams {
+  userId?: string;
+  filter?: 'creator' | 'evaluator';
+  status?: FormStatusType;
+}
+
+interface GetFormsResponse {
+  id: string;
+  title: string;
+  status: FormStatusType;
+  // ...
+}
+
+async function getForms(params?: GetFormsParams): Promise<GetFormsResponse[]> {
+  const axios = AxiosManager.getAxiosInstance();
+  const url = CustomSearchParams.buildURL('/api/v1/forms', params ?? {});
+  const response = await axios.get<GetFormsResponse[]>(url);
+  return response.data;
+}
+
+export { getForms };
+export type { GetFormsParams, GetFormsResponse };
+```
+
+### API 타입 네이밍 규칙
+
+| 타입 | 네이밍 패턴 | 예시 |
+|------|-------------|------|
+| Response | `Get*Response` | `GetFormsResponse` |
+| Query Params | `Get*Params` | `GetFormsParams` |
+| Request Body | `*RequestData` | `PostFormRequestData` |
+
+서버 응답 타입과 프론트 도메인 모델은 반드시 분리. 변환은 ApiService에서 수행.
+
+### API Service — 도메인 모델 변환 + 캐싱
+
+```typescript
+// src/entities/evaluation/lib/evaluation-api-service.ts
+class EvaluationApiService {
+  private static CACHE_TTL_MS = 5 * 60 * 1000;
+
+  static async fetchAssignedForms(): Promise<AssignedFormsResult> {
+    const cached = CachedService.get<AssignedFormsResult>('key');
+    if (cached) { return cached; }
+
+    const response = await getEvaluatorAssignedForms();
+    const forms = response.map(item => new FormSignatureModel({ id: item.formId, title: item.title }));
+    // ...
+    CachedService.set('key', result, this.CACHE_TTL_MS);
+    return result;
   }
 }
 ```
 
+핵심: API 함수가 반환하는 서버 타입 → ApiService에서 도메인 모델로 변환.
+
 ## Segment Index Files
-
-Each segment should have an `index.ts` that exports publicly accessible modules.
-
-**CRITICAL**: Always use named exports with the following pattern:
-
-```typescript
-export { default as (ModuleName) } from './module-directory';
-```
-
-### Examples
 
 ```typescript
 // src/entities/form/model/index.ts
 export { default as FormQuestionModel } from './form-question';
-export { default as FormQuestionOptionModel } from './form-question/option';
 export { default as FormSignatureModel } from './form-signature';
 
 // src/entities/form/lib/index.ts
 export { default as QuestionStateService } from './question-state-service';
-export { default as QuestionListStateService } from './question-list-state-service';
 export { default as FormApiService } from './form-api-service';
 ```
 
-**WARNING**: Never use default exports in index files. Always use named exports for consistency.
+항상 named export 사용. default export를 index에서 재수출.
 
 ## Reference
 
-For current file structure and module list, see `/.project-skills/entities/STRUCTURE.md`.
+파일 구조: `/.project-skills/entities/STRUCTURE.md` 참조.

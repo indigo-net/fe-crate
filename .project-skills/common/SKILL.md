@@ -6,6 +6,18 @@
 > **원본 경로**: `.project-skills/common/SKILL.md`
 > symlink 혹은 원본을 수정하여 커밋할 경우, 반드시 `.project-skills/` 내 원본 파일과 symlink 대상 파일을 함께 커밋해야 합니다.
 
+## Git Commit 금지
+
+AI 에이전트는 `git commit`을 직접 실행하지 않는다. 커밋은 반드시 사용자가 터미널에서 직접 수행한다.
+husky pre-commit hook에 의해 FSD 레이어 검증 확인이 필요하며, 이 과정에서 사용자 입력(`y/n`)을 요구하기 때문이다.
+
+AI 에이전트의 역할:
+1. 코드 작성 및 수정
+2. `@fsd-reviewer` 에이전트로 변경 파일 검증
+3. 검증 결과를 사용자에게 보고
+4. 사용자가 커밋을 요청하면: 관련 파일을 `git add`로 staging하고, 커밋 메시지를 출력
+5. 사용자가 직접 `git commit` 실행
+
 ## Project Overview
 
 CRATE is a selection optimization solution - a React application that streamlines recruitment processes from application collection to evaluation. It provides an integrated platform for creating forms, managing evaluators, and conducting fair selection processes.
@@ -114,13 +126,6 @@ The path alias `@/` resolves to `src/`.
 
 ## Design System
 
-### Widget Data Fetching Pattern
-
-Widgets fetch their own data via Entity ApiService - NOT via props from page-level hooks:
-- ✅ Widget `hook.ts` calls `XxxApiService.fetchXxx()` internally
-- ❌ Page passes data to widget via props
-- Use `CachedService` for deduplication when multiple widgets request same data
-
 ### Color Tokens
 
 The project uses a comprehensive color token system defined in `src/styles/colors.css`:
@@ -141,81 +146,6 @@ The project uses a comprehensive color token system defined in `src/styles/color
 
 Toggle dark mode by adding/removing the `dark` class on the document root. Color tokens automatically adjust via CSS variables.
 
-## State Management Pattern
-
-### Zustand Stores
-
-Located in `entities/*/store/` - use Zustand for state management:
-
-```typescript
-interface State {
-  data: SomeModel[];
-  setData: (next: SomeModel[] | ((prev: SomeModel[]) => SomeModel[])) => void;
-}
-```
-
-**Null Handling in Store Callbacks:**
-
-When store setter receives a callback with nullable prev, use `TypeGuard.checkNull`:
-
-```typescript
-setFormSignature(prev => {
-  if (TypeGuard.checkNull(prev)) {
-    return SomeStateService.getInitialState();
-  }
-  return SomeStateService.updateState(prev, newValue);
-});
-```
-
-### Custom Models
-
-Domain models extend `CustomModel<T>` from `shared/model/`:
-
-```typescript
-abstract class CustomModel<T> {
-  abstract toJSON(): T;
-  abstract clone(props?: Partial<T>): CustomModel<T>;
-}
-```
-
-## Context System
-
-Global UI contexts are provided in `app/lib/context-provider/`:
-
-- `ModalProvider` / `useModalContext` - Modal dialogs
-- `AlertProvider` / `useAlertContext` - Alert dialogs
-- `ToastProvider` / `useToastContext` - Toast notifications
-
-Wrap the app with these providers in order: `ToastProvider` → `AlertProvider` → `ModalProvider`.
-
-### Modal Usage Pattern
-
-모달은 반드시 `useModalContext().openModal()` + `createElement`로 열어야 함:
-```typescript
-const { openModal } = useModalContext();
-openModal({
-  id: UUID.v4(),
-  title: '모달 제목',
-  content: createElement(ModalComponent, { prop1 }),
-});
-```
-- ❌ `useState(isOpen)` + `<Modal isOpen={isOpen} />` 직접 렌더링 금지
-- ✅ `openModal()` 호출은 hook.ts에 위치 (tsx에서 직접 호출하지 않음)
-
-## Routing
-
-Routes are defined in `src/app/ui/index.tsx`:
-
-- `/` - Landing page
-- `/new-form` - Form creation page
-- `/kakao-authorize` - Kakao OAuth redirect handler
-- `/dashboard` - Admin dashboard
-- `/evaluator/dashboard` - Evaluator dashboard
-- `/evaluation/:formId` - Evaluation workspace
-- `/form/:formId` - Form detail page
-- `/form/:formId/apply` - Form application page
-- `/invite/:inviteToken` - Evaluator invite accept page
-
 ## Environment Variables
 
 Access via `EnvManager.getAppEnv(key)` or `import.meta.env[key]`:
@@ -223,12 +153,6 @@ Access via `EnvManager.getAppEnv(key)` or `import.meta.env[key]`:
 - `VITE_API_BASE_URL` - API base URL
 - `VITE_KAKAO_CLIENT_ID` - Kakao OAuth client ID
 - `VITE_KAKAO_REDIRECT_URI` - Kakao OAuth redirect URI
-
-## HTTP Client & MSW Response Pattern
-
-- AxiosManager 인터셉터가 MSW 래핑 응답(`{ success: true, data, meta }`)의 `data`를 자동 추출
-- API 함수에서 `response.data`를 반환하면 래핑 없이 순수 데이터가 반환됨
-- 에러 응답(`success: false`)은 래핑 해제하지 않음 — Axios 에러 핸들러로 전달
 
 ## Code Style Guide
 
@@ -253,12 +177,6 @@ See `.claude/skills/code-style.md` for detailed code style guidelines including:
 - Use `DateStandard.fromISO()` instead of `new Date(isoString)` for ISO date parsing
 - Use `CustomSearchParams.buildURL()` for API URL query string building
 
-### API Type Naming Convention
-
-API 레이어(`entities/*/api/`) 타입명 규칙 (MSW 내부 타입은 제외):
-- Response: `Get*Response`, `Post*Response` (e.g., `GetFormsResponse`)
-- Query Params: `Get*Params` (e.g., `GetFormsParams`)
-- Request Body: `*RequestData` (e.g., `PostFormRequestData`)
 
 ## Pull Request Workflow
 
@@ -316,16 +234,16 @@ export const Default: Story = {
 
 ## Layer Documentation
 
-For detailed layer-specific best practices, see the skill files:
+레이어별 상세 패턴(Model, Store, API, Widget Data Fetching, Modal, Context, Routing 등)은 각 레이어 스킬에 정의:
 
-| Layer        | Skill File                         | Topics                                                  |
-| ------------ | ---------------------------------- | ------------------------------------------------------- |
-| **Entities** | `.claude/skills/entities-layer.md` | Model pattern, Store pattern, API layer, State services |
-| **Shared**   | `.claude/skills/shared-layer.md`   | Utility classes, Base components, Shared modules        |
-| **Features** | `.claude/skills/features-layer.md` | Feature definition, UI components, API patterns         |
-| **Widgets**  | `.claude/skills/widgets-layer.md`  | Widget composition, When to create widgets              |
-| **Pages**    | `.claude/skills/pages-layer.md`    | Page/Modal patterns, Component structure                |
-| **App**      | `.claude/skills/app-layer.md`      | Entry point, Context providers, Routing                 |
+| Layer | Skill | 주요 내용 |
+|-------|-------|-----------|
+| **Entities** | `entities-layer` | Model/State 패턴, Store 패턴, API 함수/서비스, 타입 네이밍 |
+| **Features** | `features-layer` | Feature 네이밍, Hook 패턴, Entities 관계 |
+| **Widgets** | `widgets-layer` | Widget Data Fetching, Hook 패턴, 생성 기준 |
+| **Pages** | `pages-layer` | 위젯 조합, Modal openModal 패턴, Hook |
+| **Shared** | `shared-layer` | 유틸리티, CustomModel, MSW 응답 패턴, 로깅 |
+| **App** | `app-layer` | Provider 순서, 라우팅, Context 사용법 |
 
 ## Key Rules Summary
 

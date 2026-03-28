@@ -10,87 +10,109 @@ description: "Use this skill when working on the App layer of the FSD architectu
 
 ## Overview
 
-The `app` layer is the application entry point. It provides routing and context providers. This layer has no slices - all code is organized directly under segments.
+`app` 레이어는 애플리케이션 진입점. 라우팅과 Context Provider를 제공. 슬라이스 없이 세그먼트로 직접 구성.
 
 ## Quick Reference
 
-| Task                    | Location                                 |
-| ----------------------- | ---------------------------------------- |
-| Add new route           | `src/app/ui/index.tsx`                   |
-| Create context provider | `src/app/lib/context-provider/`          |
-| Modify provider order   | `src/app/ui/index.tsx`                   |
-| Access modal context    | `useModalContext`                        |
-| Access alert context    | `useAlertContext`                        |
-| Access toast context    | `useToastContext`                        |
-| 파일 구조 확인          | `/.project-skills/app/STRUCTURE.md` 참조 |
+| Task | Location |
+|------|----------|
+| 라우트 추가 | `src/app/ui/index.tsx` |
+| Context Provider 생성 | `src/app/lib/context-provider/` |
+| Provider 순서 변경 | `src/app/ui/index.tsx` |
+| 모달 컨텍스트 | `useModalContext` |
+| 알림 컨텍스트 | `useAlertContext` |
+| 토스트 컨텍스트 | `useToastContext` |
+| 파일 구조 확인 | `/.project-skills/app/STRUCTURE.md` 참조 |
 
-## Entry Point
-
-`main.tsx` imports from `src/app/ui`:
-
-```typescript
-// src/main.tsx
-import App from '@/app/ui';
-import '@/styles/index.css';
-
-createRoot(document.getElementById('root')!).render(<App />);
-```
-
-## App Component Structure
+## App Component (현행)
 
 ```typescript
 // src/app/ui/index.tsx
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-
-import { AlertProvider, ToastProvider, ModalProvider } from '@/app/lib';
-import { PageLanding, PageDashboard, PageNewForm, PageKakaoRedirect } from '@/pages/ui';
-
 const App = () => {
   return (
-    <ToastProvider>
-      <AlertProvider>
-        <ModalProvider>
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<PageLanding />} />
-              <Route path="/kakao-authorize" element={<PageKakaoRedirect />} />
-              <Route path="/dashboard" element={<PageDashboard />} />
-              <Route path="/new-form" element={<PageNewForm />} />
-            </Routes>
-          </BrowserRouter>
-        </ModalProvider>
-      </AlertProvider>
-    </ToastProvider>
+    <BrowserRouter>
+      <AuthProvider>
+        <ToastProvider>
+          <AlertProvider>
+            <ModalProvider>
+              <Routes>
+                <Route path="/" element={<PageLanding />} />
+                <Route path="/kakao-authorize" element={<PageKakaoRedirect />} />
+                <Route path="/dashboard" element={<PageDashboard />} />
+                <Route path="/evaluator/dashboard" element={<PageEvaluatorDashboard />} />
+                <Route path="/evaluation/:formId" element={<PageEvaluation />} />
+                <Route path="/new-form" element={<PageNewForm />} />
+                <Route path="/form/:formId" element={<PageFormDetail />} />
+                <Route path="/form/:formId/apply" element={<PageFormApply />} />
+                <Route path="/invite/:inviteToken" element={<PageInviteAccept />} />
+              </Routes>
+            </ModalProvider>
+          </AlertProvider>
+        </ToastProvider>
+      </AuthProvider>
+    </BrowserRouter>
   );
 };
-
-export default App;
 ```
 
-## Context Providers
+## Provider 중첩 순서
 
-Each provider is defined in `app/lib/context-provider/`.
+```
+BrowserRouter > AuthProvider > ToastProvider > AlertProvider > ModalProvider
+```
 
-### Provider Exports
+순서가 중요한 이유: 내부 Provider가 외부 Provider의 컨텍스트에 접근할 수 있어야 하므로.
+
+## Context Provider 사용
+
+### Modal — openModal + createElement
 
 ```typescript
-// src/app/lib/context-provider/index.ts
-export { ModalProvider, useModalContext } from './ModalProvider';
-export { AlertProvider, useAlertContext } from './AlertProvider';
-export { ToastProvider, useToastContext } from './ToastProvider';
+import { useModalContext } from '@/app/lib/context-provider/ModalProvider';
+
+const { openModal } = useModalContext();
+openModal({
+  id: UUID.v4(),
+  title: '모달 제목',
+  content: createElement(ModalComponent, { prop1 }),
+});
 ```
 
-## Key Points
+### Alert — showAlert + confirmCallback
 
-| Rule                | Description                                         |
-| ------------------- | --------------------------------------------------- |
-| Unified providers   | All pages wrapped with same providers               |
-| Routes in index.tsx | All routing defined in app/ui/index.tsx             |
-| Provider order      | `ToastProvider` → `AlertProvider` → `ModalProvider` |
-| No src/App.tsx      | App component is in src/app/ui/index.tsx            |
+```typescript
+import { useAlertContext } from '@/app/lib/context-provider/AlertProvider';
 
-**CRITICAL**: Provider order matters! Always wrap in this order: `ToastProvider` → `AlertProvider` → `ModalProvider`.
+const { showAlert } = useAlertContext();
+showAlert({
+  id: UUID.v4(),
+  title: '확인',
+  content: '정말 삭제하시겠습니까?',
+  confirmCallback: handleDelete,
+});
+```
+
+### Toast
+
+```typescript
+import { useToastContext } from '@/app/lib/context-provider/ToastProvider';
+const { showToast } = useToastContext();
+```
+
+## Routing
+
+| 경로 | 페이지 | 비고 |
+|------|--------|------|
+| `/` | PageLanding | 랜딩 |
+| `/kakao-authorize` | PageKakaoRedirect | OAuth 콜백 |
+| `/dashboard` | PageDashboard | 관리자 대시보드 |
+| `/evaluator/dashboard` | PageEvaluatorDashboard | 평가자 대시보드 |
+| `/evaluation/:formId` | PageEvaluation | 평가 워크스페이스 |
+| `/new-form` | PageNewForm | 폼 생성 |
+| `/form/:formId` | PageFormDetail | 폼 상세 |
+| `/form/:formId/apply` | PageFormApply | 지원서 작성 |
+| `/invite/:inviteToken` | PageInviteAccept | 초대 수락 |
 
 ## Reference
 
-For current file structure and module list, see `/.project-skills/app/STRUCTURE.md`.
+파일 구조: `/.project-skills/app/STRUCTURE.md` 참조.
