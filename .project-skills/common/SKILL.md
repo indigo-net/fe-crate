@@ -6,17 +6,10 @@
 > **원본 경로**: `.project-skills/common/SKILL.md`
 > symlink 혹은 원본을 수정하여 커밋할 경우, 반드시 `.project-skills/` 내 원본 파일과 symlink 대상 파일을 함께 커밋해야 합니다.
 
-## Git Commit 금지
+## Git Commit 규칙
 
-AI 에이전트는 `git commit`을 직접 실행하지 않는다. 커밋은 반드시 사용자가 터미널에서 직접 수행한다.
-husky pre-commit hook에 의해 FSD 레이어 검증 확인이 필요하며, 이 과정에서 사용자 입력(`y/n`)을 요구하기 때문이다.
-
-AI 에이전트의 역할:
-1. 코드 작성 및 수정
-2. `@fsd-reviewer` 에이전트로 변경 파일 검증
-3. 검증 결과를 사용자에게 보고
-4. 사용자가 커밋을 요청하면: 관련 파일을 `git add`로 staging하고, 커밋 메시지를 출력
-5. 사용자가 직접 `git commit` 실행
+커밋 전에 반드시 `@project-agents/fsd-reviewer`를 실행하여 FSD 레이어 규칙 검증을 수행한다.
+검증 통과 후 커밋을 진행한다.
 
 ## Project Overview
 
