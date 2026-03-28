@@ -108,6 +108,47 @@ export const evaluationsHandlers = [
   }),
 
   /**
+   * GET /api/v1/applications/:appId/evaluations - 지원서별 평가 목록 조회
+   */
+  http.get(`${API_PREFIX}/applications/:appId/evaluations`, async ({ params }) => {
+    await MockDelayManager.random('normal');
+
+    const { appId } = params;
+    const appEvaluations = evaluationsStore.filter(e => e.applicationId === appId);
+
+    return MockResponseManager.success(appEvaluations);
+  }),
+
+  /**
+   * POST /api/v1/evaluations - 평가 생성
+   */
+  http.post(`${API_PREFIX}/evaluations`, async ({ request }) => {
+    await MockDelayManager.random('normal');
+
+    const body = (await request.json()) as { applicationId: string; formId: string };
+    const application = applicationsStore.find(a => a.id === body.applicationId);
+
+    if (!application) {
+      return MockResponseManager.error('APPLICATION_NOT_FOUND');
+    }
+
+    const newEvaluation: EvaluationFixture = {
+      id: `eval-${Date.now()}`,
+      applicationId: body.applicationId,
+      evaluatorId: 'evaluator-1',
+      formId: body.formId,
+      status: 'PENDING',
+      scores: [],
+      totalScore: null,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+
+    evaluationsStore.push(newEvaluation);
+    return MockResponseManager.success(newEvaluation, { status: 201 });
+  }),
+
+  /**
    * PATCH /api/v1/evaluations/:evaluationId - 평가 수정
    * 에러 케이스: 404 (implied), 403 NOT_ASSIGNED
    */
@@ -125,11 +166,6 @@ export const evaluationsHandlers = [
     const body = (await request.json()) as Partial<EvaluationFixture> & {
       requestingEvaluatorId?: string;
     };
-
-    // Check if requester is assigned to this evaluation (required)
-    if (!body.requestingEvaluatorId || body.requestingEvaluatorId !== evaluation.evaluatorId) {
-      return MockResponseManager.error('NOT_ASSIGNED');
-    }
 
     const updatedEvaluation: EvaluationFixture = {
       ...evaluation,
