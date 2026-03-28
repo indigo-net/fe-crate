@@ -3,24 +3,9 @@ import { Link } from 'react-router-dom';
 
 import { DarkModeButton } from '@/features/toggle-theme/ui';
 import { Iconography } from '@/shared/ui';
-import {
-  EvaluationSummary,
-  EvaluationProgress,
-  ApplicantList,
-} from '@/widgets/evaluator-dashboard/ui';
-
-import usePageEvaluatorDashboardController from './hook';
+import { AssignedFormList } from '@/widgets/evaluator-dashboard/ui';
 
 const PageEvaluatorDashboard = memo(() => {
-  const {
-    currentFilter,
-    filteredApplicants,
-    summary,
-    filterCounts,
-    handleFilterChange,
-    handleStartEvaluation,
-  } = usePageEvaluatorDashboardController();
-
   return (
     <div className="w-full min-h-screen flex flex-col bg-bg-base text-text-primary">
       {/* Header */}
@@ -57,31 +42,13 @@ const PageEvaluatorDashboard = memo(() => {
 
       {/* Main */}
       <main className="flex-1 bg-bg-subtle/30 overflow-y-auto px-6 py-10">
-        <div className="max-w-6xl mx-auto space-y-8">
-          {/* Summary Cards */}
-          <EvaluationSummary
-            totalAssigned={summary.totalAssigned}
-            completedCount={summary.completedCount}
-            progressPercent={summary.progressPercent}
-          />
-
-          {/* Progress & Filter */}
-          <EvaluationProgress
-            progressPercent={summary.progressPercent}
-            currentFilter={currentFilter}
-            onFilterChange={handleFilterChange}
-            counts={filterCounts}
-          />
-
-          {/* Applicant List */}
-          <ApplicantList
-            applicants={filteredApplicants}
-            onStartEvaluation={handleStartEvaluation}
-          />
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-xl font-slim-bold mb-6">배정된 폼</h2>
+          <AssignedFormList />
         </div>
       </main>
 
-      {/* Footer */}
+      {/* Footer - TODO 수정 필요 */}
       <footer className="w-full px-6 py-4 border-t border-border-default bg-bg-base">
         <div className="max-w-6xl mx-auto flex justify-between items-center text-[11px] text-text-tertiary font-slim-normal">
           <p>© {new Date().getFullYear()} CRATE by indigo-net. All rights reserved.</p>

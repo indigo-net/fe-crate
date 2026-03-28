@@ -1,7 +1,8 @@
+import Iconography from './index';
+
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { ComponentType, SVGProps } from 'react';
 
-import Iconography from './index';
 
 const StrokeIconEntries = Object.entries(Iconography.Stroke) as [
   string,

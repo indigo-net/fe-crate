@@ -1,19 +1,27 @@
-import { memo } from 'react';
+import { memo, useMemo } from 'react';
 
 interface Props {
   value: number | null;
   onChange: (score: number) => void;
   disabled?: boolean;
+  max?: number;
+  step?: number;
 }
 
-const SCORE_RANGE = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] as const;
+const ScoreInput = memo(({ value, onChange, disabled, max = 10, step = 1 }: Props) => {
+  const scores = useMemo(() => {
+    const safeStep = Math.max(1, step);
+    const result: number[] = [];
+    for (let i = safeStep; i <= max; i += safeStep) {
+      result.push(i);
+    }
+    return result;
+  }, [max, step]);
 
-const ScoreInput = memo(({ value, onChange, disabled }: Props) => {
   return (
     <div className="flex flex-col gap-1">
-      <label className="text-xs font-slim-semibold text-text-secondary">점수</label>
-      <div className="flex gap-1">
-        {SCORE_RANGE.map(score => {
+      <div className="flex gap-1 flex-wrap">
+        {scores.map(score => {
           const isSelected = value === score;
           return (
             <button
