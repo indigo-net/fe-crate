@@ -16,7 +16,7 @@ import {
 } from '../api';
 import EvaluationModel from '../model/evaluation';
 
-import type { ApplicationAnswer, ApplicationListItem, FormQuestion } from '../api';
+import type { ApplicationAnswer, GetApplicationsResponse, FormQuestion } from '../api';
 import type { GetApplicationEvaluationsResponse } from '../api';
 
 interface AssignedFormsResult {
@@ -68,7 +68,7 @@ class EvaluationApiService {
   static async fetchApplications(
     formId: string,
     params?: { limit?: number; page?: number },
-  ): Promise<ApplicationListItem[]> {
+  ): Promise<GetApplicationsResponse[]> {
     return getApplications(formId, params);
   }
 

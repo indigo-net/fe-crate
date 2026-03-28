@@ -6,7 +6,7 @@ interface GetApplicationsParams {
   limit?: number;
 }
 
-interface ApplicationListItem {
+interface GetApplicationsResponse {
   id: string;
   formId: string;
   applicantName: string;
@@ -20,12 +20,12 @@ interface ApplicationListItem {
 async function getApplications(
   formId: string,
   params?: GetApplicationsParams,
-): Promise<ApplicationListItem[]> {
+): Promise<GetApplicationsResponse[]> {
   const axios = AxiosManager.getAxiosInstance();
   const url = CustomSearchParams.buildURL(`/api/v1/forms/${formId}/applications`, params ?? {});
-  const response = await axios.get<ApplicationListItem[]>(url);
+  const response = await axios.get<GetApplicationsResponse[]>(url);
   return response.data;
 }
 
 export { getApplications };
-export type { GetApplicationsParams, ApplicationListItem };
+export type { GetApplicationsParams, GetApplicationsResponse };
